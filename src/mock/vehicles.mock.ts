@@ -1,0 +1,85 @@
+import type { Vehicle } from '@/types';
+
+export const mockVehicles: Vehicle[] = [
+  {
+    id: 'veh-001', tenantId: 'tenant-001', organizationId: 'org-003',
+    name: 'Truck #101', make: 'Ford', model: 'F-750', year: 2023, vin: '1FDWF7DC5PDA12345', licensePlate: 'TX-FUL-101',
+    fuelCapacityGallons: 2500, currentFuelGallons: 1800, status: 'active',
+    registrationExpiry: '2027-03-15', insuranceExpiry: '2027-01-31', lastInspectionDate: '2026-05-10', nextInspectionDue: '2026-11-10',
+    mileage: 45200, assignedDriverId: 'driver-001', assignedDriverName: 'Dave Henderson',
+    maintenanceHistory: [
+      { id: 'maint-001', type: 'Oil Change', scheduledDate: '2026-07-15', completedDate: null, status: 'scheduled', notes: '' },
+      { id: 'maint-002', type: 'Brake Inspection', scheduledDate: '2026-05-01', completedDate: '2026-05-01', status: 'completed', notes: 'All clear' },
+    ],
+    createdAt: '2023-01-15T00:00:00Z', updatedAt: '2026-06-20T00:00:00Z',
+  },
+  {
+    id: 'veh-002', tenantId: 'tenant-001', organizationId: 'org-003',
+    name: 'Truck #102', make: 'Ford', model: 'F-750', year: 2024, vin: '1FDWF7DC6PDA67890', licensePlate: 'TX-FUL-102',
+    fuelCapacityGallons: 2500, currentFuelGallons: 2200, status: 'active',
+    registrationExpiry: '2027-06-20', insuranceExpiry: '2027-01-31', lastInspectionDate: '2026-04-20', nextInspectionDue: '2026-10-20',
+    mileage: 28100, assignedDriverId: 'driver-002', assignedDriverName: 'Carlos Mendez',
+    maintenanceHistory: [],
+    createdAt: '2024-02-01T00:00:00Z', updatedAt: '2026-06-18T00:00:00Z',
+  },
+  {
+    id: 'veh-003', tenantId: 'tenant-001', organizationId: 'org-004',
+    name: 'Truck #201', make: 'Peterbilt', model: '348', year: 2022, vin: '2NP3LJHR3NM123456', licensePlate: 'TX-FUL-201',
+    fuelCapacityGallons: 4000, currentFuelGallons: 1200, status: 'active',
+    registrationExpiry: '2026-12-01', insuranceExpiry: '2026-12-31', lastInspectionDate: '2026-03-15', nextInspectionDue: '2026-09-15',
+    mileage: 78400, assignedDriverId: 'driver-003', assignedDriverName: 'Mike Santos',
+    maintenanceHistory: [
+      { id: 'maint-003', type: 'Tire Rotation', scheduledDate: '2026-06-01', completedDate: '2026-06-02', status: 'completed', notes: '' },
+    ],
+    createdAt: '2022-06-15T00:00:00Z', updatedAt: '2026-06-20T00:00:00Z',
+  },
+  {
+    id: 'veh-004', tenantId: 'tenant-001', organizationId: 'org-004',
+    name: 'Truck #202', make: 'Peterbilt', model: '348', year: 2023, vin: '2NP3LJHR4NM789012', licensePlate: 'TX-FUL-202',
+    fuelCapacityGallons: 4000, currentFuelGallons: 3500, status: 'active',
+    registrationExpiry: '2027-02-28', insuranceExpiry: '2027-01-15', lastInspectionDate: '2026-06-01', nextInspectionDue: '2026-12-01',
+    mileage: 52600, assignedDriverId: 'driver-004', assignedDriverName: 'James Wright',
+    maintenanceHistory: [],
+    createdAt: '2023-03-10T00:00:00Z', updatedAt: '2026-06-19T00:00:00Z',
+  },
+  {
+    id: 'veh-005', tenantId: 'tenant-001', organizationId: 'org-007',
+    name: 'Truck #301', make: 'Freightliner', model: 'M2 106', year: 2024, vin: '3ALACWFCXPDBC34567', licensePlate: 'FL-FUL-301',
+    fuelCapacityGallons: 3000, currentFuelGallons: 2400, status: 'active',
+    registrationExpiry: '2027-05-10', insuranceExpiry: '2027-03-31', lastInspectionDate: '2026-04-15', nextInspectionDue: '2026-10-15',
+    mileage: 31200, assignedDriverId: 'driver-005', assignedDriverName: 'Tony Reyes',
+    maintenanceHistory: [],
+    createdAt: '2024-01-20T00:00:00Z', updatedAt: '2026-06-20T00:00:00Z',
+  },
+  {
+    id: 'veh-006', tenantId: 'tenant-001', organizationId: 'org-008',
+    name: 'Truck #401', make: 'Freightliner', model: 'M2 106', year: 2023, vin: '3ALACWFC1PDBC89012', licensePlate: 'FL-FUL-401',
+    fuelCapacityGallons: 3000, currentFuelGallons: 800, status: 'active',
+    registrationExpiry: '2026-08-15', insuranceExpiry: '2026-09-30', lastInspectionDate: '2026-02-20', nextInspectionDue: '2026-08-20',
+    mileage: 62100, assignedDriverId: 'driver-006', assignedDriverName: 'Bobby Clark',
+    maintenanceHistory: [
+      { id: 'maint-004', type: 'Engine Service', scheduledDate: '2026-06-25', completedDate: null, status: 'scheduled', notes: 'Regular 50K service' },
+    ],
+    createdAt: '2023-05-01T00:00:00Z', updatedAt: '2026-06-20T00:00:00Z',
+  },
+  {
+    id: 'veh-007', tenantId: 'tenant-001', organizationId: 'org-005',
+    name: 'Truck #501', make: 'Ford', model: 'F-650', year: 2025, vin: '1FDNF6CC7PDA45678', licensePlate: 'TX-FUL-501',
+    fuelCapacityGallons: 2000, currentFuelGallons: 1600, status: 'active',
+    registrationExpiry: '2027-09-01', insuranceExpiry: '2027-06-30', lastInspectionDate: '2026-05-25', nextInspectionDue: '2026-11-25',
+    mileage: 12400, assignedDriverId: 'driver-007', assignedDriverName: 'Kyle Patterson',
+    maintenanceHistory: [],
+    createdAt: '2025-02-01T00:00:00Z', updatedAt: '2026-06-19T00:00:00Z',
+  },
+  {
+    id: 'veh-008', tenantId: 'tenant-001', organizationId: 'org-004',
+    name: 'Truck #203', make: 'Kenworth', model: 'T370', year: 2021, vin: '5PKHH68X1PM345678', licensePlate: 'TX-FUL-203',
+    fuelCapacityGallons: 3500, currentFuelGallons: 0, status: 'maintenance',
+    registrationExpiry: '2026-11-15', insuranceExpiry: '2026-12-31', lastInspectionDate: '2026-01-10', nextInspectionDue: '2026-07-10',
+    mileage: 98700, assignedDriverId: null, assignedDriverName: null,
+    maintenanceHistory: [
+      { id: 'maint-005', type: 'Transmission Repair', scheduledDate: '2026-06-15', completedDate: null, status: 'scheduled', notes: 'Major repair — estimated 2 weeks' },
+    ],
+    createdAt: '2021-08-15T00:00:00Z', updatedAt: '2026-06-15T00:00:00Z',
+  },
+];

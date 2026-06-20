@@ -1,0 +1,90 @@
+import { useState, useRef, useEffect } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { Avatar } from '@/components/ui/Avatar';
+import { Badge } from '@/components/ui/Badge';
+import { ROLES } from '@/lib/constants';
+import { ChevronDown, LogOut, RefreshCw } from 'lucide-react';
+import type { UserRole } from '@/types';
+
+const roleVariants: Record<UserRole, 'info' | 'success' | 'warning'> = {
+  corporate_super_admin: 'info',
+  master_franchise_admin: 'warning',
+  franchise_admin: 'success',
+};
+
+export function UserMenu() {
+  const { state, switchRole, logout } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  if (!state.user) return null;
+
+  const allRoles: UserRole[] = ['corporate_super_admin', 'master_franchise_admin', 'franchise_admin'];
+
+  return (
+    <div className="relative" ref={menuRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-gray-100"
+      >
+        <Avatar firstName={state.user.firstName} lastName={state.user.lastName} size="sm" />
+        <div className="hidden text-left md:block">
+          <p className="text-sm font-medium text-gray-700">
+            {state.user.firstName} {state.user.lastName}
+          </p>
+        </div>
+        <ChevronDown className="h-4 w-4 text-gray-400" />
+      </button>
+
+      {isOpen && (
+        <div className="absolute right-0 top-full mt-2 w-72 rounded-xl border border-gray-200 bg-white shadow-lg">
+          <div className="border-b border-gray-100 p-4">
+            <p className="font-medium text-gray-900">
+              {state.user.firstName} {state.user.lastName}
+            </p>
+            <p className="text-sm text-gray-500">{state.user.email}</p>
+            <Badge variant={roleVariants[state.user.role]} className="mt-2">
+              {ROLES[state.user.role]}
+            </Badge>
+          </div>
+
+          <div className="border-b border-gray-100 p-3">
+            <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase text-gray-400">
+              <RefreshCw className="h-3 w-3" /> Switch Role (Demo)
+            </p>
+            {allRoles.map((role) => (
+              <button
+                key={role}
+                onClick={() => { switchRole(role); setIsOpen(false); }}
+                className={`w-full rounded-lg px-3 py-2 text-left text-sm transition-colors ${
+                  state.user?.role === role ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                {ROLES[role]}
+              </button>
+            ))}
+          </div>
+
+          <div className="p-2">
+            <button
+              onClick={() => { logout(); setIsOpen(false); }}
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+            >
+              <LogOut className="h-4 w-4" /> Sign Out
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

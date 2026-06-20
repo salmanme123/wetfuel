@@ -1,0 +1,105 @@
+import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router';
+import { PageHeader } from '@/components/shared/PageHeader';
+import { StatusBadge } from '@/components/shared/StatusBadge';
+import { Button } from '@/components/ui/Button';
+import { DataTable, TablePagination, type Column } from '@/components/ui/DataTable';
+import { SearchInput } from '@/components/ui/SearchInput';
+import { Select } from '@/components/ui/Select';
+import { Tabs } from '@/components/ui/Tabs';
+import { Modal } from '@/components/ui/Modal';
+import { Input } from '@/components/ui/Input';
+import { Textarea } from '@/components/ui/Textarea';
+import { useTable } from '@/hooks/useTable';
+import { useModal } from '@/hooks/useModal';
+import { useToast } from '@/hooks/useToast';
+import { mockJobs } from '@/mock';
+import { FUEL_TYPES, JOB_STATUSES } from '@/lib/constants';
+import { formatGallons, formatDate } from '@/lib/format';
+import { Plus } from 'lucide-react';
+import type { Job, JobStatus } from '@/types';
+
+export function JobsListPage() {
+  const navigate = useNavigate();
+  const { addToast } = useToast();
+  const modal = useModal();
+  const [activeStatus, setActiveStatus] = useState<string>('all');
+  const [jobs] = useState(mockJobs);
+
+  const filteredByStatus = useMemo(() => {
+    if (activeStatus === 'all') return jobs;
+    return jobs.filter((j) => j.status === activeStatus);
+  }, [jobs, activeStatus]);
+
+  const statusCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: jobs.length };
+    jobs.forEach((j) => { counts[j.status] = (counts[j.status] ?? 0) + 1; });
+    return counts;
+  }, [jobs]);
+
+  const statusTabs = [
+    { key: 'all', label: 'All', count: statusCounts['all'] },
+    ...JOB_STATUSES.map((s) => ({ key: s.value, label: s.label, count: statusCounts[s.value] ?? 0 })),
+  ];
+
+  const table = useTable<Job & Record<string, unknown>>({
+    data: filteredByStatus as (Job & Record<string, unknown>)[],
+    searchKeys: ['jobNumber', 'customerName'],
+  });
+
+  const columns: Column<Job & Record<string, unknown>>[] = [
+    { key: 'jobNumber', header: 'Job #', sortable: true, width: '140px', render: (j) => <span className="font-mono text-brand-600">{(j as unknown as Job).jobNumber}</span> },
+    { key: 'priority', header: 'Priority', render: (j) => <StatusBadge status={(j as unknown as Job).priority} type="priority" /> },
+    { key: 'customerName', header: 'Customer', sortable: true },
+    { key: 'siteName', header: 'Site' },
+    { key: 'driverName', header: 'Driver', render: (j) => (j as unknown as Job).driverName ?? <span className="text-gray-400">Unassigned</span> },
+    { key: 'fuelType', header: 'Fuel', render: (j) => { const ft = (j as unknown as Job).fuelType; return ft === 'gasoline_regular' ? 'Gas (Reg)' : ft === 'gasoline_premium' ? 'Gas (Prem)' : ft.charAt(0).toUpperCase() + ft.slice(1); } },
+    { key: 'requestedGallons', header: 'Gallons', sortable: true, render: (j) => formatGallons((j as unknown as Job).requestedGallons) },
+    { key: 'scheduledDate', header: 'Scheduled', sortable: true, render: (j) => formatDate((j as unknown as Job).scheduledDate) },
+    { key: 'status', header: 'Status', render: (j) => <StatusBadge status={(j as unknown as Job).status} type="job" /> },
+  ];
+
+  return (
+    <div>
+      <PageHeader
+        title="Jobs & Dispatch"
+        description="Manage fuel delivery jobs and dispatch assignments"
+        actions={
+          <Button onClick={() => modal.open()}>
+            <Plus className="h-4 w-4" /> Create Job
+          </Button>
+        }
+      />
+
+      <div className="mb-4">
+        <Tabs tabs={statusTabs} activeTab={activeStatus} onChange={(key) => { setActiveStatus(key as JobStatus | 'all'); }} />
+      </div>
+
+      <div className="mb-4 flex flex-wrap items-center gap-4">
+        <SearchInput value={table.searchTerm} onChange={table.setSearchTerm} placeholder="Search by job # or customer..." className="w-80" />
+        <Select options={FUEL_TYPES} placeholder="All Fuel Types" value={table.filters['fuelType'] ?? ''} onChange={(e) => table.setFilter('fuelType', e.target.value)} />
+        {Object.keys(table.filters).length > 0 && <Button variant="ghost" onClick={table.clearFilters}>Clear</Button>}
+      </div>
+
+      <DataTable columns={columns} data={table.filteredData} onSort={table.handleSort} sortConfig={table.sortConfig} onRowClick={(j) => navigate(`/jobs/${(j as unknown as Job).id}`)} keyExtractor={(j) => (j as unknown as Job).id} />
+      <TablePagination page={table.page} totalPages={table.totalPages} totalItems={table.totalItems} pageSize={table.pageSize} onPageChange={table.setPage} />
+
+      <Modal isOpen={modal.isOpen} onClose={modal.close} title="Create Job" size="lg" footer={
+        <>
+          <Button variant="outline" onClick={modal.close}>Cancel</Button>
+          <Button onClick={() => { addToast({ type: 'success', title: 'Job created successfully' }); modal.close(); }}>Create Job</Button>
+        </>
+      }>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Select label="Customer" options={mockJobs.filter((j, i, arr) => arr.findIndex((x) => x.customerId === j.customerId) === i).map((j) => ({ label: j.customerName, value: j.customerId }))} placeholder="Select customer" />
+          <Select label="Fuel Type" options={FUEL_TYPES} placeholder="Select fuel type" />
+          <Input label="Requested Gallons" type="number" placeholder="500" />
+          <Select label="Priority" options={[{ label: 'Low', value: 'low' }, { label: 'Normal', value: 'normal' }, { label: 'High', value: 'high' }, { label: 'Urgent', value: 'urgent' }]} placeholder="Select priority" />
+          <Input label="Scheduled Date" type="date" />
+          <Select label="Time Window" options={[{ label: '04:00 - 08:00', value: '04:00 - 08:00' }, { label: '06:00 - 10:00', value: '06:00 - 10:00' }, { label: '08:00 - 12:00', value: '08:00 - 12:00' }, { label: '12:00 - 16:00', value: '12:00 - 16:00' }]} placeholder="Select window" />
+          <Textarea label="Notes" placeholder="Additional instructions..." className="sm:col-span-2" />
+        </div>
+      </Modal>
+    </div>
+  );
+}

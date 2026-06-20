@@ -3,10 +3,17 @@ import { PageHeader } from '@/components/shared/PageHeader';
 import { StatsCard } from '@/components/shared/StatsCard';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
 import { Tabs } from '@/components/ui/Tabs';
-import { mockComplianceDocuments, mockComplianceScorecards, mockSafetyIncidents } from '@/mock';
+import { Modal } from '@/components/ui/Modal';
+import { Input } from '@/components/ui/Input';
+import { Select } from '@/components/ui/Select';
+import { Textarea } from '@/components/ui/Textarea';
+import { useModal } from '@/hooks/useModal';
+import { useToast } from '@/hooks/useToast';
+import { mockComplianceDocuments, mockComplianceScorecards, mockSafetyIncidents, mockDrivers } from '@/mock';
 import { formatDate } from '@/lib/format';
-import { Shield, AlertTriangle, FileCheck, AlertCircle } from 'lucide-react';
+import { Shield, AlertTriangle, FileCheck, AlertCircle, Plus } from 'lucide-react';
 
 const docStatusColors: Record<string, 'success' | 'warning' | 'error'> = { valid: 'success', expiring_soon: 'warning', expired: 'error' };
 const incidentSeverityColors: Record<string, 'default' | 'warning' | 'error'> = { low: 'default', medium: 'warning', high: 'error', critical: 'error' };
@@ -14,6 +21,8 @@ const incidentStatusColors: Record<string, 'info' | 'warning' | 'success' | 'def
 
 export function CompliancePage() {
   const [activeTab, setActiveTab] = useState('scorecards');
+  const { addToast } = useToast();
+  const incidentModal = useModal();
 
   const expiredCount = mockComplianceDocuments.filter((d) => d.status === 'expired').length;
   const expiringSoonCount = mockComplianceDocuments.filter((d) => d.status === 'expiring_soon').length;
@@ -101,6 +110,9 @@ export function CompliancePage() {
 
         {activeTab === 'incidents' && (
           <div className="space-y-4">
+            <div className="flex justify-end">
+              <Button onClick={() => incidentModal.open()}><Plus className="h-4 w-4" /> Report Incident</Button>
+            </div>
             {mockSafetyIncidents.map((inc) => (
               <Card key={inc.id}>
                 <div className="flex items-start justify-between">
@@ -128,6 +140,40 @@ export function CompliancePage() {
           </div>
         )}
       </div>
+
+      <Modal isOpen={incidentModal.isOpen} onClose={incidentModal.close} title="Report Safety Incident" size="lg" footer={
+        <>
+          <Button variant="outline" onClick={incidentModal.close}>Cancel</Button>
+          <Button onClick={() => { addToast({ type: 'success', title: 'Incident reported', message: 'Safety team has been notified' }); incidentModal.close(); }}>Submit Report</Button>
+        </>
+      }>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Select label="Incident Type" options={[
+            { label: 'Fuel Spill', value: 'spill' },
+            { label: 'Accident', value: 'accident' },
+            { label: 'Violation', value: 'violation' },
+            { label: 'Near Miss', value: 'near_miss' },
+          ]} placeholder="Select type" />
+          <Select label="Severity" options={[
+            { label: 'Low', value: 'low' },
+            { label: 'Medium', value: 'medium' },
+            { label: 'High', value: 'high' },
+            { label: 'Critical', value: 'critical' },
+          ]} placeholder="Select severity" />
+          <Select label="Driver (if applicable)" options={mockDrivers.map((d) => ({ label: `${d.firstName} ${d.lastName}`, value: d.id }))} placeholder="Select driver" />
+          <Input label="Date of Incident" type="date" />
+          <Input label="Location" placeholder="e.g. 2400 Freight Rd, Houston, TX" className="sm:col-span-2" />
+          <Textarea label="Description" placeholder="Describe what happened in detail..." className="sm:col-span-2" />
+          <Textarea label="Immediate Actions Taken" placeholder="What was done immediately after the incident..." className="sm:col-span-2" />
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Attach Photos/Evidence</label>
+            <div className="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
+              <p className="text-sm text-gray-500">Drag & drop or click to upload photos</p>
+              <p className="text-xs text-gray-400 mt-1">JPG, PNG up to 10MB each, max 5 files</p>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

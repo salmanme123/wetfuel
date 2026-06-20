@@ -15,7 +15,7 @@ import { useToast } from '@/hooks/useToast';
 import { mockVehicles } from '@/mock';
 import { formatDate, formatNumber } from '@/lib/format';
 import { cn } from '@/lib/cn';
-import { Plus, Truck, Wrench, AlertTriangle } from 'lucide-react';
+import { Plus, Truck, Wrench, AlertTriangle, FileUp } from 'lucide-react';
 import type { Vehicle } from '@/types';
 
 const statusVariants: Record<string, 'success' | 'warning' | 'error'> = {
@@ -45,6 +45,7 @@ function isRegistrationExpired(date: string): boolean {
 export function FleetListPage() {
   const { addToast } = useToast();
   const modal = useModal<Vehicle>();
+  const docModal = useModal();
   const [showExpiredOnly, setShowExpiredOnly] = useState(false);
 
   const activeCount = mockVehicles.filter((v) => v.status === 'active').length;
@@ -98,7 +99,10 @@ export function FleetListPage() {
   return (
     <div>
       <PageHeader title="Fleet & Vehicle Management" description="Track vehicles, maintenance, and compliance" actions={
-        <Button onClick={() => modal.open()}><Plus className="h-4 w-4" /> Add Vehicle</Button>
+        <div className="flex gap-3">
+          <Button variant="outline" onClick={() => docModal.open()}><FileUp className="h-4 w-4" /> Upload Document</Button>
+          <Button onClick={() => modal.open()}><Plus className="h-4 w-4" /> Add Vehicle</Button>
+        </div>
       } />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-4">
@@ -161,6 +165,37 @@ export function FleetListPage() {
           <Input label="Fuel Capacity (gallons)" type="number" placeholder="2500" />
           <Input label="Registration Expiry" type="date" />
           <Input label="Insurance Expiry" type="date" />
+        </div>
+      </Modal>
+
+      <Modal isOpen={docModal.isOpen} onClose={docModal.close} title="Upload Vehicle Document" size="md" footer={
+        <>
+          <Button variant="outline" onClick={docModal.close}>Cancel</Button>
+          <Button onClick={() => { addToast({ type: 'success', title: 'Document uploaded', message: 'Vehicle compliance record updated' }); docModal.close(); }}>Upload</Button>
+        </>
+      }>
+        <div className="grid gap-4">
+          <Select label="Vehicle" options={mockVehicles.map((v) => ({ label: `${v.name} (${v.licensePlate})`, value: v.id }))} placeholder="Select vehicle" />
+          <Select label="Document Type" options={[
+            { label: 'Vehicle Registration', value: 'registration' },
+            { label: 'Insurance Certificate', value: 'insurance' },
+            { label: 'DOT Inspection Report', value: 'dot_inspection' },
+            { label: 'Maintenance Record', value: 'maintenance' },
+            { label: 'Emissions Certificate', value: 'emissions' },
+          ]} placeholder="Select document type" />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Input label="Issued Date" type="date" />
+            <Input label="Expiry Date" type="date" />
+          </div>
+          <Input label="Document Number (optional)" placeholder="e.g. REG-2026-TX-12345" />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Upload File</label>
+            <div className="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
+              <FileUp className="mx-auto h-8 w-8 text-gray-400" />
+              <p className="mt-2 text-sm text-gray-500">Drag & drop or click to upload</p>
+              <p className="text-xs text-gray-400 mt-1">PDF, JPG, PNG up to 10MB</p>
+            </div>
+          </div>
         </div>
       </Modal>
     </div>

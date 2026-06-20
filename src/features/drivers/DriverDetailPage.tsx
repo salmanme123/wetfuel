@@ -6,6 +6,11 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
+import { Modal } from '@/components/ui/Modal';
+import { Input } from '@/components/ui/Input';
+import { Select } from '@/components/ui/Select';
+import { useModal } from '@/hooks/useModal';
+import { useToast } from '@/hooks/useToast';
 import { mockDrivers, mockJobs, mockFuelingEvents, mockVehicles } from '@/mock';
 import { formatGallons, formatDate, formatDateTime, formatCurrency } from '@/lib/format';
 import {
@@ -22,6 +27,7 @@ import {
   IdCard,
   Award,
   Gauge,
+  Plus,
 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import type { Driver, DriverStatus, ShiftStatus, DriverCertification } from '@/types';
@@ -85,6 +91,9 @@ export function DriverDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const { addToast } = useToast();
+  const certModal = useModal();
+  const licenseModal = useModal();
 
   const driverFromState = (location.state as { driver?: Driver } | null)?.driver;
   const driver = driverFromState ?? mockDrivers.find((d) => d.id === id);
@@ -228,7 +237,9 @@ export function DriverDetailPage() {
 
         <div className="space-y-6 lg:col-span-2">
           <div className="grid gap-6 sm:grid-cols-2">
-            <Card title="License">
+            <Card title="License" footer={
+              <Button size="sm" variant="outline" onClick={() => licenseModal.open()}>Update License</Button>
+            }>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <IdCard className="mt-0.5 h-5 w-5 text-gray-400" />
@@ -271,7 +282,11 @@ export function DriverDetailPage() {
             </Card>
           </div>
 
-          <Card title="Certifications">
+          <Card title="Certifications" footer={
+            <Button size="sm" variant="outline" onClick={() => certModal.open()}>
+              <Plus className="h-4 w-4" /> Add Certification
+            </Button>
+          }>
             {driver.certifications.length === 0 ? (
               <p className="py-4 text-center text-sm text-gray-500">No certifications on file.</p>
             ) : (
@@ -431,6 +446,63 @@ export function DriverDetailPage() {
           </div>
         )}
       </Card>
+
+      <Modal isOpen={certModal.isOpen} onClose={certModal.close} title="Add Certification" size="md" footer={
+        <>
+          <Button variant="outline" onClick={certModal.close}>Cancel</Button>
+          <Button onClick={() => { addToast({ type: 'success', title: 'Certification added', message: `Added to ${fullName}'s profile` }); certModal.close(); }}>Add Certification</Button>
+        </>
+      }>
+        <div className="grid gap-4">
+          <Select label="Certification Type" options={[
+            { label: 'HAZMAT Endorsement', value: 'hazmat' },
+            { label: 'Tanker Endorsement', value: 'tanker' },
+            { label: 'First Aid/CPR', value: 'first_aid' },
+            { label: 'Defensive Driving', value: 'defensive_driving' },
+            { label: 'Medical Certificate', value: 'medical' },
+            { label: 'DOT Safety Training', value: 'dot_safety' },
+          ]} placeholder="Select certification" />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Input label="Issued Date" type="date" />
+            <Input label="Expiry Date" type="date" />
+          </div>
+          <Input label="Certificate Number (optional)" placeholder="e.g. CERT-2026-00001" />
+          <Input label="Issuing Authority" placeholder="e.g. Texas DPS" />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Upload Document</label>
+            <div className="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
+              <p className="text-sm text-gray-500">Drag & drop or click to upload</p>
+              <p className="text-xs text-gray-400 mt-1">PDF, JPG, PNG up to 10MB</p>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={licenseModal.isOpen} onClose={licenseModal.close} title="Update License" size="md" footer={
+        <>
+          <Button variant="outline" onClick={licenseModal.close}>Cancel</Button>
+          <Button onClick={() => { addToast({ type: 'success', title: 'License updated', message: `Updated ${fullName}'s license` }); licenseModal.close(); }}>Update License</Button>
+        </>
+      }>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Select label="License Type" options={[
+            { label: 'CDL-A', value: 'CDL-A' },
+            { label: 'CDL-B', value: 'CDL-B' },
+            { label: 'CDL-C', value: 'CDL-C' },
+            { label: 'Standard', value: 'standard' },
+          ]} defaultValue={driver.license.type} />
+          <Input label="License Number" defaultValue={driver.license.number} />
+          <Input label="State" defaultValue={driver.license.state} />
+          <Input label="Expiry Date" type="date" defaultValue={driver.license.expiryDate} />
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Upload License Copy</label>
+            <div className="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
+              <p className="text-sm text-gray-500">Drag & drop or click to upload</p>
+              <p className="text-xs text-gray-400 mt-1">PDF, JPG, PNG up to 10MB</p>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

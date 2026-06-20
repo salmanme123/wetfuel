@@ -15,6 +15,7 @@ import { JobDetailPage } from '@/features/jobs/JobDetailPage';
 import { FleetListPage } from '@/features/fleet/FleetListPage';
 import { InventoryPage } from '@/features/inventory/InventoryPage';
 import { EquipmentListPage } from '@/features/equipment/EquipmentListPage';
+import { EquipmentDetailPage } from '@/features/equipment/EquipmentDetailPage';
 import { PricingPage } from '@/features/pricing/PricingPage';
 import { CompliancePage } from '@/features/compliance/CompliancePage';
 import { InvoicesListPage } from '@/features/invoices/InvoicesListPage';
@@ -49,6 +50,7 @@ export const router = createBrowserRouter([
           { path: 'fleet', element: <FleetListPage /> },
           { path: 'inventory', element: <InventoryPage /> },
           { path: 'equipment', element: <EquipmentListPage /> },
+          { path: 'equipment/:id', element: <EquipmentDetailPage /> },
           { path: 'pricing', element: <PricingPage /> },
           { path: 'compliance', element: <CompliancePage /> },
           { path: 'invoices', element: <InvoicesListPage /> },

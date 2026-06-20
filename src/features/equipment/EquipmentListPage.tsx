@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { Card } from '@/components/ui/Card';
 import { DataTable, TablePagination, type Column } from '@/components/ui/DataTable';
 import { SearchInput } from '@/components/ui/SearchInput';
 import { SearchableSelect } from '@/components/ui/SearchableSelect';
@@ -18,7 +17,7 @@ import { useToast } from '@/hooks/useToast';
 import { mockEquipment, mockCustomers } from '@/mock';
 import { formatGallons, formatDate } from '@/lib/format';
 import { FUEL_TYPES } from '@/lib/constants';
-import { Plus, QrCode, Eye, Trash2, Flame, Truck } from 'lucide-react';
+import { Plus, QrCode, Eye, Trash2 } from 'lucide-react';
 import type { Equipment, EquipmentType, PlaceLocation } from '@/types';
 
 const typeLabels: Record<string, string> = { tank: 'Tank', generator: 'Generator', pump: 'Pump', other: 'Other' };
@@ -80,7 +79,6 @@ export function EquipmentListPage() {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const addModal = useModal();
-  const viewModal = useModal<Equipment>();
   const [equipment, setEquipment] = useState(mockEquipment);
   const [deleteTarget, setDeleteTarget] = useState<Equipment | null>(null);
   const [customerFilter, setCustomerFilter] = useState('');
@@ -236,6 +234,10 @@ export function EquipmentListPage() {
     table.clearFilters();
   };
 
+  const openEquipmentDetail = (eq: Equipment) => {
+    navigate(`/equipment/${eq.id}`, { state: { equipment: eq } });
+  };
+
   const columns: Column<Equipment & Record<string, unknown>>[] = [
     { key: 'name', header: 'Equipment', sortable: true, render: (e) => { const eq = e as unknown as Equipment; return (<div><p className="font-medium text-gray-900">{eq.name}</p><p className="text-xs text-gray-500">{eq.manufacturer} {eq.model}</p></div>); } },
     { key: 'type', header: 'Type', render: (e) => <Badge variant="default">{typeLabels[(e as unknown as Equipment).type]}</Badge> },
@@ -256,7 +258,7 @@ export function EquipmentListPage() {
           <div className="flex items-center gap-1" onClick={(ev) => ev.stopPropagation()}>
             <button
               type="button"
-              onClick={() => viewModal.open(eq)}
+              onClick={() => openEquipmentDetail(eq)}
               className="cursor-pointer rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 hover:text-brand-600"
               title="View"
             >
@@ -310,96 +312,10 @@ export function EquipmentListPage() {
         data={table.filteredData}
         onSort={table.handleSort}
         sortConfig={table.sortConfig}
-        onRowClick={(e) => viewModal.open(e as unknown as Equipment)}
+        onRowClick={(e) => openEquipmentDetail(e as unknown as Equipment)}
         keyExtractor={(e) => (e as unknown as Equipment).id}
       />
       <TablePagination page={table.page} totalPages={table.totalPages} totalItems={table.totalItems} pageSize={table.pageSize} onPageChange={table.setPage} />
-
-      <Modal isOpen={viewModal.isOpen} onClose={viewModal.close} title={viewModal.data?.name ?? 'Equipment Details'} size="lg" footer={
-        <>
-          <Button variant="outline" onClick={viewModal.close}>Close</Button>
-          {viewModal.data && (
-            <>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  navigate(`/jobs?siteId=${viewModal.data!.siteId}&customerId=${viewModal.data!.customerId}`);
-                  viewModal.close();
-                }}
-              >
-                <Truck className="h-4 w-4" /> View Jobs
-              </Button>
-              <Button
-                onClick={() => {
-                  navigate(`/fueling-events?equipmentId=${viewModal.data!.id}`);
-                  viewModal.close();
-                }}
-              >
-                <Flame className="h-4 w-4" /> View Fueling Events
-              </Button>
-            </>
-          )}
-        </>
-      }>
-        {viewModal.data && (
-          <div className="space-y-6">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant={statusVariants[viewModal.data.status]}>{viewModal.data.status}</Badge>
-              <Badge variant="default">{typeLabels[viewModal.data.type]}</Badge>
-              <span className="flex items-center gap-1 font-mono text-sm text-gray-600">
-                <QrCode className="h-4 w-4" />{viewModal.data.qrCode}
-              </span>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Card padding="sm">
-                <p className="text-xs text-gray-500">Customer</p>
-                <p className="font-medium text-gray-900">{viewModal.data.customerName}</p>
-              </Card>
-              <Card padding="sm">
-                <p className="text-xs text-gray-500">Site</p>
-                <p className="font-medium text-gray-900">{viewModal.data.siteName}</p>
-              </Card>
-              <Card padding="sm">
-                <p className="text-xs text-gray-500">Manufacturer / Model</p>
-                <p className="font-medium text-gray-900">{viewModal.data.manufacturer} {viewModal.data.model}</p>
-              </Card>
-              <Card padding="sm">
-                <p className="text-xs text-gray-500">Serial Number</p>
-                <p className="font-medium text-gray-900">{viewModal.data.serialNumber}</p>
-              </Card>
-              <Card padding="sm">
-                <p className="text-xs text-gray-500">Fuel Type</p>
-                <p className="font-medium text-gray-900">{viewModal.data.fuelType}</p>
-              </Card>
-              <Card padding="sm">
-                <p className="text-xs text-gray-500">Capacity</p>
-                <p className="font-medium text-gray-900">{viewModal.data.capacityGallons ? formatGallons(viewModal.data.capacityGallons) : '—'}</p>
-              </Card>
-              <Card padding="sm">
-                <p className="text-xs text-gray-500">Total Fuelings</p>
-                <p className="font-medium text-gray-900">{viewModal.data.totalFuelingEvents}</p>
-              </Card>
-              <Card padding="sm">
-                <p className="text-xs text-gray-500">Gallons Delivered</p>
-                <p className="font-medium text-gray-900">{formatGallons(viewModal.data.totalGallonsDelivered)}</p>
-              </Card>
-              <Card padding="sm">
-                <p className="text-xs text-gray-500">Last Fueled</p>
-                <p className="font-medium text-gray-900">{viewModal.data.lastFueledDate ? formatDate(viewModal.data.lastFueledDate) : '—'}</p>
-              </Card>
-              <Card padding="sm">
-                <p className="text-xs text-gray-500">Installed</p>
-                <p className="font-medium text-gray-900">{formatDate(viewModal.data.installDate)}</p>
-              </Card>
-            </div>
-
-            <div className="rounded-lg bg-gray-50 p-3 text-sm text-gray-600">
-              GPS: {viewModal.data.latitude}, {viewModal.data.longitude}
-            </div>
-          </div>
-        )}
-      </Modal>
 
       <Modal
         isOpen={addModal.isOpen}

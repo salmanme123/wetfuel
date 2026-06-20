@@ -35,7 +35,11 @@ export function Breadcrumbs() {
       </Link>
       {pathSegments.map((segment, index) => {
         const path = '/' + pathSegments.slice(0, index + 1).join('/');
-        const label = routeLabels[segment] ?? segment;
+        const prevSegment = pathSegments[index - 1];
+        const label =
+          prevSegment === 'equipment' && index === pathSegments.length - 1
+            ? 'Details'
+            : routeLabels[segment] ?? segment;
         const isLast = index === pathSegments.length - 1;
 
         return (

@@ -37,7 +37,7 @@ export function Breadcrumbs() {
         const path = '/' + pathSegments.slice(0, index + 1).join('/');
         const prevSegment = pathSegments[index - 1];
         const label =
-          prevSegment === 'equipment' && index === pathSegments.length - 1
+          (prevSegment === 'equipment' || prevSegment === 'drivers') && index === pathSegments.length - 1
             ? 'Details'
             : routeLabels[segment] ?? segment;
         const isLast = index === pathSegments.length - 1;

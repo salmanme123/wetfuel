@@ -33,11 +33,13 @@ function buildOptions(events: FuelingEvent[], idKey: keyof FuelingEvent, nameKey
 export function FuelingEventsPage() {
   const [searchParams] = useSearchParams();
   const modal = useModal<FuelingEvent>();
-  const [driverId, setDriverId] = useState('');
+  const [driverId, setDriverId] = useState(() => searchParams.get('driverId') ?? '');
   const [customerId, setCustomerId] = useState('');
   const [equipmentId, setEquipmentId] = useState(() => searchParams.get('equipmentId') ?? '');
 
   useEffect(() => {
+    const driver = searchParams.get('driverId');
+    if (driver) setDriverId(driver);
     const eq = searchParams.get('equipmentId');
     if (eq) setEquipmentId(eq);
   }, [searchParams]);

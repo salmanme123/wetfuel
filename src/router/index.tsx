@@ -8,6 +8,7 @@ import { TenantDetailPage } from '@/features/tenants/TenantDetailPage';
 import { OrganizationsPage } from '@/features/organizations/OrganizationsPage';
 import { UsersListPage } from '@/features/users/UsersListPage';
 import { DriversListPage } from '@/features/drivers/DriversListPage';
+import { DriverDetailPage } from '@/features/drivers/DriverDetailPage';
 import { CustomersListPage } from '@/features/customers/CustomersListPage';
 import { CustomerDetailPage } from '@/features/customers/CustomerDetailPage';
 import { JobsListPage } from '@/features/jobs/JobsListPage';
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
           { path: 'organizations', element: <OrganizationsPage /> },
           { path: 'users', element: <UsersListPage /> },
           { path: 'drivers', element: <DriversListPage /> },
+          { path: 'drivers/:id', element: <DriverDetailPage /> },
           { path: 'customers', element: <CustomersListPage /> },
           { path: 'customers/:id', element: <CustomerDetailPage /> },
           { path: 'jobs', element: <JobsListPage /> },

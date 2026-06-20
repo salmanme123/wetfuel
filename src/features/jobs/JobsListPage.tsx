@@ -29,6 +29,7 @@ export function JobsListPage() {
   const [jobs] = useState(mockJobs);
   const [siteFilter, setSiteFilter] = useState(() => searchParams.get('siteId') ?? '');
   const [customerFilterFromUrl] = useState(() => searchParams.get('customerId') ?? '');
+  const [driverFilterFromUrl] = useState(() => searchParams.get('driverId') ?? '');
 
   const filteredByStatus = useMemo(() => {
     if (activeStatus === 'all') return jobs;
@@ -86,6 +87,9 @@ export function JobsListPage() {
     }
     if (siteFilter) {
       table.setFilter('siteId', siteFilter);
+    }
+    if (driverFilterFromUrl) {
+      table.setFilter('driverId', driverFilterFromUrl);
     }
     // Apply URL filters once on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps

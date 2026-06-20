@@ -32,33 +32,33 @@ export function DataTable<T extends Record<string, unknown>>({
   keyExtractor,
 }: DataTableProps<T>) {
   const renderSortIcon = (key: string) => {
-    if (!sortConfig || sortConfig.key !== key) return <ChevronsUpDown className="h-4 w-4 text-gray-400" />;
+    if (!sortConfig || sortConfig.key !== key) return <ChevronsUpDown className="h-4 w-4 text-muted-foreground" />;
     return sortConfig.direction === 'asc' ? (
-      <ChevronUp className="h-4 w-4 text-brand-600" />
+      <ChevronUp className="h-4 w-4 text-primary" />
     ) : (
-      <ChevronDown className="h-4 w-4 text-brand-600" />
+      <ChevronDown className="h-4 w-4 text-primary" />
     );
   };
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-brand-600" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="min-w-full divide-y divide-border">
+        <thead className="bg-muted/50">
           <tr>
             {columns.map((col) => (
               <th
                 key={col.key}
                 className={cn(
-                  'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500',
-                  col.sortable && 'cursor-pointer select-none hover:text-gray-700',
+                  'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground',
+                  col.sortable && 'cursor-pointer select-none hover:text-foreground',
                 )}
                 style={col.width ? { width: col.width } : undefined}
                 onClick={col.sortable && onSort ? () => onSort(col.key) : undefined}
@@ -71,10 +71,10 @@ export function DataTable<T extends Record<string, unknown>>({
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 bg-white">
+        <tbody className="divide-y divide-border bg-card">
           {data.length === 0 ? (
             <tr>
-              <td colSpan={columns.length} className="px-4 py-12 text-center text-sm text-gray-500">
+              <td colSpan={columns.length} className="px-4 py-12 text-center text-sm text-muted-foreground">
                 {emptyMessage}
               </td>
             </tr>
@@ -84,12 +84,12 @@ export function DataTable<T extends Record<string, unknown>>({
                 key={keyExtractor(item)}
                 className={cn(
                   'transition-colors',
-                  onRowClick && 'cursor-pointer hover:bg-gray-50',
+                  onRowClick && 'cursor-pointer hover:bg-accent/50',
                 )}
                 onClick={onRowClick ? () => onRowClick(item) : undefined}
               >
                 {columns.map((col) => (
-                  <td key={col.key} className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                  <td key={col.key} className="whitespace-nowrap px-4 py-3 text-sm text-foreground">
                     {col.render ? col.render(item) : String(item[col.key] ?? '')}
                   </td>
                 ))}
@@ -116,14 +116,14 @@ export function TablePagination({ page, totalPages, totalItems, pageSize, onPage
 
   return (
     <div className="flex items-center justify-between px-4 py-3">
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-muted-foreground">
         Showing {start} to {end} of {totalItems} results
       </p>
       <div className="flex items-center gap-2">
         <button
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
-          className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -143,10 +143,10 @@ export function TablePagination({ page, totalPages, totalItems, pageSize, onPage
               key={pageNum}
               onClick={() => onPageChange(pageNum)}
               className={cn(
-                'rounded-lg px-3 py-1.5 text-sm font-medium',
+                'rounded-md px-3 py-1.5 text-sm font-medium',
                 pageNum === page
-                  ? 'bg-brand-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-100',
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-foreground hover:bg-accent',
               )}
             >
               {pageNum}
@@ -156,7 +156,7 @@ export function TablePagination({ page, totalPages, totalItems, pageSize, onPage
         <button
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
-          className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Next
         </button>

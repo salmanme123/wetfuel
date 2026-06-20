@@ -37,7 +37,7 @@ export function CustomersListPage() {
   });
 
   const columns: Column<Customer & Record<string, unknown>>[] = [
-    { key: 'companyName', header: 'Company', sortable: true, render: (c) => <span className="font-medium text-gray-900">{(c as unknown as Customer).companyName}</span> },
+    { key: 'companyName', header: 'Company', sortable: true, render: (c) => <span className="font-medium text-foreground">{(c as unknown as Customer).companyName}</span> },
     { key: 'category', header: 'Category', render: (c) => { const cat = (c as unknown as Customer).category; return <Badge variant={categoryVariants[cat]}>{cat}</Badge>; } },
     { key: 'contactName', header: 'Contact', sortable: true },
     { key: 'billingTerm', header: 'Billing' },

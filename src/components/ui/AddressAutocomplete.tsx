@@ -27,7 +27,7 @@ function highlightMatch(text: string, query: string) {
   return (
     <>
       {before}
-      <span className="font-semibold text-gray-900">{match}</span>
+      <span className="font-semibold text-foreground">{match}</span>
       {after}
     </>
   );
@@ -154,12 +154,12 @@ export function AddressAutocomplete({
   return (
     <div ref={containerRef} className={cn('space-y-1', className)}>
       {label && (
-        <label htmlFor="address-autocomplete" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="address-autocomplete" className="block text-sm font-medium text-foreground">
           {label}
         </label>
       )}
       <div className="relative">
-        <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+        <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60" />
         <input
           ref={inputRef}
           id="address-autocomplete"
@@ -179,35 +179,35 @@ export function AddressAutocomplete({
           className={cn(
             'block w-full rounded-lg border py-2 pl-9 pr-3 text-sm shadow-sm transition-colors',
             'focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500',
-            'placeholder:text-gray-400',
-            error ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300',
-            disabled && 'cursor-not-allowed bg-gray-50 text-gray-500',
+            'placeholder:text-muted-foreground/60',
+            error ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-border',
+            disabled && 'cursor-not-allowed bg-muted/50 text-muted-foreground',
           )}
         />
       </div>
 
       {value && (
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           GPS: {value.latitude.toFixed(6)}, {value.longitude.toFixed(6)}
         </p>
       )}
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      {resolvedHelperText && <p className="text-sm text-gray-500">{resolvedHelperText}</p>}
+      {error && <p className="text-sm text-red-400">{error}</p>}
+      {resolvedHelperText && <p className="text-sm text-muted-foreground">{resolvedHelperText}</p>}
 
       {showDropdown && createPortal(
         <div
           ref={dropdownRef}
-          className="fixed z-[300] overflow-hidden rounded-sm border border-gray-200 bg-white shadow-[0_2px_6px_rgba(0,0,0,0.3)]"
+          className="fixed z-[300] overflow-hidden rounded-sm border border-border bg-card shadow-[0_2px_6px_rgba(0,0,0,0.3)]"
           style={{ top: dropdownStyle.top, left: dropdownStyle.left, width: dropdownStyle.width }}
         >
           {loading ? (
-            <div className="flex items-center gap-2 px-3 py-3 text-sm text-gray-500">
-              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-brand-500" />
+            <div className="flex items-center gap-2 px-3 py-3 text-sm text-muted-foreground">
+              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-border border-t-brand-500" />
               Searching places...
             </div>
           ) : suggestions.length === 0 ? (
-            <div className="px-3 py-3 text-sm text-gray-500">
+            <div className="px-3 py-3 text-sm text-muted-foreground">
               No places found. Try a street name or city.
             </div>
           ) : (
@@ -218,18 +218,18 @@ export function AddressAutocomplete({
                     type="button"
                     className={cn(
                       'flex w-full cursor-pointer items-start gap-3 px-3 py-2.5 text-left transition-colors',
-                      index === activeIndex ? 'bg-gray-100' : 'hover:bg-gray-50',
+                      index === activeIndex ? 'bg-muted' : 'hover:bg-muted/50',
                     )}
                     onMouseDown={(e) => e.preventDefault()}
                     onMouseEnter={() => setActiveIndex(index)}
                     onClick={() => selectSuggestion(suggestion)}
                   >
-                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" strokeWidth={1.75} />
+                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/60" strokeWidth={1.75} />
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm text-gray-800">
+                      <span className="block truncate text-sm text-foreground">
                         {highlightMatch(suggestion.primaryText, inputValue)}
                       </span>
-                      <span className="block truncate text-xs text-gray-500">
+                      <span className="block truncate text-xs text-muted-foreground">
                         {suggestion.secondaryText}
                       </span>
                     </span>
@@ -238,8 +238,8 @@ export function AddressAutocomplete({
               ))}
             </ul>
           )}
-          <div className="flex items-center justify-end border-t border-gray-100 px-3 py-1.5">
-            <span className="text-[10px] tracking-wide text-gray-400">
+          <div className="flex items-center justify-end border-t border-border/50 px-3 py-1.5">
+            <span className="text-[10px] tracking-wide text-muted-foreground/60">
               powered by{' '}
               <span className="font-medium">
                 <span className="text-[#4285F4]">G</span>

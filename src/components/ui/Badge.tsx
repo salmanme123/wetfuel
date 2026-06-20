@@ -1,11 +1,11 @@
 import { cn } from '@/lib/cn';
 
 const variantClasses = {
-  default: 'bg-gray-100 text-gray-700',
-  success: 'bg-green-100 text-green-700',
-  warning: 'bg-yellow-100 text-yellow-700',
-  error: 'bg-red-100 text-red-700',
-  info: 'bg-blue-100 text-blue-700',
+  default: 'border-border bg-muted/50 text-muted-foreground',
+  success: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400',
+  warning: 'border-amber-500/30 bg-amber-500/10 text-amber-400',
+  error: 'border-red-500/30 bg-red-500/10 text-red-400',
+  info: 'border-sky-500/30 bg-sky-500/10 text-sky-400',
 };
 
 interface BadgeProps {
@@ -18,7 +18,7 @@ export function Badge({ children, variant = 'default', className }: BadgeProps) 
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+        'inline-flex items-center rounded-full border px-2.5 py-1 font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]',
         variantClasses[variant],
         className,
       )}

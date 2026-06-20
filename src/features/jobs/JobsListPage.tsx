@@ -96,11 +96,11 @@ export function JobsListPage() {
   }, []);
 
   const columns: Column<Job & Record<string, unknown>>[] = [
-    { key: 'jobNumber', header: 'Job #', sortable: true, width: '140px', render: (j) => <span className="font-mono text-brand-600">{(j as unknown as Job).jobNumber}</span> },
+    { key: 'jobNumber', header: 'Job #', sortable: true, width: '140px', render: (j) => <span className="font-mono text-primary">{(j as unknown as Job).jobNumber}</span> },
     { key: 'priority', header: 'Priority', render: (j) => <StatusBadge status={(j as unknown as Job).priority} type="priority" /> },
     { key: 'customerName', header: 'Customer', sortable: true },
     { key: 'siteName', header: 'Site' },
-    { key: 'driverName', header: 'Driver', render: (j) => (j as unknown as Job).driverName ?? <span className="text-gray-400">Unassigned</span> },
+    { key: 'driverName', header: 'Driver', render: (j) => (j as unknown as Job).driverName ?? <span className="text-muted-foreground/60">Unassigned</span> },
     { key: 'fuelType', header: 'Fuel', render: (j) => { const ft = (j as unknown as Job).fuelType; return ft === 'gasoline_regular' ? 'Gas (Reg)' : ft === 'gasoline_premium' ? 'Gas (Prem)' : ft.charAt(0).toUpperCase() + ft.slice(1); } },
     { key: 'requestedGallons', header: 'Gallons', sortable: true, render: (j) => formatGallons((j as unknown as Job).requestedGallons) },
     { key: 'scheduledDate', header: 'Scheduled', sortable: true, render: (j) => formatDate((j as unknown as Job).scheduledDate) },

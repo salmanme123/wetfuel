@@ -10,17 +10,17 @@ const icons = {
 };
 
 const colors = {
-  success: 'border-green-200 bg-green-50',
-  error: 'border-red-200 bg-red-50',
-  warning: 'border-yellow-200 bg-yellow-50',
-  info: 'border-blue-200 bg-blue-50',
+  success: 'border-emerald-500/30 bg-emerald-500/10',
+  error: 'border-red-500/30 bg-red-500/10',
+  warning: 'border-amber-500/30 bg-amber-500/10',
+  info: 'border-sky-500/30 bg-sky-500/10',
 };
 
 const iconColors = {
-  success: 'text-green-500',
-  error: 'text-red-500',
-  warning: 'text-yellow-500',
-  info: 'text-blue-500',
+  success: 'text-emerald-400',
+  error: 'text-red-400',
+  warning: 'text-amber-400',
+  info: 'text-sky-400',
 };
 
 export function ToastContainer() {
@@ -42,12 +42,12 @@ export function ToastContainer() {
           >
             <Icon className={cn('h-5 w-5 shrink-0 mt-0.5', iconColors[toast.type])} />
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-900">{toast.title}</p>
-              {toast.message && <p className="mt-1 text-sm text-gray-600">{toast.message}</p>}
+              <p className="text-sm font-medium text-foreground">{toast.title}</p>
+              {toast.message && <p className="mt-1 text-sm text-muted-foreground">{toast.message}</p>}
             </div>
             <button
               onClick={() => removeToast(toast.id)}
-              className="shrink-0 rounded p-1 text-gray-400 hover:text-gray-600"
+              className="shrink-0 rounded p-1 text-muted-foreground hover:text-foreground"
             >
               <X className="h-4 w-4" />
             </button>

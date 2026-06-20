@@ -86,13 +86,13 @@ export function FleetListPage() {
   };
 
   const columns: Column<Vehicle & Record<string, unknown>>[] = [
-    { key: 'name', header: 'Vehicle', sortable: true, render: (v) => { const veh = v as unknown as Vehicle; return (<div><p className="font-medium text-gray-900">{veh.name}</p><p className="text-xs text-gray-500">{veh.year} {veh.make} {veh.model}</p></div>); } },
+    { key: 'name', header: 'Vehicle', sortable: true, render: (v) => { const veh = v as unknown as Vehicle; return (<div><p className="font-medium text-foreground">{veh.name}</p><p className="text-xs text-muted-foreground">{veh.year} {veh.make} {veh.model}</p></div>); } },
     { key: 'licensePlate', header: 'Plate' },
     { key: 'status', header: 'Status', render: (v) => { const veh = v as unknown as Vehicle; return <Badge variant={statusVariants[veh.status]}>{veh.status}</Badge>; } },
-    { key: 'fuelCapacityGallons', header: 'Fuel Level', render: (v) => { const veh = v as unknown as Vehicle; const pct = Math.round((veh.currentFuelGallons / veh.fuelCapacityGallons) * 100); return (<div className="flex items-center gap-2"><div className="h-2 w-20 rounded-full bg-gray-200"><div className={`h-2 rounded-full ${pct > 50 ? 'bg-green-500' : pct > 20 ? 'bg-yellow-500' : 'bg-red-500'}`} style={{ width: `${pct}%` }} /></div><span className="text-xs text-gray-500">{pct}%</span></div>); } },
-    { key: 'assignedDriverName', header: 'Driver', render: (v) => (v as unknown as Vehicle).assignedDriverName ?? <span className="text-gray-400">Unassigned</span> },
+    { key: 'fuelCapacityGallons', header: 'Fuel Level', render: (v) => { const veh = v as unknown as Vehicle; const pct = Math.round((veh.currentFuelGallons / veh.fuelCapacityGallons) * 100); return (<div className="flex items-center gap-2"><div className="h-2 w-20 rounded-full bg-border"><div className={`h-2 rounded-full ${pct > 50 ? 'bg-emerald-500/100' : pct > 20 ? 'bg-amber-500/100' : 'bg-red-500/100'}`} style={{ width: `${pct}%` }} /></div><span className="text-xs text-muted-foreground">{pct}%</span></div>); } },
+    { key: 'assignedDriverName', header: 'Driver', render: (v) => (v as unknown as Vehicle).assignedDriverName ?? <span className="text-muted-foreground/60">Unassigned</span> },
     { key: 'mileage', header: 'Mileage', sortable: true, render: (v) => `${formatNumber((v as unknown as Vehicle).mileage)} mi` },
-    { key: 'registrationExpiry', header: 'Reg. Expiry', sortable: true, render: (v) => { const veh = v as unknown as Vehicle; const expired = isRegistrationExpired(veh.registrationExpiry); const soon = !expired && new Date(veh.registrationExpiry) < new Date('2026-09-01'); return <span className={cn(expired ? 'font-medium text-red-600' : soon && 'text-amber-600 font-medium')}>{formatDate(veh.registrationExpiry)}</span>; } },
+    { key: 'registrationExpiry', header: 'Reg. Expiry', sortable: true, render: (v) => { const veh = v as unknown as Vehicle; const expired = isRegistrationExpired(veh.registrationExpiry); const soon = !expired && new Date(veh.registrationExpiry) < new Date('2026-09-01'); return <span className={cn(expired ? 'font-medium text-red-400' : soon && 'text-amber-600 font-medium')}>{formatDate(veh.registrationExpiry)}</span>; } },
     { key: 'nextInspectionDue', header: 'Next Inspection', sortable: true, render: (v) => formatDate((v as unknown as Vehicle).nextInspectionDue) },
   ];
 
@@ -107,8 +107,8 @@ export function FleetListPage() {
 
       <div className="mb-6 grid gap-4 sm:grid-cols-4">
         <StatsCard title="Active Vehicles" value={activeCount} icon={Truck} />
-        <StatsCard title="In Maintenance" value={maintenanceCount} icon={Wrench} iconColor="text-yellow-600 bg-yellow-100" />
-        <StatsCard title="Expired Documents" value={expiredCount} icon={AlertTriangle} iconColor="text-red-600 bg-red-100" />
+        <StatsCard title="In Maintenance" value={maintenanceCount} icon={Wrench} iconColor="text-amber-400 bg-yellow-100" />
+        <StatsCard title="Expired Documents" value={expiredCount} icon={AlertTriangle} iconColor="text-red-400 bg-red-100" />
         <StatsCard title="Docs Expiring Soon" value={expiringDocs} icon={AlertTriangle} iconColor="text-amber-600 bg-amber-100" />
       </div>
 
@@ -132,7 +132,7 @@ export function FleetListPage() {
           value={table.filters['status'] ?? ''}
           onChange={(e) => table.setFilter('status', e.target.value)}
         />
-        <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm">
+        <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm">
           <input
             type="checkbox"
             checked={showExpiredOnly}
@@ -140,9 +140,9 @@ export function FleetListPage() {
               setShowExpiredOnly(e.target.checked);
               table.setPage(1);
             }}
-            className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+            className="h-4 w-4 rounded border-border text-primary focus:ring-brand-500"
           />
-          <span className="text-gray-700">Expired only</span>
+          <span className="text-foreground">Expired only</span>
         </label>
         {hasActiveFilters && (
           <Button variant="ghost" onClick={clearFilters}>Clear</Button>
@@ -189,11 +189,11 @@ export function FleetListPage() {
           </div>
           <Input label="Document Number (optional)" placeholder="e.g. REG-2026-TX-12345" />
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Upload File</label>
-            <div className="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
-              <FileUp className="mx-auto h-8 w-8 text-gray-400" />
-              <p className="mt-2 text-sm text-gray-500">Drag & drop or click to upload</p>
-              <p className="text-xs text-gray-400 mt-1">PDF, JPG, PNG up to 10MB</p>
+            <label className="block text-sm font-medium text-foreground mb-1">Upload File</label>
+            <div className="rounded-lg border-2 border-dashed border-border p-6 text-center">
+              <FileUp className="mx-auto h-8 w-8 text-muted-foreground/60" />
+              <p className="mt-2 text-sm text-muted-foreground">Drag & drop or click to upload</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">PDF, JPG, PNG up to 10MB</p>
             </div>
           </div>
         </div>

@@ -34,9 +34,9 @@ export function CompliancePage() {
 
       <div className="mb-6 grid gap-4 sm:grid-cols-4">
         <StatsCard title="Avg Compliance Score" value={`${avgScore}%`} icon={Shield} iconColor="text-emerald-600 bg-emerald-100" />
-        <StatsCard title="Expired Documents" value={expiredCount} icon={AlertCircle} iconColor="text-red-600 bg-red-100" />
-        <StatsCard title="Expiring Soon" value={expiringSoonCount} icon={AlertTriangle} iconColor="text-yellow-600 bg-yellow-100" />
-        <StatsCard title="Total Documents" value={mockComplianceDocuments.length} icon={FileCheck} iconColor="text-blue-600 bg-blue-100" />
+        <StatsCard title="Expired Documents" value={expiredCount} icon={AlertCircle} iconColor="text-red-400 bg-red-100" />
+        <StatsCard title="Expiring Soon" value={expiringSoonCount} icon={AlertTriangle} iconColor="text-amber-400 bg-yellow-100" />
+        <StatsCard title="Total Documents" value={mockComplianceDocuments.length} icon={FileCheck} iconColor="text-sky-400 bg-sky-500/15" />
       </div>
 
       <Tabs tabs={[
@@ -52,23 +52,23 @@ export function CompliancePage() {
               <Card key={sc.organizationId}>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-900">{sc.organizationName}</h3>
-                    <span className={`text-2xl font-bold ${sc.overallScore >= 90 ? 'text-green-600' : sc.overallScore >= 80 ? 'text-yellow-600' : 'text-red-600'}`}>{sc.overallScore}%</span>
+                    <h3 className="font-semibold text-foreground">{sc.organizationName}</h3>
+                    <span className={`text-2xl font-bold ${sc.overallScore >= 90 ? 'text-emerald-400' : sc.overallScore >= 80 ? 'text-amber-400' : 'text-red-400'}`}>{sc.overallScore}%</span>
                   </div>
                   <div className="space-y-2">
                     {([['Driver', sc.driverScore], ['Vehicle', sc.vehicleScore], ['Operational', sc.operationalScore], ['Safety', sc.safetyScore]] as [string, number][]).map(([label, score]) => (
                       <div key={label} className="flex items-center justify-between">
-                        <span className="text-sm text-gray-500">{label}</span>
+                        <span className="text-sm text-muted-foreground">{label}</span>
                         <div className="flex items-center gap-2">
-                          <div className="h-2 w-24 rounded-full bg-gray-200">
-                            <div className={`h-2 rounded-full ${score >= 90 ? 'bg-green-500' : score >= 80 ? 'bg-yellow-500' : 'bg-red-500'}`} style={{ width: `${score}%` }} />
+                          <div className="h-2 w-24 rounded-full bg-border">
+                            <div className={`h-2 rounded-full ${score >= 90 ? 'bg-emerald-500/100' : score >= 80 ? 'bg-amber-500/100' : 'bg-red-500/100'}`} style={{ width: `${score}%` }} />
                           </div>
                           <span className="text-sm font-medium w-10 text-right">{score}%</span>
                         </div>
                       </div>
                     ))}
                   </div>
-                  <div className="flex gap-2 border-t pt-3 text-xs text-gray-500">
+                  <div className="flex gap-2 border-t pt-3 text-xs text-muted-foreground">
                     <span>{sc.totalDocuments} docs</span>
                     {sc.expiredDocuments > 0 && <Badge variant="error">{sc.expiredDocuments} expired</Badge>}
                     {sc.expiringSoonDocuments > 0 && <Badge variant="warning">{sc.expiringSoonDocuments} expiring</Badge>}
@@ -82,23 +82,23 @@ export function CompliancePage() {
         {activeTab === 'documents' && (
           <Card>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
+              <table className="min-w-full divide-y divide-border">
                 <thead><tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Document</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Category</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Entity</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Expiry Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Days Left</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Document</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Category</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Entity</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Expiry Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Days Left</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Status</th>
                 </tr></thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-border/50">
                   {mockComplianceDocuments.sort((a, b) => a.daysUntilExpiry - b.daysUntilExpiry).map((d) => (
                     <tr key={d.id}>
-                      <td className="px-4 py-3 text-sm font-medium text-gray-900">{d.documentName}</td>
+                      <td className="px-4 py-3 text-sm font-medium text-foreground">{d.documentName}</td>
                       <td className="px-4 py-3"><Badge variant="default">{d.category}</Badge></td>
-                      <td className="px-4 py-3"><div><p className="text-sm">{d.entityName}</p><p className="text-xs text-gray-500">{d.entityType}</p></div></td>
+                      <td className="px-4 py-3"><div><p className="text-sm">{d.entityName}</p><p className="text-xs text-muted-foreground">{d.entityType}</p></div></td>
                       <td className="px-4 py-3 text-sm">{formatDate(d.expiryDate)}</td>
-                      <td className="px-4 py-3 text-sm font-medium"><span className={d.daysUntilExpiry < 0 ? 'text-red-600' : d.daysUntilExpiry < 90 ? 'text-yellow-600' : 'text-green-600'}>{d.daysUntilExpiry < 0 ? `${Math.abs(d.daysUntilExpiry)}d overdue` : `${d.daysUntilExpiry}d`}</span></td>
+                      <td className="px-4 py-3 text-sm font-medium"><span className={d.daysUntilExpiry < 0 ? 'text-red-400' : d.daysUntilExpiry < 90 ? 'text-amber-400' : 'text-emerald-400'}>{d.daysUntilExpiry < 0 ? `${Math.abs(d.daysUntilExpiry)}d overdue` : `${d.daysUntilExpiry}d`}</span></td>
                       <td className="px-4 py-3"><Badge variant={docStatusColors[d.status]}>{d.status.replace('_', ' ')}</Badge></td>
                     </tr>
                   ))}
@@ -122,15 +122,15 @@ export function CompliancePage() {
                       <Badge variant="default">{inc.type}</Badge>
                       <Badge variant={incidentStatusColors[inc.status]}>{inc.status}</Badge>
                     </div>
-                    <p className="text-sm text-gray-700">{inc.description}</p>
-                    <div className="flex gap-4 text-xs text-gray-500">
+                    <p className="text-sm text-foreground">{inc.description}</p>
+                    <div className="flex gap-4 text-xs text-muted-foreground">
                       <span>Date: {formatDate(inc.date)}</span>
                       {inc.driverName && <span>Driver: {inc.driverName}</span>}
                       <span>Location: {inc.location}</span>
                     </div>
                     {inc.correctiveAction && (
-                      <div className="rounded-lg bg-green-50 p-2">
-                        <p className="text-xs font-medium text-green-700">Corrective Action: {inc.correctiveAction}</p>
+                      <div className="rounded-lg bg-emerald-500/10 p-2">
+                        <p className="text-xs font-medium text-emerald-400">Corrective Action: {inc.correctiveAction}</p>
                       </div>
                     )}
                   </div>
@@ -166,10 +166,10 @@ export function CompliancePage() {
           <Textarea label="Description" placeholder="Describe what happened in detail..." className="sm:col-span-2" />
           <Textarea label="Immediate Actions Taken" placeholder="What was done immediately after the incident..." className="sm:col-span-2" />
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Attach Photos/Evidence</label>
-            <div className="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
-              <p className="text-sm text-gray-500">Drag & drop or click to upload photos</p>
-              <p className="text-xs text-gray-400 mt-1">JPG, PNG up to 10MB each, max 5 files</p>
+            <label className="block text-sm font-medium text-foreground mb-1">Attach Photos/Evidence</label>
+            <div className="rounded-lg border-2 border-dashed border-border p-6 text-center">
+              <p className="text-sm text-muted-foreground">Drag & drop or click to upload photos</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">JPG, PNG up to 10MB each, max 5 files</p>
             </div>
           </div>
         </div>

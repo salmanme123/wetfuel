@@ -37,30 +37,26 @@ export function Modal({ isOpen, onClose, title, children, footer, size = 'md', b
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-      <div
-        className="fixed inset-0 bg-black/50 transition-opacity pointer-events-auto"
-        onClick={onClose}
-        aria-hidden="true"
-      />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-0 bg-background/80 backdrop-blur-sm" onClick={onClose} />
       <div
         className={cn(
-          'relative z-10 w-full rounded-xl bg-white shadow-xl pointer-events-auto',
+          'relative w-full rounded-2xl border border-border bg-card p-6 shadow-2xl',
           sizeClasses[size],
         )}
       >
-        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
-          <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-foreground">{title}</h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="rounded-lg p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
-        <div className={cn('max-h-[70vh] overflow-y-auto px-6 py-4', bodyClassName)}>{children}</div>
+        <div className={cn("max-h-[70vh] overflow-y-auto", bodyClassName)}>{children}</div>
         {footer && (
-          <div className="flex items-center justify-end gap-3 border-t border-gray-200 px-6 py-4">
+          <div className="mt-4 flex items-center justify-end gap-3 border-t border-border pt-4">
             {footer}
           </div>
         )}

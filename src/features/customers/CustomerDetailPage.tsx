@@ -22,7 +22,7 @@ export function CustomerDetailPage() {
   if (!customer) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">Customer not found</p>
+        <p className="text-muted-foreground">Customer not found</p>
         <Button variant="outline" className="mt-4" onClick={() => navigate('/customers')}>Back to Customers</Button>
       </div>
     );
@@ -49,9 +49,9 @@ export function CustomerDetailPage() {
 
       <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatsCard title="Total Deliveries" value={customer.totalDeliveries} icon={Truck} />
-        <StatsCard title="Total Gallons" value={formatGallons(customer.totalGallonsDelivered)} icon={Droplets} iconColor="text-blue-600 bg-blue-100" />
-        <StatsCard title="Outstanding Balance" value={formatCurrency(customer.outstandingBalance)} icon={DollarSign} iconColor="text-green-600 bg-green-100" />
-        <StatsCard title="Sites" value={customer.sites.length} icon={MapPin} iconColor="text-orange-600 bg-orange-100" />
+        <StatsCard title="Total Gallons" value={formatGallons(customer.totalGallonsDelivered)} icon={Droplets} iconColor="text-sky-400 bg-sky-500/15" />
+        <StatsCard title="Outstanding Balance" value={formatCurrency(customer.outstandingBalance)} icon={DollarSign} iconColor="text-emerald-400 bg-emerald-500/10" />
+        <StatsCard title="Sites" value={customer.sites.length} icon={MapPin} iconColor="text-amber-400 bg-amber-500/15" />
       </div>
 
       <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
@@ -62,17 +62,17 @@ export function CustomerDetailPage() {
             <Card title="Contact Information">
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Mail className="h-5 w-5 text-muted-foreground/60" />
                   <div>
-                    <p className="text-sm text-gray-500">Contact</p>
+                    <p className="text-sm text-muted-foreground">Contact</p>
                     <p className="font-medium">{customer.contactName}</p>
-                    <p className="text-sm text-gray-600">{customer.contactEmail}</p>
+                    <p className="text-sm text-muted-foreground">{customer.contactEmail}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Phone className="h-5 w-5 text-gray-400" />
+                  <Phone className="h-5 w-5 text-muted-foreground/60" />
                   <div>
-                    <p className="text-sm text-gray-500">Phone</p>
+                    <p className="text-sm text-muted-foreground">Phone</p>
                     <p className="font-medium">{customer.contactPhone}</p>
                   </div>
                 </div>
@@ -81,19 +81,19 @@ export function CustomerDetailPage() {
             <Card title="Billing & Pricing">
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-500">Category</span>
+                  <span className="text-sm text-muted-foreground">Category</span>
                   <Badge variant="info">{customer.category}</Badge>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-500">Billing Term</span>
+                  <span className="text-sm text-muted-foreground">Billing Term</span>
                   <span className="font-medium">{customer.billingTerm}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-500">Pricing Model</span>
+                  <span className="text-sm text-muted-foreground">Pricing Model</span>
                   <span className="font-medium">{customer.pricingModel === 'opis' ? 'OPIS-Based' : customer.pricingModel === 'tank_cost' ? 'Tank Cost' : 'Hybrid'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-500">Status</span>
+                  <span className="text-sm text-muted-foreground">Status</span>
                   <StatusBadge status={customer.status} type="user" />
                 </div>
               </div>
@@ -104,25 +104,25 @@ export function CustomerDetailPage() {
         {activeTab === 'sites' && (
           <Card>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
+              <table className="min-w-full divide-y divide-border">
                 <thead>
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Site Name</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Address</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">City/State</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Contact</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Equipment</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Default</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Site Name</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Address</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">City/State</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Contact</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Equipment</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Default</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-border/50">
                   {customer.sites.map((site) => (
                     <tr key={site.id}>
-                      <td className="px-4 py-3 text-sm font-medium text-gray-900">{site.name}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{site.address}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{site.city}, {site.state} {site.zipCode}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{site.contactName}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{site.equipmentCount}</td>
+                      <td className="px-4 py-3 text-sm font-medium text-foreground">{site.name}</td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">{site.address}</td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">{site.city}, {site.state} {site.zipCode}</td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">{site.contactName}</td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">{site.equipmentCount}</td>
                       <td className="px-4 py-3">{site.isDefault && <Badge variant="success">Default</Badge>}</td>
                     </tr>
                   ))}
@@ -135,30 +135,30 @@ export function CustomerDetailPage() {
         {activeTab === 'history' && (
           <Card>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
+              <table className="min-w-full divide-y divide-border">
                 <thead>
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Job #</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Fuel Type</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Gallons</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Date</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Driver</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Job #</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Status</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Fuel Type</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Gallons</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Date</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Driver</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-border/50">
                   {customerJobs.map((job) => (
-                    <tr key={job.id} className="cursor-pointer hover:bg-gray-50" onClick={() => navigate(`/jobs/${job.id}`)}>
-                      <td className="px-4 py-3 text-sm font-mono text-brand-600">{job.jobNumber}</td>
+                    <tr key={job.id} className="cursor-pointer hover:bg-muted/50" onClick={() => navigate(`/jobs/${job.id}`)}>
+                      <td className="px-4 py-3 text-sm font-mono text-primary">{job.jobNumber}</td>
                       <td className="px-4 py-3"><StatusBadge status={job.status} type="job" /></td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{job.fuelType}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700">{formatGallons(job.deliveredGallons ?? job.requestedGallons)}</td>
-                      <td className="px-4 py-3 text-sm text-gray-500">{formatDate(job.scheduledDate)}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{job.driverName ?? '—'}</td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">{job.fuelType}</td>
+                      <td className="px-4 py-3 text-sm text-foreground">{formatGallons(job.deliveredGallons ?? job.requestedGallons)}</td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">{formatDate(job.scheduledDate)}</td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">{job.driverName ?? '—'}</td>
                     </tr>
                   ))}
                   {customerJobs.length === 0 && (
-                    <tr><td colSpan={6} className="px-4 py-8 text-center text-sm text-gray-500">No deliveries found</td></tr>
+                    <tr><td colSpan={6} className="px-4 py-8 text-center text-sm text-muted-foreground">No deliveries found</td></tr>
                   )}
                 </tbody>
               </table>

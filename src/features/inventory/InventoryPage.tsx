@@ -71,8 +71,8 @@ function formatPerformerName(performer: TransferPerformer): string {
 function PerformerCell({ performer }: { performer: TransferPerformer }) {
   return (
     <span className="inline-flex items-center gap-2">
-      <span className="font-medium text-gray-900">{formatPerformerName(performer)}</span>
-      <span className="rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+      <span className="font-medium text-foreground">{formatPerformerName(performer)}</span>
+      <span className="rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
         {performer.role}
       </span>
     </span>
@@ -113,8 +113,8 @@ export function InventoryPage() {
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
         <StatsCard title="Total On-Hand" value={formatGallons(totalCurrent)} icon={Droplets} />
-        <StatsCard title="Total Capacity" value={formatGallons(totalCapacity)} icon={Database} iconColor="text-blue-600 bg-blue-100" />
-        <StatsCard title="Fill Level" value={`${overallPct}%`} icon={ArrowLeftRight} iconColor="text-green-600 bg-green-100" />
+        <StatsCard title="Total Capacity" value={formatGallons(totalCapacity)} icon={Database} iconColor="text-sky-400 bg-sky-500/15" />
+        <StatsCard title="Fill Level" value={`${overallPct}%`} icon={ArrowLeftRight} iconColor="text-emerald-400 bg-emerald-500/10" />
       </div>
 
       <Tabs tabs={[{ key: 'storage', label: 'Storage Tanks', count: mockFuelStorage.length }, { key: 'transfers', label: 'Recent Transfers', count: mockFuelTransfers.length }]} activeTab={activeTab} onChange={setActiveTab} />
@@ -128,18 +128,18 @@ export function InventoryPage() {
                 <Card key={tank.id}>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-gray-900">{tank.name}</h3>
+                      <h3 className="font-semibold text-foreground">{tank.name}</h3>
                       <Badge variant={pct > 50 ? 'success' : pct > 20 ? 'warning' : 'error'}>{pct}%</Badge>
                     </div>
-                    <div className="h-3 w-full rounded-full bg-gray-200">
-                      <div className={`h-3 rounded-full ${pct > 50 ? 'bg-green-500' : pct > 20 ? 'bg-yellow-500' : 'bg-red-500'}`} style={{ width: `${pct}%` }} />
+                    <div className="h-3 w-full rounded-full bg-border">
+                      <div className={`h-3 rounded-full ${pct > 50 ? 'bg-emerald-500/100' : pct > 20 ? 'bg-amber-500/100' : 'bg-red-500/100'}`} style={{ width: `${pct}%` }} />
                     </div>
-                    <div className="flex justify-between text-sm text-gray-500">
+                    <div className="flex justify-between text-sm text-muted-foreground">
                       <span>{formatGallons(tank.currentGallons)}</span>
                       <span>/ {formatGallons(tank.capacityGallons)}</span>
                     </div>
-                    <p className="text-xs text-gray-400">{tank.location}</p>
-                    <p className="text-xs text-gray-400">Fuel: {tank.fuelType} | Type: {tank.type === 'bulk_tank' ? 'Bulk Tank' : 'Truck'}</p>
+                    <p className="text-xs text-muted-foreground/60">{tank.location}</p>
+                    <p className="text-xs text-muted-foreground/60">Fuel: {tank.fuelType} | Type: {tank.type === 'bulk_tank' ? 'Bulk Tank' : 'Truck'}</p>
                   </div>
                 </Card>
               );
@@ -150,30 +150,30 @@ export function InventoryPage() {
         {activeTab === 'transfers' && (
           <Card>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
+              <table className="min-w-full divide-y divide-border">
                 <thead>
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Transfer #</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Type</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">From</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">To</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Fuel</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Gallons</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Performed By</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Date</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Transfer #</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Type</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">From</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">To</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Fuel</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Gallons</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Performed By</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Date</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-border/50">
                   {mockFuelTransfers.map((t) => (
                     <tr key={t.id}>
-                      <td className="px-4 py-3 text-sm font-mono text-brand-600">{t.transferNumber}</td>
+                      <td className="px-4 py-3 text-sm font-mono text-primary">{t.transferNumber}</td>
                       <td className="px-4 py-3"><Badge variant={transferColors[t.type]}>{transferLabels[t.type]}</Badge></td>
                       <td className="px-4 py-3 text-sm">{t.fromStorageName}</td>
                       <td className="px-4 py-3 text-sm">{t.toStorageName}</td>
                       <td className="px-4 py-3 text-sm">{t.fuelType}</td>
                       <td className="px-4 py-3 text-sm font-medium">{formatGallons(t.gallons)}</td>
                       <td className="px-4 py-3 text-sm"><PerformerCell performer={t.performedBy} /></td>
-                      <td className="px-4 py-3 text-sm text-gray-500">{formatDateTime(t.createdAt)}</td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">{formatDateTime(t.createdAt)}</td>
                     </tr>
                   ))}
                 </tbody>

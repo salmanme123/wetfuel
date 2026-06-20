@@ -239,7 +239,7 @@ export function EquipmentListPage() {
   };
 
   const columns: Column<Equipment & Record<string, unknown>>[] = [
-    { key: 'name', header: 'Equipment', sortable: true, render: (e) => { const eq = e as unknown as Equipment; return (<div><p className="font-medium text-gray-900">{eq.name}</p><p className="text-xs text-gray-500">{eq.manufacturer} {eq.model}</p></div>); } },
+    { key: 'name', header: 'Equipment', sortable: true, render: (e) => { const eq = e as unknown as Equipment; return (<div><p className="font-medium text-foreground">{eq.name}</p><p className="text-xs text-muted-foreground">{eq.manufacturer} {eq.model}</p></div>); } },
     { key: 'type', header: 'Type', render: (e) => <Badge variant="default">{typeLabels[(e as unknown as Equipment).type]}</Badge> },
     { key: 'customerName', header: 'Customer', sortable: true },
     { key: 'siteName', header: 'Site' },
@@ -259,7 +259,7 @@ export function EquipmentListPage() {
             <button
               type="button"
               onClick={() => openEquipmentDetail(eq)}
-              className="cursor-pointer rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 hover:text-brand-600"
+              className="cursor-pointer rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-primary"
               title="View"
             >
               <Eye className="h-4 w-4" />
@@ -267,7 +267,7 @@ export function EquipmentListPage() {
             <button
               type="button"
               onClick={() => setDeleteTarget(eq)}
-              className="cursor-pointer rounded-lg p-1.5 text-gray-500 hover:bg-red-50 hover:text-red-600"
+              className="cursor-pointer rounded-lg p-1.5 text-muted-foreground hover:bg-red-500/10 hover:text-red-400"
               title="Delete"
             >
               <Trash2 className="h-4 w-4" />
@@ -341,7 +341,7 @@ export function EquipmentListPage() {
             className={registerErrors.customerId ? 'sm:col-span-2' : 'sm:col-span-2'}
           />
           {registerErrors.customerId && (
-            <p className="-mt-2 text-sm text-red-600 sm:col-span-2">{registerErrors.customerId}</p>
+            <p className="-mt-2 text-sm text-red-400 sm:col-span-2">{registerErrors.customerId}</p>
           )}
 
           <SearchableSelect
@@ -431,7 +431,7 @@ export function EquipmentListPage() {
             onChange={(e) => updateRegisterForm({ installDate: e.target.value })}
           />
         </div>
-        <p className="mt-4 rounded-lg bg-blue-50 p-3 text-sm text-blue-700">
+        <p className="mt-4 rounded-lg bg-sky-500/10 p-3 text-sm text-sky-400">
           A QR code will be auto-generated upon registration. Search the exact equipment location — Google Places integration will be enabled in production.
         </p>
       </Modal>

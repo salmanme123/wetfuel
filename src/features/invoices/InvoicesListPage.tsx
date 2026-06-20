@@ -27,11 +27,11 @@ export function InvoicesListPage() {
   });
 
   const columns: Column<Invoice & Record<string, unknown>>[] = [
-    { key: 'invoiceNumber', header: 'Invoice #', sortable: true, render: (i) => <span className="font-mono text-brand-600">{(i as unknown as Invoice).invoiceNumber}</span> },
+    { key: 'invoiceNumber', header: 'Invoice #', sortable: true, render: (i) => <span className="font-mono text-primary">{(i as unknown as Invoice).invoiceNumber}</span> },
     { key: 'customerName', header: 'Customer', sortable: true },
     { key: 'status', header: 'Status', render: (i) => { const inv = i as unknown as Invoice; return <Badge variant={statusColors[inv.status]}>{inv.status}</Badge>; } },
     { key: 'issueDate', header: 'Issue Date', sortable: true, render: (i) => formatDate((i as unknown as Invoice).issueDate) },
-    { key: 'dueDate', header: 'Due Date', sortable: true, render: (i) => { const inv = i as unknown as Invoice; const isOverdue = inv.status === 'overdue'; return <span className={isOverdue ? 'text-red-600 font-medium' : ''}>{formatDate(inv.dueDate)}</span>; } },
+    { key: 'dueDate', header: 'Due Date', sortable: true, render: (i) => { const inv = i as unknown as Invoice; const isOverdue = inv.status === 'overdue'; return <span className={isOverdue ? 'text-red-400 font-medium' : ''}>{formatDate(inv.dueDate)}</span>; } },
     { key: 'subtotal', header: 'Subtotal', sortable: true, render: (i) => formatCurrency((i as unknown as Invoice).subtotal) },
     { key: 'taxTotal', header: 'Tax', render: (i) => formatCurrency((i as unknown as Invoice).taxTotal) },
     { key: 'total', header: 'Total', sortable: true, render: (i) => <span className="font-medium">{formatCurrency((i as unknown as Invoice).total)}</span> },
@@ -46,9 +46,9 @@ export function InvoicesListPage() {
 
       <div className="mb-6 grid gap-4 sm:grid-cols-4">
         <StatsCard title="Total Invoices" value={mockInvoices.length} icon={FileText} />
-        <StatsCard title="Outstanding" value={formatCurrency(totalOutstanding)} icon={DollarSign} iconColor="text-orange-600 bg-orange-100" />
-        <StatsCard title="Collected" value={formatCurrency(totalPaid)} icon={CheckCircle} iconColor="text-green-600 bg-green-100" />
-        <StatsCard title="Overdue" value={overdueCount} icon={AlertTriangle} iconColor="text-red-600 bg-red-100" />
+        <StatsCard title="Outstanding" value={formatCurrency(totalOutstanding)} icon={DollarSign} iconColor="text-amber-400 bg-amber-500/15" />
+        <StatsCard title="Collected" value={formatCurrency(totalPaid)} icon={CheckCircle} iconColor="text-emerald-400 bg-emerald-500/10" />
+        <StatsCard title="Overdue" value={overdueCount} icon={AlertTriangle} iconColor="text-red-400 bg-red-100" />
       </div>
 
       <div className="mb-4 flex flex-wrap items-center gap-4">

@@ -35,31 +35,31 @@ export function UserMenu() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-gray-100"
+        className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-accent"
       >
         <Avatar firstName={state.user.firstName} lastName={state.user.lastName} size="sm" />
         <div className="hidden text-left md:block">
-          <p className="text-sm font-medium text-gray-700">
+          <p className="text-sm font-medium text-foreground">
             {state.user.firstName} {state.user.lastName}
           </p>
         </div>
-        <ChevronDown className="h-4 w-4 text-gray-400" />
+        <ChevronDown className="h-4 w-4 text-muted-foreground" />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-72 rounded-xl border border-gray-200 bg-white shadow-lg">
-          <div className="border-b border-gray-100 p-4">
-            <p className="font-medium text-gray-900">
+        <div className="absolute right-0 top-full mt-2 w-72 rounded-xl border border-border bg-card shadow-2xl">
+          <div className="border-b border-border p-4">
+            <p className="font-medium text-foreground">
               {state.user.firstName} {state.user.lastName}
             </p>
-            <p className="text-sm text-gray-500">{state.user.email}</p>
+            <p className="text-sm text-muted-foreground">{state.user.email}</p>
             <Badge variant={roleVariants[state.user.role]} className="mt-2">
               {ROLES[state.user.role]}
             </Badge>
           </div>
 
-          <div className="border-b border-gray-100 p-3">
-            <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase text-gray-400">
+          <div className="border-b border-border p-3">
+            <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               <RefreshCw className="h-3 w-3" /> Switch Role (Demo)
             </p>
             {allRoles.map((role) => (
@@ -67,7 +67,7 @@ export function UserMenu() {
                 key={role}
                 onClick={() => { switchRole(role); setIsOpen(false); }}
                 className={`w-full rounded-lg px-3 py-2 text-left text-sm transition-colors ${
-                  state.user?.role === role ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
+                  state.user?.role === role ? 'bg-primary/15 text-primary font-medium' : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                 }`}
               >
                 {ROLES[role]}
@@ -78,7 +78,7 @@ export function UserMenu() {
           <div className="p-2">
             <button
               onClick={() => { logout(); setIsOpen(false); }}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-400 hover:bg-red-500/10"
             >
               <LogOut className="h-4 w-4" /> Sign Out
             </button>

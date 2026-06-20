@@ -58,19 +58,19 @@ export function ReportsPage() {
 
             <Card title="Top Customers by Gallons" className="lg:col-span-2">
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-border">
                   <thead><tr>
-                    <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">#</th>
-                    <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Customer</th>
-                    <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Category</th>
-                    <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Deliveries</th>
-                    <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Total Gallons</th>
+                    <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">#</th>
+                    <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Customer</th>
+                    <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Category</th>
+                    <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Deliveries</th>
+                    <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Total Gallons</th>
                   </tr></thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-border/50">
                     {topCustomers.map((c, i) => (
                       <tr key={c.id}>
                         <td className="px-4 py-3 text-sm font-medium">{i + 1}</td>
-                        <td className="px-4 py-3 text-sm font-medium text-gray-900">{c.companyName}</td>
+                        <td className="px-4 py-3 text-sm font-medium text-foreground">{c.companyName}</td>
                         <td className="px-4 py-3"><Badge variant="info">{c.category}</Badge></td>
                         <td className="px-4 py-3 text-sm">{c.totalDeliveries}</td>
                         <td className="px-4 py-3 text-sm font-medium">{formatGallons(c.totalGallonsDelivered)}</td>
@@ -108,7 +108,7 @@ export function ReportsPage() {
                     <div key={status} className="flex items-center justify-between rounded-lg border p-3">
                       <div className="flex items-center gap-3">
                         <Badge variant={status === 'paid' ? 'success' : status === 'overdue' ? 'error' : status === 'sent' ? 'info' : 'default'}>{status}</Badge>
-                        <span className="text-sm text-gray-500">{invoices.length} invoices</span>
+                        <span className="text-sm text-muted-foreground">{invoices.length} invoices</span>
                       </div>
                       <span className="font-medium">{formatCurrency(total)}</span>
                     </div>
@@ -122,26 +122,26 @@ export function ReportsPage() {
         {activeTab === 'driver' && (
           <Card title="Top Drivers by Deliveries">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
+              <table className="min-w-full divide-y divide-border">
                 <thead><tr>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">#</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Driver</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Franchise</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Deliveries</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Total Gallons</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Hours/Week</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Compliance</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">#</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Driver</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Franchise</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Deliveries</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Total Gallons</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Hours/Week</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Compliance</th>
                 </tr></thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-border/50">
                   {topDrivers.map((d, i) => (
                     <tr key={d.id}>
                       <td className="px-4 py-3 text-sm font-medium">{i + 1}</td>
-                      <td className="px-4 py-3 text-sm font-medium text-gray-900">{d.firstName} {d.lastName}</td>
-                      <td className="px-4 py-3 text-sm text-gray-500">{d.organizationName}</td>
+                      <td className="px-4 py-3 text-sm font-medium text-foreground">{d.firstName} {d.lastName}</td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">{d.organizationName}</td>
                       <td className="px-4 py-3 text-sm">{d.totalDeliveries}</td>
                       <td className="px-4 py-3 text-sm">{formatGallons(d.totalGallonsDelivered)}</td>
                       <td className="px-4 py-3 text-sm">{d.hoursThisWeek}h</td>
-                      <td className="px-4 py-3"><span className={`font-medium ${d.complianceScore >= 90 ? 'text-green-600' : 'text-yellow-600'}`}>{d.complianceScore}%</span></td>
+                      <td className="px-4 py-3"><span className={`font-medium ${d.complianceScore >= 90 ? 'text-emerald-400' : 'text-amber-400'}`}>{d.complianceScore}%</span></td>
                     </tr>
                   ))}
                 </tbody>

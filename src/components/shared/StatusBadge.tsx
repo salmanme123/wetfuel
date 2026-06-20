@@ -27,11 +27,11 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
   }
 
   if (!config) {
-    return <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700">{status}</span>;
+    return <span className="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-1 font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-muted-foreground">{status}</span>;
   }
 
   return (
-    <span className={cn('inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium', config.color)}>
+    <span className={cn('inline-flex items-center rounded-full border px-2.5 py-1 font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]', config.color)}>
       {config.label}
     </span>
   );

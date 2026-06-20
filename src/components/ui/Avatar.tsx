@@ -29,7 +29,7 @@ export function Avatar({ firstName, lastName, src, size = 'md', className }: Ava
   return (
     <div
       className={cn(
-        'flex items-center justify-center rounded-full bg-brand-100 font-medium text-brand-700',
+        'flex items-center justify-center rounded-full bg-primary/15 font-medium text-primary',
         sizes[size],
         className,
       )}

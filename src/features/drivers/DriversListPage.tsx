@@ -56,8 +56,8 @@ export function DriversListPage() {
           <div className="flex items-center gap-3">
             <Avatar firstName={dr.firstName} lastName={dr.lastName} size="sm" />
             <div>
-              <p className="font-medium text-gray-900">{dr.firstName} {dr.lastName}</p>
-              <p className="text-xs text-gray-500">{dr.organizationName}</p>
+              <p className="font-medium text-foreground">{dr.firstName} {dr.lastName}</p>
+              <p className="text-xs text-muted-foreground">{dr.organizationName}</p>
             </div>
           </div>
         );
@@ -91,7 +91,7 @@ export function DriversListPage() {
     {
       key: 'assignedVehicleName',
       header: 'Vehicle',
-      render: (d) => (d as unknown as Driver).assignedVehicleName ?? <span className="text-gray-400">None</span>,
+      render: (d) => (d as unknown as Driver).assignedVehicleName ?? <span className="text-muted-foreground/60">None</span>,
     },
     { key: 'totalDeliveries', header: 'Deliveries', sortable: true },
     {
@@ -110,10 +110,10 @@ export function DriversListPage() {
           <span
             className={
               score >= 90
-                ? 'font-medium text-green-600'
+                ? 'font-medium text-emerald-400'
                 : score >= 80
-                  ? 'font-medium text-yellow-600'
-                  : 'font-medium text-red-600'
+                  ? 'font-medium text-amber-400'
+                  : 'font-medium text-red-400'
             }
           >
             {score}%
@@ -134,7 +134,7 @@ export function DriversListPage() {
               e.stopPropagation();
               openDriverDetail(dr);
             }}
-            className="cursor-pointer rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 hover:text-brand-600"
+            className="cursor-pointer rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-primary"
             title="View"
           >
             <Eye className="h-4 w-4" />

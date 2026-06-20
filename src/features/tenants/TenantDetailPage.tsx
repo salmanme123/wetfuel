@@ -16,7 +16,7 @@ export function TenantDetailPage() {
   if (!tenant) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">Tenant not found</p>
+        <p className="text-muted-foreground">Tenant not found</p>
         <Button variant="outline" className="mt-4" onClick={() => navigate('/tenants')}>Back to Tenants</Button>
       </div>
     );
@@ -41,24 +41,24 @@ export function TenantDetailPage() {
         <Card title="Company Information">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <Mail className="h-5 w-5 text-gray-400" />
+              <Mail className="h-5 w-5 text-muted-foreground/60" />
               <div>
-                <p className="text-sm text-gray-500">Email</p>
-                <p className="font-medium text-gray-900">{tenant.contactEmail}</p>
+                <p className="text-sm text-muted-foreground">Email</p>
+                <p className="font-medium text-foreground">{tenant.contactEmail}</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Phone className="h-5 w-5 text-gray-400" />
+              <Phone className="h-5 w-5 text-muted-foreground/60" />
               <div>
-                <p className="text-sm text-gray-500">Phone</p>
-                <p className="font-medium text-gray-900">{tenant.contactPhone}</p>
+                <p className="text-sm text-muted-foreground">Phone</p>
+                <p className="font-medium text-foreground">{tenant.contactPhone}</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <MapPin className="h-5 w-5 text-gray-400" />
+              <MapPin className="h-5 w-5 text-muted-foreground/60" />
               <div>
-                <p className="text-sm text-gray-500">Address</p>
-                <p className="font-medium text-gray-900">{tenant.address}</p>
+                <p className="text-sm text-muted-foreground">Address</p>
+                <p className="font-medium text-foreground">{tenant.address}</p>
               </div>
             </div>
           </div>
@@ -67,46 +67,46 @@ export function TenantDetailPage() {
         <Card title="Status & Statistics">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">Status</span>
+              <span className="text-sm text-muted-foreground">Status</span>
               <StatusBadge status={tenant.status} type="tenant" />
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">Platform Owner</span>
+              <span className="text-sm text-muted-foreground">Platform Owner</span>
               <Badge variant={tenant.isPlatformOwner ? 'info' : 'default'}>
                 {tenant.isPlatformOwner ? 'Yes' : 'No'}
               </Badge>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">Franchises</span>
-              <span className="font-medium text-gray-900">{tenant.franchiseCount}</span>
+              <span className="text-sm text-muted-foreground">Franchises</span>
+              <span className="font-medium text-foreground">{tenant.franchiseCount}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">Users</span>
-              <span className="font-medium text-gray-900">{tenant.userCount}</span>
+              <span className="text-sm text-muted-foreground">Users</span>
+              <span className="font-medium text-foreground">{tenant.userCount}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">Created</span>
-              <span className="font-medium text-gray-900">{formatDate(tenant.createdAt)}</span>
+              <span className="text-sm text-muted-foreground">Created</span>
+              <span className="font-medium text-foreground">{formatDate(tenant.createdAt)}</span>
             </div>
           </div>
         </Card>
 
         <Card title="Branding" className="lg:col-span-2">
           <div className="flex items-center gap-6">
-            <Palette className="h-8 w-8 text-gray-400" />
+            <Palette className="h-8 w-8 text-muted-foreground/60" />
             <div className="flex items-center gap-4">
               <div className="text-center">
                 <div className="h-12 w-12 rounded-lg border" style={{ backgroundColor: tenant.branding.primaryColor }} />
-                <p className="mt-1 text-xs text-gray-500">Primary</p>
+                <p className="mt-1 text-xs text-muted-foreground">Primary</p>
               </div>
               <div className="text-center">
                 <div className="h-12 w-12 rounded-lg border" style={{ backgroundColor: tenant.branding.secondaryColor }} />
-                <p className="mt-1 text-xs text-gray-500">Secondary</p>
+                <p className="mt-1 text-xs text-muted-foreground">Secondary</p>
               </div>
             </div>
             <div className="ml-6">
-              <p className="text-sm text-gray-500">Primary: {tenant.branding.primaryColor}</p>
-              <p className="text-sm text-gray-500">Secondary: {tenant.branding.secondaryColor}</p>
+              <p className="text-sm text-muted-foreground">Primary: {tenant.branding.primaryColor}</p>
+              <p className="text-sm text-muted-foreground">Secondary: {tenant.branding.secondaryColor}</p>
             </div>
           </div>
         </Card>

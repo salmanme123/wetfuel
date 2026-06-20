@@ -8,6 +8,12 @@ const icons = {
   info: Info,
 };
 
+const iconColors = {
+  danger: 'text-red-400',
+  warning: 'text-amber-400',
+  info: 'text-sky-400',
+};
+
 const buttonVariants = {
   danger: 'danger' as const,
   warning: 'primary' as const,
@@ -59,8 +65,8 @@ export function ConfirmDialog({
       }
     >
       <div className="flex gap-4">
-        <Icon className="h-6 w-6 shrink-0 text-yellow-500" />
-        <p className="text-sm text-gray-600">{message}</p>
+        <Icon className={`h-6 w-6 shrink-0 ${iconColors[variant]}`} />
+        <p className="text-sm text-muted-foreground">{message}</p>
       </div>
     </Modal>
   );

@@ -51,16 +51,16 @@ function QrCodeVisual({ code }: { code: string }) {
   }, [code]);
 
   return (
-    <div className="mx-auto w-fit rounded-xl border-2 border-gray-900 bg-white p-4 shadow-sm">
+    <div className="mx-auto w-fit rounded-xl border-2 border-gray-900 bg-card p-4 shadow-sm">
       <div className="grid grid-cols-11 gap-0.5">
         {cells.map((filled, i) => (
           <div
             key={i}
-            className={cn('h-2.5 w-2.5', filled ? 'bg-gray-900' : 'bg-white')}
+            className={cn('h-2.5 w-2.5', filled ? 'bg-gray-900' : 'bg-card')}
           />
         ))}
       </div>
-      <p className="mt-3 text-center font-mono text-xs font-semibold tracking-wider text-gray-800">
+      <p className="mt-3 text-center font-mono text-xs font-semibold tracking-wider text-foreground">
         {code}
       </p>
     </div>
@@ -93,7 +93,7 @@ export function EquipmentDetailPage() {
   if (!equipment) {
     return (
       <div className="py-12 text-center">
-        <p className="text-gray-500">Equipment not found</p>
+        <p className="text-muted-foreground">Equipment not found</p>
         <Button variant="outline" className="mt-4" onClick={() => navigate('/equipment')}>
           Back to Equipment
         </Button>
@@ -133,7 +133,7 @@ export function EquipmentDetailPage() {
       <div className="mb-6 flex flex-wrap items-center gap-2">
         <Badge variant={statusVariants[equipment.status]}>{equipment.status.replace('_', ' ')}</Badge>
         <Badge variant="default">{typeLabels[equipment.type]}</Badge>
-        <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 font-mono text-xs text-gray-700">
+        <span className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 font-mono text-xs text-foreground">
           <QrCode className="h-3.5 w-3.5" />
           {equipment.qrCode}
         </span>
@@ -144,25 +144,25 @@ export function EquipmentDetailPage() {
           title="Total Fuelings"
           value={equipment.totalFuelingEvents}
           icon={Flame}
-          iconColor="text-orange-600 bg-orange-100"
+          iconColor="text-amber-400 bg-amber-500/15"
         />
         <StatsCard
           title="Gallons Delivered"
           value={formatGallons(equipment.totalGallonsDelivered)}
           icon={Droplets}
-          iconColor="text-blue-600 bg-blue-100"
+          iconColor="text-sky-400 bg-sky-500/15"
         />
         <StatsCard
           title="Tank Capacity"
           value={equipment.capacityGallons ? formatGallons(equipment.capacityGallons) : '—'}
           icon={Gauge}
-          iconColor="text-brand-600 bg-brand-100"
+          iconColor="text-primary bg-primary/15"
         />
         <StatsCard
           title="Last Fueled"
           value={equipment.lastFueledDate ? formatDate(equipment.lastFueledDate) : 'Never'}
           icon={Calendar}
-          iconColor="text-green-600 bg-green-100"
+          iconColor="text-emerald-400 bg-emerald-500/10"
         />
       </div>
 
@@ -170,7 +170,7 @@ export function EquipmentDetailPage() {
         <Card title="QR Code" className="lg:col-span-1">
           <div className="flex flex-col items-center py-2">
             <QrCodeVisual code={equipment.qrCode} />
-            <p className="mt-4 text-center text-sm text-gray-500">
+            <p className="mt-4 text-center text-sm text-muted-foreground">
               Scan at delivery to link fueling events to this equipment.
             </p>
             <Button variant="outline" className="mt-4" size="sm">
@@ -183,42 +183,42 @@ export function EquipmentDetailPage() {
           <Card title="Equipment Details">
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="flex items-start gap-3">
-                <Wrench className="mt-0.5 h-5 w-5 text-gray-400" />
+                <Wrench className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                 <div>
-                  <p className="text-sm text-gray-500">Manufacturer / Model</p>
-                  <p className="font-medium text-gray-900">
+                  <p className="text-sm text-muted-foreground">Manufacturer / Model</p>
+                  <p className="font-medium text-foreground">
                     {equipment.manufacturer} {equipment.model}
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Hash className="mt-0.5 h-5 w-5 text-gray-400" />
+                <Hash className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                 <div>
-                  <p className="text-sm text-gray-500">Serial Number</p>
-                  <p className="font-medium font-mono text-gray-900">{equipment.serialNumber}</p>
+                  <p className="text-sm text-muted-foreground">Serial Number</p>
+                  <p className="font-medium font-mono text-foreground">{equipment.serialNumber}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Droplets className="mt-0.5 h-5 w-5 text-gray-400" />
+                <Droplets className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                 <div>
-                  <p className="text-sm text-gray-500">Fuel Type</p>
-                  <p className="font-medium text-gray-900">{formatFuelType(equipment.fuelType)}</p>
+                  <p className="text-sm text-muted-foreground">Fuel Type</p>
+                  <p className="font-medium text-foreground">{formatFuelType(equipment.fuelType)}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Gauge className="mt-0.5 h-5 w-5 text-gray-400" />
+                <Gauge className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                 <div>
-                  <p className="text-sm text-gray-500">Capacity</p>
-                  <p className="font-medium text-gray-900">
+                  <p className="text-sm text-muted-foreground">Capacity</p>
+                  <p className="font-medium text-foreground">
                     {equipment.capacityGallons ? formatGallons(equipment.capacityGallons) : '—'}
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Calendar className="mt-0.5 h-5 w-5 text-gray-400" />
+                <Calendar className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                 <div>
-                  <p className="text-sm text-gray-500">Install Date</p>
-                  <p className="font-medium text-gray-900">{formatDate(equipment.installDate)}</p>
+                  <p className="text-sm text-muted-foreground">Install Date</p>
+                  <p className="font-medium text-foreground">{formatDate(equipment.installDate)}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -226,15 +226,15 @@ export function EquipmentDetailPage() {
                   <span
                     className={cn(
                       'h-2.5 w-2.5 rounded-full',
-                      equipment.status === 'active' && 'bg-green-500',
+                      equipment.status === 'active' && 'bg-emerald-500/100',
                       equipment.status === 'inactive' && 'bg-gray-400',
                       equipment.status === 'needs_service' && 'bg-amber-500',
                     )}
                   />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Status</p>
-                  <p className="font-medium text-gray-900 capitalize">{equipment.status.replace('_', ' ')}</p>
+                  <p className="text-sm text-muted-foreground">Status</p>
+                  <p className="font-medium text-foreground capitalize">{equipment.status.replace('_', ' ')}</p>
                 </div>
               </div>
             </div>
@@ -244,46 +244,46 @@ export function EquipmentDetailPage() {
             <Card title="Customer & Site">
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <Building2 className="mt-0.5 h-5 w-5 text-gray-400" />
+                  <Building2 className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                   <div>
-                    <p className="text-sm text-gray-500">Customer</p>
-                    <p className="font-medium text-gray-900">{equipment.customerName}</p>
+                    <p className="text-sm text-muted-foreground">Customer</p>
+                    <p className="font-medium text-foreground">{equipment.customerName}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <MapPin className="mt-0.5 h-5 w-5 text-gray-400" />
+                  <MapPin className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                   <div>
-                    <p className="text-sm text-gray-500">Site</p>
-                    <p className="font-medium text-gray-900">{equipment.siteName}</p>
-                    {siteAddress && <p className="text-sm text-gray-600">{siteAddress}</p>}
+                    <p className="text-sm text-muted-foreground">Site</p>
+                    <p className="font-medium text-foreground">{equipment.siteName}</p>
+                    {siteAddress && <p className="text-sm text-muted-foreground">{siteAddress}</p>}
                   </div>
                 </div>
               </div>
             </Card>
 
             <Card title="Exact Location">
-              <div className="overflow-hidden rounded-lg border border-gray-200 bg-gradient-to-br from-brand-50 to-slate-100">
+              <div className="overflow-hidden rounded-lg border border-border bg-gradient-to-br from-brand-50 to-slate-100">
                 <div className="relative flex h-36 items-center justify-center">
                   <div className="absolute inset-0 opacity-20">
                     <div className="grid h-full w-full grid-cols-8 grid-rows-4">
                       {Array.from({ length: 32 }).map((_, i) => (
-                        <div key={i} className="border border-gray-300/60" />
+                        <div key={i} className="border border-border/60" />
                       ))}
                     </div>
                   </div>
                   <div className="relative flex flex-col items-center">
-                    <div className="rounded-full bg-brand-600 p-2 shadow-lg">
+                    <div className="rounded-full bg-primary p-2 shadow-lg">
                       <MapPin className="h-5 w-5 text-white" />
                     </div>
-                    <p className="mt-2 text-xs font-medium text-gray-700">Equipment pinned here</p>
+                    <p className="mt-2 text-xs font-medium text-foreground">Equipment pinned here</p>
                   </div>
                 </div>
               </div>
               <div className="mt-3 space-y-1 text-sm">
-                <p className="text-gray-600">
+                <p className="text-muted-foreground">
                   {siteAddress ?? 'Location coordinates on file'}
                 </p>
-                <p className="font-mono text-xs text-gray-500">
+                <p className="font-mono text-xs text-muted-foreground">
                   {equipment.latitude.toFixed(6)}, {equipment.longitude.toFixed(6)}
                 </p>
               </div>
@@ -294,29 +294,29 @@ export function EquipmentDetailPage() {
 
       <Card title="Recent Fueling Events" className="mt-6">
         {fuelingEvents.length === 0 ? (
-          <p className="py-6 text-center text-sm text-gray-500">
+          <p className="py-6 text-center text-sm text-muted-foreground">
             No fueling events recorded for this equipment yet.
           </p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full divide-y divide-border">
               <thead>
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Job #</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Driver</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Gallons</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Total</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Job #</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Driver</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Gallons</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Total</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-border/50">
                 {fuelingEvents.map((fe) => (
-                  <tr key={fe.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 text-sm text-gray-600">{formatDateTime(fe.createdAt)}</td>
-                    <td className="px-4 py-3 text-sm font-mono text-brand-600">{fe.jobNumber}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">{fe.driverName}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">{formatGallons(fe.gallonsDelivered)}</td>
-                    <td className="px-4 py-3 text-sm font-medium text-gray-900">{formatCurrency(fe.total)}</td>
+                  <tr key={fe.id} className="hover:bg-muted/50">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{formatDateTime(fe.createdAt)}</td>
+                    <td className="px-4 py-3 text-sm font-mono text-primary">{fe.jobNumber}</td>
+                    <td className="px-4 py-3 text-sm text-foreground">{fe.driverName}</td>
+                    <td className="px-4 py-3 text-sm text-foreground">{formatGallons(fe.gallonsDelivered)}</td>
+                    <td className="px-4 py-3 text-sm font-medium text-foreground">{formatCurrency(fe.total)}</td>
                   </tr>
                 ))}
               </tbody>

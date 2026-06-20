@@ -10,24 +10,24 @@ interface StatsCardProps {
   iconColor?: string;
 }
 
-export function StatsCard({ title, value, icon: Icon, trend, iconColor = 'text-brand-600 bg-brand-100' }: StatsCardProps) {
+export function StatsCard({ title, value, icon: Icon, trend, iconColor = 'text-primary bg-primary/15' }: StatsCardProps) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+    <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-500">{title}</p>
-          <p className="mt-2 text-3xl font-bold text-gray-900">{value}</p>
+          <p className="text-sm font-medium text-muted-foreground">{title}</p>
+          <p className="mt-2 text-3xl font-bold text-foreground">{value}</p>
           {trend && (
             <div className="mt-2 flex items-center gap-1">
               {trend.direction === 'up' ? (
-                <TrendingUp className="h-4 w-4 text-green-500" />
+                <TrendingUp className="h-4 w-4 text-emerald-400" />
               ) : (
-                <TrendingDown className="h-4 w-4 text-red-500" />
+                <TrendingDown className="h-4 w-4 text-red-400" />
               )}
               <span
                 className={cn(
                   'text-sm font-medium',
-                  trend.direction === 'up' ? 'text-green-600' : 'text-red-600',
+                  trend.direction === 'up' ? 'text-emerald-400' : 'text-red-400',
                 )}
               >
                 {trend.value}%

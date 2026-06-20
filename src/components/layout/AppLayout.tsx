@@ -9,7 +9,7 @@ export function AppLayout() {
   const sidebar = useContext(SidebarContext);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground">
       <Sidebar />
       <div
         className={cn(
@@ -18,7 +18,7 @@ export function AppLayout() {
         )}
       >
         <Topbar />
-        <main className="p-6">
+        <main className="p-4 lg:p-6">
           <Outlet />
         </main>
       </div>

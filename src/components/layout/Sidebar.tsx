@@ -27,14 +27,14 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 z-30 flex h-screen flex-col border-r border-gray-200 bg-white transition-all duration-300',
+        'fixed left-0 top-0 z-30 flex h-screen flex-col border-r border-sidebar-border bg-sidebar transition-all duration-300',
         sidebar.isCollapsed ? 'w-16' : 'w-64',
       )}
     >
-      <div className={cn('flex h-16 items-center border-b border-gray-200 px-4', sidebar.isCollapsed ? 'justify-center' : 'gap-3')}>
-        <Fuel className="h-8 w-8 shrink-0 text-brand-600" />
+      <div className={cn('flex h-16 items-center border-b border-sidebar-border px-4', sidebar.isCollapsed ? 'justify-center' : 'gap-3')}>
+        <Fuel className="h-8 w-8 shrink-0 text-primary" />
         {!sidebar.isCollapsed && (
-          <span className="text-lg font-bold text-gray-900">WetFuel</span>
+          <span className="text-lg font-bold text-sidebar-foreground display-font">WetFuel</span>
         )}
       </div>
 
@@ -48,11 +48,11 @@ export function Sidebar() {
                   to={item.path}
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                      'flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                       isActive
-                        ? 'bg-brand-50 text-brand-700'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900',
-                      sidebar.isCollapsed && 'justify-center px-2',
+                        ? 'border-l-2 border-sidebar-primary bg-sidebar-primary/15 text-sidebar-primary'
+                        : 'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground',
+                      sidebar.isCollapsed && 'justify-center border-l-0 px-2',
                     )
                   }
                   title={sidebar.isCollapsed ? item.label : undefined}
@@ -66,10 +66,10 @@ export function Sidebar() {
         </ul>
       </nav>
 
-      <div className="border-t border-gray-200 p-2">
+      <div className="border-t border-sidebar-border p-2">
         <button
           onClick={sidebar.toggle}
-          className="flex w-full items-center justify-center rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+          className="flex w-full items-center justify-center rounded-lg p-2 text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground"
         >
           {sidebar.isCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
         </button>

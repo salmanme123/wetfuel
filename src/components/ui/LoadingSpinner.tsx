@@ -13,6 +13,6 @@ interface LoadingSpinnerProps {
 
 export function LoadingSpinner({ size = 'md', className }: LoadingSpinnerProps) {
   return (
-    <div className={cn('animate-spin rounded-full border-4 border-gray-200 border-t-brand-600', sizes[size], className)} />
+    <div className={cn('animate-spin rounded-full border-4 border-muted border-t-primary', sizes[size], className)} />
   );
 }

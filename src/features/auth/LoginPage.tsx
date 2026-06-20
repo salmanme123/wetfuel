@@ -41,19 +41,23 @@ export function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-brand-50 via-white to-fuel-50 p-4">
-      <div className="mb-8 flex items-center gap-3">
-        <Fuel className="h-12 w-12 text-brand-600" />
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background p-4">
+      <div className="pointer-events-none absolute inset-0" style={{
+        background: 'radial-gradient(ellipse 80% 50% at 20% -10%, oklch(0.62 0.24 27 / 0.08), transparent 60%), radial-gradient(ellipse 60% 40% at 100% 110%, oklch(0.62 0.24 27 / 0.04), transparent 60%)',
+      }} />
+
+      <div className="relative z-10 mb-8 flex items-center gap-3">
+        <Fuel className="h-12 w-12 text-primary" />
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">WetFuel</h1>
-          <p className="text-sm text-gray-500">Digital Solution Ecosystem</p>
+          <h1 className="text-3xl font-bold text-foreground display-font">WetFuel</h1>
+          <p className="text-sm text-muted-foreground">Digital Solution Ecosystem</p>
         </div>
       </div>
 
-      <div className="w-full max-w-3xl">
+      <div className="relative z-10 w-full max-w-3xl">
         <div className="mb-8 text-center">
-          <h2 className="text-xl font-semibold text-gray-900">Select a Role to Continue</h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <h2 className="text-xl font-semibold text-foreground">Select a Role to Continue</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
             Choose a demo role to explore the platform
           </p>
         </div>
@@ -63,18 +67,18 @@ export function LoginPage() {
             <button
               key={role}
               onClick={() => handleRoleSelect(role)}
-              className="group flex cursor-pointer flex-col items-center rounded-xl border-2 border-gray-200 bg-white p-6 text-center shadow-sm transition-all hover:border-brand-500 hover:shadow-md"
+              className="group flex cursor-pointer flex-col items-center rounded-xl border border-border bg-card p-6 text-center shadow-sm transition-all hover:border-primary/50 hover:shadow-[0_0_24px_oklch(0.62_0.24_27_/_0.12)]"
             >
-              <div className="rounded-lg bg-brand-100 p-3 transition-colors group-hover:bg-brand-200">
-                <Icon className="h-8 w-8 text-brand-600" />
+              <div className="rounded-lg bg-primary/15 p-3 transition-colors group-hover:bg-primary/25">
+                <Icon className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="mt-4 text-sm font-semibold text-gray-900">{label}</h3>
-              <p className="mt-2 text-xs text-gray-500">{description}</p>
+              <h3 className="mt-4 text-sm font-semibold text-foreground">{label}</h3>
+              <p className="mt-2 text-xs text-muted-foreground">{description}</p>
             </button>
           ))}
         </div>
 
-        <p className="mt-6 text-center text-xs text-gray-400">
+        <p className="mt-6 text-center text-xs text-muted-foreground/60">
           This is a demo environment with mock data. No real authentication required.
         </p>
       </div>

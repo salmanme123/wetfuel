@@ -29,7 +29,7 @@ export function TenantsListPage() {
   });
 
   const columns: Column<Tenant & Record<string, unknown>>[] = [
-    { key: 'tenantCode', header: 'Code', sortable: true, width: '120px', render: (t) => <span className="font-mono text-brand-600">{(t as unknown as Tenant).tenantCode}</span> },
+    { key: 'tenantCode', header: 'Code', sortable: true, width: '120px', render: (t) => <span className="font-mono text-primary">{(t as unknown as Tenant).tenantCode}</span> },
     { key: 'companyName', header: 'Company Name', sortable: true },
     { key: 'status', header: 'Status', render: (t) => <StatusBadge status={(t as unknown as Tenant).status} type="tenant" /> },
     { key: 'franchiseCount', header: 'Franchises', sortable: true },

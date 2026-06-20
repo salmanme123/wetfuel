@@ -42,7 +42,7 @@ export function NotificationsPage() {
 
       <div className="mt-6 space-y-2">
         {filtered.length === 0 ? (
-          <div className="py-12 text-center text-gray-500">No notifications</div>
+          <div className="py-12 text-center text-muted-foreground">No notifications</div>
         ) : (
           filtered.map((notif) => {
             const Icon = categoryIcons[notif.category] ?? Bell;
@@ -51,24 +51,24 @@ export function NotificationsPage() {
                 key={notif.id}
                 className={cn(
                   'flex items-start gap-4 rounded-lg border p-4 transition-colors cursor-pointer',
-                  notif.isRead ? 'border-gray-200 bg-white' : 'border-brand-200 bg-brand-50',
+                  notif.isRead ? 'border-border bg-card' : 'border-brand-200 bg-primary/10',
                 )}
                 onClick={() => { markRead(notif.id); if (notif.link) navigate(notif.link); }}
               >
                 <div className={cn(
                   'flex h-10 w-10 shrink-0 items-center justify-center rounded-full',
-                  notif.priority === 'critical' ? 'bg-red-100 text-red-600' : notif.priority === 'high' ? 'bg-orange-100 text-orange-600' : 'bg-gray-100 text-gray-500',
+                  notif.priority === 'critical' ? 'bg-red-100 text-red-400' : notif.priority === 'high' ? 'bg-amber-500/15 text-amber-400' : 'bg-muted text-muted-foreground',
                 )}>
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className={cn('text-sm', notif.isRead ? 'font-medium text-gray-700' : 'font-semibold text-gray-900')}>{notif.title}</h3>
+                    <h3 className={cn('text-sm', notif.isRead ? 'font-medium text-foreground' : 'font-semibold text-foreground')}>{notif.title}</h3>
                     <Badge variant={priorityColors[notif.priority]}>{notif.priority}</Badge>
-                    {!notif.isRead && <span className="h-2 w-2 rounded-full bg-brand-600" />}
+                    {!notif.isRead && <span className="h-2 w-2 rounded-full bg-primary" />}
                   </div>
-                  <p className="mt-1 text-sm text-gray-600">{notif.message}</p>
-                  <p className="mt-1 text-xs text-gray-400">{formatRelativeTime(notif.createdAt)}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{notif.message}</p>
+                  <p className="mt-1 text-xs text-muted-foreground/60">{formatRelativeTime(notif.createdAt)}</p>
                 </div>
               </div>
             );

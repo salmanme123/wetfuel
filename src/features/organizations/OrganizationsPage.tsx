@@ -46,7 +46,7 @@ function TreeNode({ node, selectedId, onSelect, depth = 0 }: {
       <button
         onClick={() => onSelect(node)}
         className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${
-          selectedId === node.id ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50 text-gray-700'
+          selectedId === node.id ? 'bg-primary/10 text-primary' : 'hover:bg-muted/50 text-foreground'
         }`}
         style={{ paddingLeft: `${depth * 20 + 12}px` }}
       >
@@ -149,7 +149,7 @@ export function OrganizationsPage() {
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900">{selected.name}</h3>
+                    <h3 className="text-xl font-semibold text-foreground">{selected.name}</h3>
                     <Badge variant={orgColors[selected.type]} className="mt-1">{ORG_TYPE_LABELS[selected.type]}</Badge>
                   </div>
                   <Badge variant={selected.status === 'active' ? 'success' : 'default'}>{selected.status}</Badge>
@@ -164,54 +164,54 @@ export function OrganizationsPage() {
                 )}
 
                 {parentOrg && (
-                  <div className="rounded-lg bg-gray-50 p-3">
-                    <p className="text-xs text-gray-500">Reports to</p>
-                    <p className="text-sm font-medium text-gray-900">
+                  <div className="rounded-lg bg-muted/50 p-3">
+                    <p className="text-xs text-muted-foreground">Reports to</p>
+                    <p className="text-sm font-medium text-foreground">
                       {parentOrg.name}{' '}
-                      <span className="text-gray-500">({ORG_TYPE_LABELS[parentOrg.type]})</span>
+                      <span className="text-muted-foreground">({ORG_TYPE_LABELS[parentOrg.type]})</span>
                     </p>
                   </div>
                 )}
 
                 {selected.territory && (
-                  <div className="rounded-lg bg-blue-50 p-3">
-                    <p className="text-sm font-medium text-blue-700">Territory: {selected.territory}</p>
+                  <div className="rounded-lg bg-sky-500/10 p-3">
+                    <p className="text-sm font-medium text-sky-400">Territory: {selected.territory}</p>
                   </div>
                 )}
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="flex items-center gap-3">
-                    <Mail className="h-5 w-5 text-gray-400" />
+                    <Mail className="h-5 w-5 text-muted-foreground/60" />
                     <div>
-                      <p className="text-xs text-gray-500">Email</p>
+                      <p className="text-xs text-muted-foreground">Email</p>
                       <p className="text-sm font-medium">{selected.contactEmail}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Phone className="h-5 w-5 text-gray-400" />
+                    <Phone className="h-5 w-5 text-muted-foreground/60" />
                     <div>
-                      <p className="text-xs text-gray-500">Phone</p>
+                      <p className="text-xs text-muted-foreground">Phone</p>
                       <p className="text-sm font-medium">{selected.contactPhone}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <MapPin className="h-5 w-5 text-gray-400" />
+                    <MapPin className="h-5 w-5 text-muted-foreground/60" />
                     <div>
-                      <p className="text-xs text-gray-500">Address</p>
+                      <p className="text-xs text-muted-foreground">Address</p>
                       <p className="text-sm font-medium">{selected.address}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Users className="h-5 w-5 text-gray-400" />
+                    <Users className="h-5 w-5 text-muted-foreground/60" />
                     <div>
-                      <p className="text-xs text-gray-500">Users</p>
+                      <p className="text-xs text-muted-foreground">Users</p>
                       <p className="text-sm font-medium">{selected.userCount}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Network className="h-5 w-5 text-gray-400" />
+                    <Network className="h-5 w-5 text-muted-foreground/60" />
                     <div>
-                      <p className="text-xs text-gray-500">Sub-Organizations</p>
+                      <p className="text-xs text-muted-foreground">Sub-Organizations</p>
                       <p className="text-sm font-medium">{selected.childCount}</p>
                     </div>
                   </div>
@@ -221,8 +221,8 @@ export function OrganizationsPage() {
           ) : (
             <Card>
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <Building2 className="h-12 w-12 text-gray-300" />
-                <p className="mt-4 text-gray-500">Select an organization to view details</p>
+                <Building2 className="h-12 w-12 text-muted-foreground/40" />
+                <p className="mt-4 text-muted-foreground">Select an organization to view details</p>
               </div>
             </Card>
           )}

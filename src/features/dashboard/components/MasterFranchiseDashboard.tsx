@@ -13,9 +13,9 @@ export function MasterFranchiseDashboard() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <StatsCard title="Franchises" value={masterFranchiseKpis.franchisesInRegion} icon={Boxes} />
-        <StatsCard title="Regional Revenue" value={formatCurrency(masterFranchiseKpis.regionalRevenue)} icon={DollarSign} iconColor="text-green-600 bg-green-100" trend={{ value: 11, direction: 'up' }} />
-        <StatsCard title="Regional Gallons" value={formatGallons(masterFranchiseKpis.regionalGallons)} icon={Droplets} iconColor="text-blue-600 bg-blue-100" />
-        <StatsCard title="Avg Delivery (min)" value={masterFranchiseKpis.avgDeliveryTime} icon={Clock} iconColor="text-orange-600 bg-orange-100" trend={{ value: 5, direction: 'down' }} />
+        <StatsCard title="Regional Revenue" value={formatCurrency(masterFranchiseKpis.regionalRevenue)} icon={DollarSign} iconColor="text-emerald-400 bg-emerald-500/10" trend={{ value: 11, direction: 'up' }} />
+        <StatsCard title="Regional Gallons" value={formatGallons(masterFranchiseKpis.regionalGallons)} icon={Droplets} iconColor="text-sky-400 bg-sky-500/15" />
+        <StatsCard title="Avg Delivery (min)" value={masterFranchiseKpis.avgDeliveryTime} icon={Clock} iconColor="text-amber-400 bg-amber-500/15" trend={{ value: 5, direction: 'down' }} />
         <StatsCard title="Compliance" value={`${masterFranchiseKpis.complianceScore}%`} icon={ShieldCheck} iconColor="text-emerald-600 bg-emerald-100" />
         <StatsCard title="Active Drivers" value={masterFranchiseKpis.activeDrivers} icon={Users} iconColor="text-purple-600 bg-purple-100" />
       </div>

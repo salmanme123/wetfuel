@@ -22,9 +22,9 @@ export function FranchiseDashboard() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <StatsCard title="Active Jobs" value={franchiseKpis.activeJobsToday} icon={Truck} trend={{ value: 20, direction: 'up' }} />
-        <StatsCard title="Gallons Today" value={formatGallons(franchiseKpis.gallonsDeliveredToday)} icon={Droplets} iconColor="text-blue-600 bg-blue-100" />
+        <StatsCard title="Gallons Today" value={formatGallons(franchiseKpis.gallonsDeliveredToday)} icon={Droplets} iconColor="text-sky-400 bg-sky-500/15" />
         <StatsCard title="Active Drivers" value={franchiseKpis.activeDrivers} icon={Users} iconColor="text-purple-600 bg-purple-100" />
-        <StatsCard title="Pending Invoices" value={franchiseKpis.pendingInvoices} icon={FileText} iconColor="text-orange-600 bg-orange-100" />
+        <StatsCard title="Pending Invoices" value={franchiseKpis.pendingInvoices} icon={FileText} iconColor="text-amber-400 bg-amber-500/15" />
         <StatsCard title="Compliance" value={`${franchiseKpis.complianceScore}%`} icon={ShieldCheck} iconColor="text-emerald-600 bg-emerald-100" />
         <StatsCard title="Customers" value={franchiseKpis.totalCustomers} icon={UserCheck} iconColor="text-cyan-600 bg-cyan-100" />
       </div>
@@ -62,24 +62,24 @@ export function FranchiseDashboard() {
       <div className="mt-6">
         <Card title="Recent Jobs">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full divide-y divide-border">
               <thead>
                 <tr>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Job #</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Customer</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Date</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Gallons</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Job #</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Customer</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Status</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Date</th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-muted-foreground">Gallons</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-border/50">
                 {recentJobs.map((job) => (
-                  <tr key={job.id} className="cursor-pointer hover:bg-gray-50" onClick={() => navigate(`/jobs/${job.id}`)}>
-                    <td className="px-4 py-3 text-sm font-mono text-brand-600">{job.jobNumber}</td>
-                    <td className="px-4 py-3 text-sm text-gray-700">{job.customerName}</td>
+                  <tr key={job.id} className="cursor-pointer hover:bg-muted/50" onClick={() => navigate(`/jobs/${job.id}`)}>
+                    <td className="px-4 py-3 text-sm font-mono text-primary">{job.jobNumber}</td>
+                    <td className="px-4 py-3 text-sm text-foreground">{job.customerName}</td>
                     <td className="px-4 py-3"><StatusBadge status={job.status} type="job" /></td>
-                    <td className="px-4 py-3 text-sm text-gray-500">{formatDate(job.scheduledDate)}</td>
-                    <td className="px-4 py-3 text-sm text-gray-700">{formatGallons(job.requestedGallons)}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{formatDate(job.scheduledDate)}</td>
+                    <td className="px-4 py-3 text-sm text-foreground">{formatGallons(job.requestedGallons)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -37,21 +37,21 @@ export function PricingPage() {
       <div className="mt-6">
         {activeTab === 'opis' && (
           <div>
-            <div className="mb-4 flex items-center gap-2 rounded-lg bg-blue-50 p-3">
-              <TrendingUp className="h-5 w-5 text-blue-600" />
-              <p className="text-sm text-blue-700">Daily OPIS rack prices — last updated June 20, 2026 (Gulf Coast)</p>
+            <div className="mb-4 flex items-center gap-2 rounded-lg bg-sky-500/10 p-3">
+              <TrendingUp className="h-5 w-5 text-sky-400" />
+              <p className="text-sm text-sky-400">Daily OPIS rack prices — last updated June 20, 2026 (Gulf Coast)</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {mockOpisRates.map((rate) => (
                 <Card key={rate.id}>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">{rate.fuelType.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase())}</p>
-                      <p className="text-2xl font-bold text-gray-900">{formatCurrency(rate.rackPrice)}<span className="text-sm font-normal text-gray-500">/gal</span></p>
+                      <p className="text-sm text-muted-foreground">{rate.fuelType.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase())}</p>
+                      <p className="text-2xl font-bold text-foreground">{formatCurrency(rate.rackPrice)}<span className="text-sm font-normal text-muted-foreground">/gal</span></p>
                     </div>
                     <Badge variant="info">{rate.source}</Badge>
                   </div>
-                  <p className="mt-2 text-xs text-gray-400">Effective: {rate.effectiveDate}</p>
+                  <p className="mt-2 text-xs text-muted-foreground/60">Effective: {rate.effectiveDate}</p>
                 </Card>
               ))}
             </div>
@@ -65,22 +65,22 @@ export function PricingPage() {
             </div>
             <Card>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-border">
                   <thead>
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Name</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Type</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Fuel</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Margin</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Min Price</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Default</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Name</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Type</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Fuel</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Margin</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Min Price</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Default</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-border/50">
                     {mockPricingRules.map((r) => (
                       <tr key={r.id}>
-                        <td className="px-4 py-3 text-sm font-medium text-gray-900">{r.name}</td>
+                        <td className="px-4 py-3 text-sm font-medium text-foreground">{r.name}</td>
                         <td className="px-4 py-3"><Badge variant={typeColors[r.type]}>{typeLabels[r.type]}</Badge></td>
                         <td className="px-4 py-3 text-sm">{r.fuelType}</td>
                         <td className="px-4 py-3 text-sm font-medium">{r.marginType === 'fixed' ? `+${formatCurrency(r.marginValue)}/gal` : `+${r.marginValue}%`}</td>
@@ -103,21 +103,21 @@ export function PricingPage() {
             </div>
             <Card>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-border">
                   <thead>
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Name</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Tax Type</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Fuel</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">State</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Rate</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Name</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Tax Type</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Fuel</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">State</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Rate</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-border/50">
                     {mockTaxRules.map((t) => (
                       <tr key={t.id}>
-                        <td className="px-4 py-3 text-sm font-medium text-gray-900">{t.name}</td>
+                        <td className="px-4 py-3 text-sm font-medium text-foreground">{t.name}</td>
                         <td className="px-4 py-3"><Badge variant="info">{taxTypeLabels[t.taxType]}</Badge></td>
                         <td className="px-4 py-3 text-sm">{t.fuelType ?? 'All'}</td>
                         <td className="px-4 py-3 text-sm">{t.state ?? 'Federal'}</td>

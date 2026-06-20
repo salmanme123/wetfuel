@@ -43,8 +43,8 @@ export function UsersListPage() {
           <div className="flex items-center gap-3">
             <Avatar firstName={user.firstName} lastName={user.lastName} size="sm" />
             <div>
-              <p className="font-medium text-gray-900">{user.firstName} {user.lastName}</p>
-              <p className="text-xs text-gray-500">{user.email}</p>
+              <p className="font-medium text-foreground">{user.firstName} {user.lastName}</p>
+              <p className="text-xs text-muted-foreground">{user.email}</p>
             </div>
           </div>
         );
@@ -66,7 +66,7 @@ export function UsersListPage() {
       key: 'lastLoginAt', header: 'Last Login', sortable: true,
       render: (u) => {
         const user = u as unknown as UserProfile;
-        return user.lastLoginAt ? formatDate(user.lastLoginAt) : <span className="text-gray-400">Never</span>;
+        return user.lastLoginAt ? formatDate(user.lastLoginAt) : <span className="text-muted-foreground/60">Never</span>;
       },
     },
   ];

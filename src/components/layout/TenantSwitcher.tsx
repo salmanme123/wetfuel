@@ -28,18 +28,18 @@ export function TenantSwitcher() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm shadow-sm hover:bg-gray-50"
+        className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5 text-sm shadow-xs hover:bg-accent"
       >
-        <Building2 className="h-4 w-4 text-brand-600" />
-        <span className="font-medium text-gray-700">{activeTenant?.companyName ?? 'Select Tenant'}</span>
-        <Badge variant="info" className="text-[10px]">{activeTenant?.tenantCode}</Badge>
-        <ChevronDown className="h-4 w-4 text-gray-400" />
+        <Building2 className="h-4 w-4 text-primary" />
+        <span className="font-medium text-foreground">{activeTenant?.companyName ?? 'Select Tenant'}</span>
+        <Badge variant="info" className="text-[0.55rem]">{activeTenant?.tenantCode}</Badge>
+        <ChevronDown className="h-4 w-4 text-muted-foreground" />
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 top-full z-50 mt-1 w-72 rounded-xl border border-gray-200 bg-white shadow-lg">
-          <div className="border-b border-gray-100 px-4 py-3">
-            <p className="text-xs font-semibold uppercase text-gray-400">Operating as Tenant</p>
+        <div className="absolute left-0 top-full z-50 mt-1 w-72 rounded-xl border border-border bg-card shadow-2xl">
+          <div className="border-b border-border px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Operating as Tenant</p>
           </div>
           <div className="max-h-64 overflow-y-auto py-1">
             {mockTenants.map((tenant) => (
@@ -47,7 +47,7 @@ export function TenantSwitcher() {
                 key={tenant.id}
                 onClick={() => { setActiveTenantId(tenant.id); setIsOpen(false); }}
                 className={`flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${
-                  activeTenantId === tenant.id ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50 text-gray-700'
+                  activeTenantId === tenant.id ? 'bg-primary/15 text-primary' : 'hover:bg-accent text-foreground'
                 }`}
               >
                 <div
@@ -56,9 +56,9 @@ export function TenantSwitcher() {
                 />
                 <div className="flex-1">
                   <p className="font-medium">{tenant.companyName}</p>
-                  <p className="text-xs text-gray-500">{tenant.tenantCode} — {tenant.franchiseCount} franchises</p>
+                  <p className="text-xs text-muted-foreground">{tenant.tenantCode} — {tenant.franchiseCount} franchises</p>
                 </div>
-                {activeTenantId === tenant.id && <Check className="h-4 w-4 text-brand-600" />}
+                {activeTenantId === tenant.id && <Check className="h-4 w-4 text-primary" />}
                 {tenant.status === 'suspended' && <Badge variant="error">Suspended</Badge>}
               </button>
             ))}

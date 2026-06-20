@@ -61,12 +61,12 @@ function ComplianceRing({ score }: { score: number }) {
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
   const scoreColor =
-    score >= 90 ? 'text-green-500' : score >= 80 ? 'text-amber-500' : 'text-red-500';
+    score >= 90 ? 'text-emerald-400' : score >= 80 ? 'text-amber-500' : 'text-red-500';
 
   return (
     <div className="relative mx-auto h-36 w-36">
       <svg className="h-full w-full -rotate-90" viewBox="0 0 120 120">
-        <circle cx="60" cy="60" r={radius} fill="none" stroke="#e5e7eb" strokeWidth="8" />
+        <circle cx="60" cy="60" r={radius} fill="none" stroke="oklch(0.24 0 0)" strokeWidth="8" />
         <circle
           cx="60"
           cy="60"
@@ -81,7 +81,7 @@ function ComplianceRing({ score }: { score: number }) {
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className={cn('text-3xl font-bold', scoreColor)}>{score}%</span>
-        <span className="text-xs text-gray-500">Compliance</span>
+        <span className="text-xs text-muted-foreground">Compliance</span>
       </div>
     </div>
   );
@@ -125,7 +125,7 @@ export function DriverDetailPage() {
   if (!driver) {
     return (
       <div className="py-12 text-center">
-        <p className="text-gray-500">Driver not found</p>
+        <p className="text-muted-foreground">Driver not found</p>
         <Button variant="outline" className="mt-4" onClick={() => navigate('/drivers')}>
           Back to Drivers
         </Button>
@@ -158,7 +158,7 @@ export function DriverDetailPage() {
       <div className="mb-6 flex flex-wrap items-center gap-2">
         <Badge variant={statusVariants[driver.status]}>{driver.status.replace('_', ' ')}</Badge>
         <Badge variant={shiftVariants[driver.shiftStatus]}>{shiftLabels[driver.shiftStatus]}</Badge>
-        <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 font-mono text-xs text-gray-700">
+        <span className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 font-mono text-xs text-foreground">
           <IdCard className="h-3.5 w-3.5" />
           {driver.license.type} · {driver.license.state}
         </span>
@@ -169,19 +169,19 @@ export function DriverDetailPage() {
           title="Total Deliveries"
           value={driver.totalDeliveries}
           icon={Truck}
-          iconColor="text-brand-600 bg-brand-100"
+          iconColor="text-primary bg-primary/15"
         />
         <StatsCard
           title="Gallons Delivered"
           value={formatGallons(driver.totalGallonsDelivered)}
           icon={Droplets}
-          iconColor="text-blue-600 bg-blue-100"
+          iconColor="text-sky-400 bg-sky-500/15"
         />
         <StatsCard
           title="Hours This Week"
           value={`${driver.hoursThisWeek}h`}
           icon={Clock}
-          iconColor="text-orange-600 bg-orange-100"
+          iconColor="text-amber-400 bg-amber-500/15"
         />
         <StatsCard
           title="Compliance Score"
@@ -189,10 +189,10 @@ export function DriverDetailPage() {
           icon={Shield}
           iconColor={
             driver.complianceScore >= 90
-              ? 'text-green-600 bg-green-100'
+              ? 'text-emerald-400 bg-emerald-500/10'
               : driver.complianceScore >= 80
                 ? 'text-amber-600 bg-amber-100'
-                : 'text-red-600 bg-red-100'
+                : 'text-red-400 bg-red-100'
           }
         />
       </div>
@@ -201,30 +201,30 @@ export function DriverDetailPage() {
         <Card title="Driver Profile" className="lg:col-span-1">
           <div className="flex flex-col items-center py-2">
             <Avatar firstName={driver.firstName} lastName={driver.lastName} size="lg" className="h-20 w-20 text-xl" />
-            <h3 className="mt-4 text-lg font-semibold text-gray-900">{fullName}</h3>
-            <p className="text-sm text-gray-500">{driver.organizationName}</p>
+            <h3 className="mt-4 text-lg font-semibold text-foreground">{fullName}</h3>
+            <p className="text-sm text-muted-foreground">{driver.organizationName}</p>
 
             <div className="mt-6 w-full space-y-3 border-t pt-4">
               <div className="flex items-center gap-3 text-sm">
-                <Mail className="h-4 w-4 shrink-0 text-gray-400" />
-                <span className="text-gray-700">{driver.email}</span>
+                <Mail className="h-4 w-4 shrink-0 text-muted-foreground/60" />
+                <span className="text-foreground">{driver.email}</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
-                <Phone className="h-4 w-4 shrink-0 text-gray-400" />
-                <span className="text-gray-700">{driver.phone}</span>
+                <Phone className="h-4 w-4 shrink-0 text-muted-foreground/60" />
+                <span className="text-foreground">{driver.phone}</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
-                <Building2 className="h-4 w-4 shrink-0 text-gray-400" />
-                <span className="text-gray-700">{driver.organizationName}</span>
+                <Building2 className="h-4 w-4 shrink-0 text-muted-foreground/60" />
+                <span className="text-foreground">{driver.organizationName}</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
-                <Calendar className="h-4 w-4 shrink-0 text-gray-400" />
-                <span className="text-gray-700">Hired {formatDate(driver.hireDate)}</span>
+                <Calendar className="h-4 w-4 shrink-0 text-muted-foreground/60" />
+                <span className="text-foreground">Hired {formatDate(driver.hireDate)}</span>
               </div>
               {driver.lastClockIn && (
                 <div className="flex items-center gap-3 text-sm">
-                  <Clock className="h-4 w-4 shrink-0 text-gray-400" />
-                  <span className="text-gray-700">Last clock-in {formatDateTime(driver.lastClockIn)}</span>
+                  <Clock className="h-4 w-4 shrink-0 text-muted-foreground/60" />
+                  <span className="text-foreground">Last clock-in {formatDateTime(driver.lastClockIn)}</span>
                 </div>
               )}
             </div>
@@ -242,31 +242,31 @@ export function DriverDetailPage() {
             }>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <IdCard className="mt-0.5 h-5 w-5 text-gray-400" />
+                  <IdCard className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                   <div>
-                    <p className="text-sm text-gray-500">License Type</p>
-                    <p className="font-medium text-gray-900">{driver.license.type}</p>
+                    <p className="text-sm text-muted-foreground">License Type</p>
+                    <p className="font-medium text-foreground">{driver.license.type}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Shield className="mt-0.5 h-5 w-5 text-gray-400" />
+                  <Shield className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                   <div>
-                    <p className="text-sm text-gray-500">License Number</p>
-                    <p className="font-medium font-mono text-gray-900">{driver.license.number}</p>
+                    <p className="text-sm text-muted-foreground">License Number</p>
+                    <p className="font-medium font-mono text-foreground">{driver.license.number}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Building2 className="mt-0.5 h-5 w-5 text-gray-400" />
+                  <Building2 className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                   <div>
-                    <p className="text-sm text-gray-500">State</p>
-                    <p className="font-medium text-gray-900">{driver.license.state}</p>
+                    <p className="text-sm text-muted-foreground">State</p>
+                    <p className="font-medium text-foreground">{driver.license.state}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Calendar className="mt-0.5 h-5 w-5 text-gray-400" />
+                  <Calendar className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                   <div>
-                    <p className="text-sm text-gray-500">Expiry Date</p>
-                    <p className="font-medium text-gray-900">{formatDate(driver.license.expiryDate)}</p>
+                    <p className="text-sm text-muted-foreground">Expiry Date</p>
+                    <p className="font-medium text-foreground">{formatDate(driver.license.expiryDate)}</p>
                   </div>
                 </div>
               </div>
@@ -275,7 +275,7 @@ export function DriverDetailPage() {
             <Card title="Compliance Overview">
               <div className="flex flex-col items-center py-2">
                 <ComplianceRing score={driver.complianceScore} />
-                <p className="mt-4 text-center text-sm text-gray-500">
+                <p className="mt-4 text-center text-sm text-muted-foreground">
                   Based on license validity, certifications, and delivery compliance history.
                 </p>
               </div>
@@ -288,29 +288,29 @@ export function DriverDetailPage() {
             </Button>
           }>
             {driver.certifications.length === 0 ? (
-              <p className="py-4 text-center text-sm text-gray-500">No certifications on file.</p>
+              <p className="py-4 text-center text-sm text-muted-foreground">No certifications on file.</p>
             ) : (
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-border">
                   <thead>
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Certification</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Issued</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Expires</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Certification</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Issued</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Expires</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-border/50">
                     {driver.certifications.map((cert) => (
-                      <tr key={cert.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                      <tr key={cert.id} className="hover:bg-muted/50">
+                        <td className="px-4 py-3 text-sm font-medium text-foreground">
                           <span className="inline-flex items-center gap-2">
-                            <Award className="h-4 w-4 text-gray-400" />
+                            <Award className="h-4 w-4 text-muted-foreground/60" />
                             {cert.name}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-600">{formatDate(cert.issuedDate)}</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">{formatDate(cert.expiryDate)}</td>
+                        <td className="px-4 py-3 text-sm text-muted-foreground">{formatDate(cert.issuedDate)}</td>
+                        <td className="px-4 py-3 text-sm text-muted-foreground">{formatDate(cert.expiryDate)}</td>
                         <td className="px-4 py-3">
                           <Badge variant={certVariants[cert.status]}>
                             {cert.status.replace('_', ' ')}
@@ -326,44 +326,44 @@ export function DriverDetailPage() {
 
           <Card title="Assigned Vehicle">
             {!vehicle ? (
-              <p className="py-6 text-center text-sm text-gray-500">No vehicle currently assigned.</p>
+              <p className="py-6 text-center text-sm text-muted-foreground">No vehicle currently assigned.</p>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2">
-                <div className="overflow-hidden rounded-lg border border-gray-200 bg-gradient-to-br from-slate-50 to-brand-50">
+                <div className="overflow-hidden rounded-lg border border-border bg-gradient-to-br from-slate-50 to-brand-50">
                   <div className="flex h-32 items-center justify-center">
                     <div className="flex flex-col items-center">
-                      <div className="rounded-full bg-brand-600 p-3 shadow-lg">
+                      <div className="rounded-full bg-primary p-3 shadow-lg">
                         <Truck className="h-6 w-6 text-white" />
                       </div>
-                      <p className="mt-2 text-sm font-semibold text-gray-900">{vehicle.name}</p>
-                      <p className="text-xs text-gray-500">{vehicle.licensePlate}</p>
+                      <p className="mt-2 text-sm font-semibold text-foreground">{vehicle.name}</p>
+                      <p className="text-xs text-muted-foreground">{vehicle.licensePlate}</p>
                     </div>
                   </div>
                 </div>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <Truck className="mt-0.5 h-5 w-5 text-gray-400" />
+                    <Truck className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                     <div>
-                      <p className="text-sm text-gray-500">Make / Model</p>
-                      <p className="font-medium text-gray-900">
+                      <p className="text-sm text-muted-foreground">Make / Model</p>
+                      <p className="font-medium text-foreground">
                         {vehicle.year} {vehicle.make} {vehicle.model}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Gauge className="mt-0.5 h-5 w-5 text-gray-400" />
+                    <Gauge className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                     <div>
-                      <p className="text-sm text-gray-500">Onboard Fuel</p>
-                      <p className="font-medium text-gray-900">
+                      <p className="text-sm text-muted-foreground">Onboard Fuel</p>
+                      <p className="font-medium text-foreground">
                         {formatGallons(vehicle.currentFuelGallons)} / {formatGallons(vehicle.fuelCapacityGallons)}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Calendar className="mt-0.5 h-5 w-5 text-gray-400" />
+                    <Calendar className="mt-0.5 h-5 w-5 text-muted-foreground/60" />
                     <div>
-                      <p className="text-sm text-gray-500">Next Inspection</p>
-                      <p className="font-medium text-gray-900">{formatDate(vehicle.nextInspectionDue)}</p>
+                      <p className="text-sm text-muted-foreground">Next Inspection</p>
+                      <p className="font-medium text-foreground">{formatDate(vehicle.nextInspectionDue)}</p>
                     </div>
                   </div>
                 </div>
@@ -375,32 +375,32 @@ export function DriverDetailPage() {
 
       <Card title="Recent Jobs" className="mt-6">
         {recentJobs.length === 0 ? (
-          <p className="py-6 text-center text-sm text-gray-500">No jobs assigned to this driver yet.</p>
+          <p className="py-6 text-center text-sm text-muted-foreground">No jobs assigned to this driver yet.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full divide-y divide-border">
               <thead>
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Job #</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Customer</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Site</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Scheduled</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Gallons</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Job #</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Customer</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Site</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Scheduled</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Gallons</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-border/50">
                 {recentJobs.map((job) => (
                   <tr
                     key={job.id}
-                    className="cursor-pointer hover:bg-gray-50"
+                    className="cursor-pointer hover:bg-muted/50"
                     onClick={() => navigate(`/jobs/${job.id}`)}
                   >
-                    <td className="px-4 py-3 text-sm font-mono text-brand-600">{job.jobNumber}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">{job.customerName}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{job.siteName}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{formatDate(job.scheduledDate)}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">{formatGallons(job.requestedGallons)}</td>
+                    <td className="px-4 py-3 text-sm font-mono text-primary">{job.jobNumber}</td>
+                    <td className="px-4 py-3 text-sm text-foreground">{job.customerName}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{job.siteName}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{formatDate(job.scheduledDate)}</td>
+                    <td className="px-4 py-3 text-sm text-foreground">{formatGallons(job.requestedGallons)}</td>
                     <td className="px-4 py-3">
                       <Badge variant={job.status === 'completed' ? 'success' : job.status === 'cancelled' ? 'error' : 'default'}>
                         {job.status.replace('_', ' ')}
@@ -416,29 +416,29 @@ export function DriverDetailPage() {
 
       <Card title="Recent Fueling Events" className="mt-6">
         {fuelingEvents.length === 0 ? (
-          <p className="py-6 text-center text-sm text-gray-500">No fueling events recorded for this driver yet.</p>
+          <p className="py-6 text-center text-sm text-muted-foreground">No fueling events recorded for this driver yet.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full divide-y divide-border">
               <thead>
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Job #</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Customer</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Equipment</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Gallons</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Total</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Job #</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Customer</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Equipment</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Gallons</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-muted-foreground">Total</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-border/50">
                 {fuelingEvents.map((fe) => (
-                  <tr key={fe.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 text-sm text-gray-600">{formatDateTime(fe.createdAt)}</td>
-                    <td className="px-4 py-3 text-sm font-mono text-brand-600">{fe.jobNumber}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">{fe.customerName}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">{fe.equipmentName}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">{formatGallons(fe.gallonsDelivered)}</td>
-                    <td className="px-4 py-3 text-sm font-medium text-gray-900">{formatCurrency(fe.total)}</td>
+                  <tr key={fe.id} className="hover:bg-muted/50">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{formatDateTime(fe.createdAt)}</td>
+                    <td className="px-4 py-3 text-sm font-mono text-primary">{fe.jobNumber}</td>
+                    <td className="px-4 py-3 text-sm text-foreground">{fe.customerName}</td>
+                    <td className="px-4 py-3 text-sm text-foreground">{fe.equipmentName}</td>
+                    <td className="px-4 py-3 text-sm text-foreground">{formatGallons(fe.gallonsDelivered)}</td>
+                    <td className="px-4 py-3 text-sm font-medium text-foreground">{formatCurrency(fe.total)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -469,10 +469,10 @@ export function DriverDetailPage() {
           <Input label="Certificate Number (optional)" placeholder="e.g. CERT-2026-00001" />
           <Input label="Issuing Authority" placeholder="e.g. Texas DPS" />
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Upload Document</label>
-            <div className="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
-              <p className="text-sm text-gray-500">Drag & drop or click to upload</p>
-              <p className="text-xs text-gray-400 mt-1">PDF, JPG, PNG up to 10MB</p>
+            <label className="block text-sm font-medium text-foreground mb-1">Upload Document</label>
+            <div className="rounded-lg border-2 border-dashed border-border p-6 text-center">
+              <p className="text-sm text-muted-foreground">Drag & drop or click to upload</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">PDF, JPG, PNG up to 10MB</p>
             </div>
           </div>
         </div>
@@ -495,10 +495,10 @@ export function DriverDetailPage() {
           <Input label="State" defaultValue={driver.license.state} />
           <Input label="Expiry Date" type="date" defaultValue={driver.license.expiryDate} />
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Upload License Copy</label>
-            <div className="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
-              <p className="text-sm text-gray-500">Drag & drop or click to upload</p>
-              <p className="text-xs text-gray-400 mt-1">PDF, JPG, PNG up to 10MB</p>
+            <label className="block text-sm font-medium text-foreground mb-1">Upload License Copy</label>
+            <div className="rounded-lg border-2 border-dashed border-border p-6 text-center">
+              <p className="text-sm text-muted-foreground">Drag & drop or click to upload</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">PDF, JPG, PNG up to 10MB</p>
             </div>
           </div>
         </div>

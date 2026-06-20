@@ -7,19 +7,19 @@ export const ROLES: Record<string, string> = {
 };
 
 export const JOB_STATUSES = [
-  { value: 'draft', label: 'Draft', color: 'bg-gray-100 text-gray-700' },
-  { value: 'pending', label: 'Pending', color: 'bg-yellow-100 text-yellow-700' },
-  { value: 'assigned', label: 'Assigned', color: 'bg-blue-100 text-blue-700' },
-  { value: 'in_progress', label: 'In Progress', color: 'bg-orange-100 text-orange-700' },
-  { value: 'completed', label: 'Completed', color: 'bg-green-100 text-green-700' },
-  { value: 'cancelled', label: 'Cancelled', color: 'bg-red-100 text-red-700' },
+  { value: 'draft', label: 'Draft', color: 'border-border bg-muted/50 text-muted-foreground' },
+  { value: 'pending', label: 'Pending', color: 'border-amber-500/30 bg-amber-500/10 text-amber-400' },
+  { value: 'assigned', label: 'Assigned', color: 'border-sky-500/30 bg-sky-500/10 text-sky-400' },
+  { value: 'in_progress', label: 'In Progress', color: 'border-primary/30 bg-primary/10 text-primary' },
+  { value: 'completed', label: 'Completed', color: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400' },
+  { value: 'cancelled', label: 'Cancelled', color: 'border-red-500/30 bg-red-500/10 text-red-400' },
 ] as const;
 
 export const JOB_PRIORITIES = [
-  { value: 'low', label: 'Low', color: 'bg-gray-100 text-gray-600' },
-  { value: 'normal', label: 'Normal', color: 'bg-blue-100 text-blue-600' },
-  { value: 'high', label: 'High', color: 'bg-orange-100 text-orange-600' },
-  { value: 'urgent', label: 'Urgent', color: 'bg-red-100 text-red-600' },
+  { value: 'low', label: 'Low', color: 'border-border bg-muted/50 text-muted-foreground' },
+  { value: 'normal', label: 'Normal', color: 'border-sky-500/30 bg-sky-500/10 text-sky-400' },
+  { value: 'high', label: 'High', color: 'border-amber-500/30 bg-amber-500/10 text-amber-400' },
+  { value: 'urgent', label: 'Urgent', color: 'border-red-500/30 bg-red-500/10 text-red-400' },
 ] as const;
 
 export const BILLING_TERMS: SelectOption[] = [
@@ -52,13 +52,13 @@ export const CUSTOMER_CATEGORIES: SelectOption[] = [
 ];
 
 export const TENANT_STATUSES = [
-  { value: 'active', label: 'Active', color: 'bg-green-100 text-green-700' },
-  { value: 'suspended', label: 'Suspended', color: 'bg-red-100 text-red-700' },
-  { value: 'pending', label: 'Pending', color: 'bg-yellow-100 text-yellow-700' },
+  { value: 'active', label: 'Active', color: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400' },
+  { value: 'suspended', label: 'Suspended', color: 'border-red-500/30 bg-red-500/10 text-red-400' },
+  { value: 'pending', label: 'Pending', color: 'border-amber-500/30 bg-amber-500/10 text-amber-400' },
 ] as const;
 
 export const USER_STATUSES = [
-  { value: 'active', label: 'Active', color: 'bg-green-100 text-green-700' },
-  { value: 'inactive', label: 'Inactive', color: 'bg-gray-100 text-gray-700' },
-  { value: 'invited', label: 'Invited', color: 'bg-blue-100 text-blue-700' },
+  { value: 'active', label: 'Active', color: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400' },
+  { value: 'inactive', label: 'Inactive', color: 'border-border bg-muted/50 text-muted-foreground' },
+  { value: 'invited', label: 'Invited', color: 'border-sky-500/30 bg-sky-500/10 text-sky-400' },
 ] as const;

@@ -30,7 +30,7 @@ export function Breadcrumbs() {
 
   return (
     <nav className="flex items-center gap-1 text-sm">
-      <Link to="/dashboard" className="text-gray-400 hover:text-gray-600">
+      <Link to="/dashboard" className="text-muted-foreground hover:text-foreground">
         <Home className="h-4 w-4" />
       </Link>
       {pathSegments.map((segment, index) => {
@@ -44,11 +44,11 @@ export function Breadcrumbs() {
 
         return (
           <span key={path} className="flex items-center gap-1">
-            <ChevronRight className="h-4 w-4 text-gray-300" />
+            <ChevronRight className="h-4 w-4 text-muted-foreground/50" />
             {isLast ? (
-              <span className="font-medium text-gray-700">{label}</span>
+              <span className="font-medium text-foreground">{label}</span>
             ) : (
-              <Link to={path} className="text-gray-500 hover:text-gray-700">
+              <Link to={path} className="text-muted-foreground hover:text-foreground">
                 {label}
               </Link>
             )}

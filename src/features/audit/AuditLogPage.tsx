@@ -37,13 +37,13 @@ export function AuditLogPage() {
   });
 
   const columns: Column<AuditLogEntry & Record<string, unknown>>[] = [
-    { key: 'timestamp', header: 'Time', sortable: true, width: '170px', render: (e) => <span className="text-xs text-gray-500">{formatDateTime((e as unknown as AuditLogEntry).timestamp)}</span> },
-    { key: 'userName', header: 'User', sortable: true, render: (e) => { const entry = e as unknown as AuditLogEntry; return (<div><p className="text-sm font-medium">{entry.userName}</p><p className="text-xs text-gray-400">{entry.userRole}</p></div>); } },
+    { key: 'timestamp', header: 'Time', sortable: true, width: '170px', render: (e) => <span className="text-xs text-muted-foreground">{formatDateTime((e as unknown as AuditLogEntry).timestamp)}</span> },
+    { key: 'userName', header: 'User', sortable: true, render: (e) => { const entry = e as unknown as AuditLogEntry; return (<div><p className="text-sm font-medium">{entry.userName}</p><p className="text-xs text-muted-foreground/60">{entry.userRole}</p></div>); } },
     { key: 'action', header: 'Action', render: (e) => { const entry = e as unknown as AuditLogEntry; return <Badge variant={actionColors[entry.action]}>{entry.action.replace('_', ' ')}</Badge>; } },
     { key: 'entity', header: 'Entity', render: (e) => { const entry = e as unknown as AuditLogEntry; return <Badge variant="default">{entry.entity.replace('_', ' ')}</Badge>; } },
-    { key: 'entityName', header: 'Record', render: (e) => <span className="font-medium text-gray-900">{(e as unknown as AuditLogEntry).entityName}</span> },
-    { key: 'description', header: 'Description', render: (e) => <span className="text-sm text-gray-600">{(e as unknown as AuditLogEntry).description}</span> },
-    { key: 'changes', header: 'Changes', width: '180px', render: (e) => { const entry = e as unknown as AuditLogEntry; if (!entry.changes) return <span className="text-gray-400">—</span>; return (<div className="space-y-1">{entry.changes.map((c, i) => (<div key={i} className="text-xs"><span className="text-gray-500">{c.field}:</span> <span className="text-red-500 line-through">{c.oldValue || '(empty)'}</span> → <span className="text-green-600">{c.newValue}</span></div>))}</div>); } },
+    { key: 'entityName', header: 'Record', render: (e) => <span className="font-medium text-foreground">{(e as unknown as AuditLogEntry).entityName}</span> },
+    { key: 'description', header: 'Description', render: (e) => <span className="text-sm text-muted-foreground">{(e as unknown as AuditLogEntry).description}</span> },
+    { key: 'changes', header: 'Changes', width: '180px', render: (e) => { const entry = e as unknown as AuditLogEntry; if (!entry.changes) return <span className="text-muted-foreground/60">—</span>; return (<div className="space-y-1">{entry.changes.map((c, i) => (<div key={i} className="text-xs"><span className="text-muted-foreground">{c.field}:</span> <span className="text-red-500 line-through">{c.oldValue || '(empty)'}</span> → <span className="text-emerald-400">{c.newValue}</span></div>))}</div>); } },
   ];
 
   return (
@@ -54,7 +54,7 @@ export function AuditLogPage() {
         <SearchInput value={table.searchTerm} onChange={table.setSearchTerm} placeholder="Search by user, record, or description..." className="w-96" />
         <Select options={actionOptions} placeholder="All Actions" value={table.filters['action'] ?? ''} onChange={(e) => table.setFilter('action', e.target.value)} />
         <Select options={entityOptions} placeholder="All Entities" value={table.filters['entity'] ?? ''} onChange={(e) => table.setFilter('entity', e.target.value)} />
-        {Object.keys(table.filters).length > 0 && <button onClick={table.clearFilters} className="text-sm text-brand-600 hover:underline">Clear</button>}
+        {Object.keys(table.filters).length > 0 && <button onClick={table.clearFilters} className="text-sm text-primary hover:underline">Clear</button>}
       </div>
 
       <DataTable columns={columns} data={table.filteredData} onSort={table.handleSort} sortConfig={table.sortConfig} keyExtractor={(e) => (e as unknown as AuditLogEntry).id} />

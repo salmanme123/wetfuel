@@ -118,7 +118,7 @@ export function SearchableSelect({
     <span className="flex min-w-0 items-center gap-2">
       <span className={cn('truncate', selected && 'font-medium')}>{opt.label}</span>
       {opt.badge && (
-        <span className="shrink-0 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+        <span className="shrink-0 rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
           {opt.badge}
         </span>
       )}
@@ -128,11 +128,11 @@ export function SearchableSelect({
   return (
     <div ref={containerRef} className={cn('relative', className)}>
       {label && (
-        <label className="mb-1 block text-sm font-medium text-gray-700">{label}</label>
+        <label className="mb-1 block text-sm font-medium text-foreground">{label}</label>
       )}
       <div
         className={cn(
-          'flex w-full items-center rounded-lg border border-gray-300 bg-white shadow-sm transition-colors',
+          'flex w-full items-center rounded-lg border border-border bg-card shadow-sm transition-colors',
           'focus-within:border-brand-500 focus-within:ring-1 focus-within:ring-brand-500',
         )}
       >
@@ -144,14 +144,14 @@ export function SearchableSelect({
           {selectedOption ? (
             renderOptionContent(selectedOption, true)
           ) : (
-            <span className="truncate text-gray-400">{placeholder}</span>
+            <span className="truncate text-muted-foreground/60">{placeholder}</span>
           )}
         </button>
         {value && (
           <button
             type="button"
             onClick={handleClear}
-            className="shrink-0 rounded p-1 text-gray-400 hover:text-gray-600"
+            className="shrink-0 rounded p-1 text-muted-foreground/60 hover:text-muted-foreground"
             aria-label="Clear selection"
           >
             <X className="h-3.5 w-3.5" />
@@ -160,7 +160,7 @@ export function SearchableSelect({
         <button
           type="button"
           onClick={toggleOpen}
-          className="shrink-0 px-2 py-2 text-gray-400"
+          className="shrink-0 px-2 py-2 text-muted-foreground/60"
           aria-label="Toggle options"
         >
           <ChevronDown className={cn('h-4 w-4 transition-transform', open && 'rotate-180')} />
@@ -176,19 +176,19 @@ export function SearchableSelect({
             left: dropdownStyle.left,
             width: dropdownStyle.width,
           }}
-          className="z-[200] overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl"
+          className="z-[200] overflow-hidden rounded-lg border border-border bg-card shadow-xl"
           onMouseDown={(e) => e.stopPropagation()}
         >
-          <div className="border-b border-gray-100 p-2">
+          <div className="border-b border-border/50 p-2">
             <div className="relative">
-              <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60" />
               <input
                 ref={searchRef}
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={searchPlaceholder}
-                className="w-full rounded-md border border-gray-300 py-1.5 pl-8 pr-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                className="w-full rounded-md border border-border py-1.5 pl-8 pr-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
               />
             </div>
           </div>
@@ -199,15 +199,15 @@ export function SearchableSelect({
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => handleSelect('')}
                 className={cn(
-                  'w-full px-3 py-2 text-left text-sm hover:bg-gray-50',
-                  !value && 'bg-brand-50 font-medium text-brand-700',
+                  'w-full px-3 py-2 text-left text-sm hover:bg-muted/50',
+                  !value && 'bg-primary/10 font-medium text-primary',
                 )}
               >
                 {placeholder}
               </button>
             </li>
             {filteredOptions.length === 0 ? (
-              <li className="px-3 py-4 text-center text-sm text-gray-500">No results found</li>
+              <li className="px-3 py-4 text-center text-sm text-muted-foreground">No results found</li>
             ) : (
               filteredOptions.map((opt) => (
                 <li key={opt.value}>
@@ -216,8 +216,8 @@ export function SearchableSelect({
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => handleSelect(opt.value)}
                     className={cn(
-                      'w-full px-3 py-2 text-left text-sm hover:bg-gray-50',
-                      value === opt.value && 'bg-brand-50 text-brand-700',
+                      'w-full px-3 py-2 text-left text-sm hover:bg-muted/50',
+                      value === opt.value && 'bg-primary/10 text-primary',
                     )}
                   >
                     {renderOptionContent(opt, value === opt.value)}

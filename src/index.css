@@ -26,8 +26,3 @@ body {
   min-height: 100vh;
   background-color: #f8fafc;
 }
-
-/* Google Places dropdown above modals */
-.pac-container {
-  z-index: 10000 !important;
-}

@@ -1,133 +1,79 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { MapPin } from 'lucide-react';
 import { cn } from '@/lib/cn';
-import { getGoogleMapsApiKey, loadGooglePlaces } from '@/lib/google-maps';
+import { searchMockPlaceSuggestions, type MockPlaceSuggestion } from '@/mock/places.mock';
 import type { PlaceLocation } from '@/types/place.types';
-
-export interface AddressSuggestion {
-  id: string;
-  label: string;
-  location: PlaceLocation;
-}
 
 interface AddressAutocompleteProps {
   value: PlaceLocation | null;
   onChange: (location: PlaceLocation | null) => void;
+  customerId?: string;
   label?: string;
   placeholder?: string;
   error?: string;
   helperText?: string;
   disabled?: boolean;
-  fallbackSuggestions?: AddressSuggestion[];
   className?: string;
 }
 
-function extractPlaceLocation(place: google.maps.places.PlaceResult): PlaceLocation | null {
-  const formattedAddress = place.formatted_address;
-  const lat = place.geometry?.location?.lat();
-  const lng = place.geometry?.location?.lng();
-  if (!formattedAddress || lat == null || lng == null) return null;
-  return {
-    formattedAddress,
-    latitude: lat,
-    longitude: lng,
-    placeId: place.place_id,
-  };
+function highlightMatch(text: string, query: string) {
+  if (!query.trim()) return text;
+  const idx = text.toLowerCase().indexOf(query.trim().toLowerCase());
+  if (idx === -1) return text;
+  const before = text.slice(0, idx);
+  const match = text.slice(idx, idx + query.trim().length);
+  const after = text.slice(idx + query.trim().length);
+  return (
+    <>
+      {before}
+      <span className="font-semibold text-gray-900">{match}</span>
+      {after}
+    </>
+  );
 }
 
 export function AddressAutocomplete({
   value,
   onChange,
+  customerId = '',
   label = 'Exact Location',
   placeholder = 'Search address on Google Maps...',
   error,
   helperText,
   disabled = false,
-  fallbackSuggestions = [],
   className,
 }: AddressAutocompleteProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [inputValue, setInputValue] = useState(value?.formattedAddress ?? '');
-  const [googleReady, setGoogleReady] = useState(false);
-  const [googleError, setGoogleError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const [dropdownStyle, setDropdownStyle] = useState<{ top: number; left: number; width: number } | null>(null);
 
-  const hasApiKey = Boolean(getGoogleMapsApiKey());
-  const onChangeRef = useRef(onChange);
-  onChangeRef.current = onChange;
-
-  const filteredFallback = fallbackSuggestions.filter((suggestion) => {
-    const query = inputValue.trim().toLowerCase();
-    if (!query) return true;
-    return suggestion.label.toLowerCase().includes(query);
-  });
+  const suggestions = useMemo(() => {
+    if (!customerId) return [];
+    return searchMockPlaceSuggestions(customerId, inputValue);
+  }, [customerId, inputValue]);
 
   useEffect(() => {
     setInputValue(value?.formattedAddress ?? '');
   }, [value?.formattedAddress]);
 
-  useEffect(() => {
-    if (!hasApiKey || disabled) return;
-
-    let cancelled = false;
-
-    loadGooglePlaces()
-      .then(() => {
-        if (cancelled || !inputRef.current) return;
-
-        const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
-          fields: ['formatted_address', 'geometry', 'place_id', 'name'],
-          types: ['geocode', 'establishment'],
-        });
-
-        autocomplete.addListener('place_changed', () => {
-          const place = autocomplete.getPlace();
-          const location = extractPlaceLocation(place);
-          if (location) {
-            setInputValue(location.formattedAddress);
-            onChangeRef.current(location);
-            setOpen(false);
-          }
-        });
-
-        autocompleteRef.current = autocomplete;
-        setGoogleReady(true);
-        setGoogleError(null);
-      })
-      .catch((err: Error) => {
-        if (!cancelled) {
-          setGoogleError(err.message);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-      const instance = autocompleteRef.current;
-      if (instance && typeof google !== 'undefined') {
-        google.maps.event.clearInstanceListeners(instance);
-      }
-      autocompleteRef.current = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasApiKey, disabled]);
-
   const updateDropdownPosition = () => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     setDropdownStyle({
-      top: rect.bottom + 4,
+      top: rect.bottom + 2,
       left: rect.left,
       width: rect.width,
     });
   };
 
   useEffect(() => {
-    if (!open || hasApiKey) return;
+    if (!open) return;
 
     updateDropdownPosition();
 
@@ -141,6 +87,7 @@ export function AddressAutocomplete({
       }
       setOpen(false);
       setDropdownStyle(null);
+      setActiveIndex(-1);
     };
 
     const handleReposition = () => updateDropdownPosition();
@@ -153,35 +100,56 @@ export function AddressAutocomplete({
       window.removeEventListener('resize', handleReposition);
       window.removeEventListener('scroll', handleReposition, true);
     };
-  }, [open, hasApiKey]);
+  }, [open]);
 
   const handleInputChange = (nextValue: string) => {
     setInputValue(nextValue);
     if (value && nextValue !== value.formattedAddress) {
       onChange(null);
     }
-    if (!hasApiKey) {
+    if (!disabled && customerId) {
       setOpen(true);
+      setLoading(true);
+      setActiveIndex(-1);
       updateDropdownPosition();
+      window.setTimeout(() => setLoading(false), 180);
     }
   };
 
-  const selectFallback = (suggestion: AddressSuggestion) => {
-    setInputValue(suggestion.label);
+  const selectSuggestion = (suggestion: MockPlaceSuggestion) => {
+    setInputValue(suggestion.location.formattedAddress);
     onChange(suggestion.location);
     setOpen(false);
     setDropdownStyle(null);
+    setActiveIndex(-1);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!open || suggestions.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIndex((i) => (i + 1) % suggestions.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex((i) => (i <= 0 ? suggestions.length - 1 : i - 1));
+    } else if (e.key === 'Enter' && activeIndex >= 0) {
+      e.preventDefault();
+      selectSuggestion(suggestions[activeIndex]!);
+    } else if (e.key === 'Escape') {
+      setOpen(false);
+      setActiveIndex(-1);
+    }
   };
 
   const resolvedHelperText = error
     ? undefined
     : helperText ?? (
-      hasApiKey
-        ? googleReady
-          ? 'Start typing to search Google Maps for the exact equipment location.'
-          : 'Loading Google Places...'
-        : 'Add VITE_GOOGLE_MAPS_API_KEY for Google autocomplete, or pick from suggested addresses.'
+      customerId
+        ? 'Search like Google Maps — type an address or pick a suggested location.'
+        : 'Select a customer first, then search for the exact equipment location.'
     );
+
+  const showDropdown = open && customerId && !disabled && dropdownStyle;
 
   return (
     <div ref={containerRef} className={cn('space-y-1', className)}>
@@ -202,11 +170,12 @@ export function AddressAutocomplete({
           autoComplete="off"
           onChange={(e) => handleInputChange(e.target.value)}
           onFocus={() => {
-            if (!hasApiKey && !disabled) {
+            if (!disabled && customerId) {
               setOpen(true);
               updateDropdownPosition();
             }
           }}
+          onKeyDown={handleKeyDown}
           className={cn(
             'block w-full rounded-lg border py-2 pl-9 pr-3 text-sm shadow-sm transition-colors',
             'focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500',
@@ -224,31 +193,64 @@ export function AddressAutocomplete({
       )}
 
       {error && <p className="text-sm text-red-600">{error}</p>}
-      {googleError && !error && (
-        <p className="text-sm text-amber-600">{googleError}</p>
-      )}
-      {resolvedHelperText && !googleError && (
-        <p className="text-sm text-gray-500">{resolvedHelperText}</p>
-      )}
+      {resolvedHelperText && <p className="text-sm text-gray-500">{resolvedHelperText}</p>}
 
-      {!hasApiKey && open && filteredFallback.length > 0 && dropdownStyle && createPortal(
+      {showDropdown && createPortal(
         <div
           ref={dropdownRef}
-          className="fixed z-[300] max-h-60 overflow-y-auto rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+          className="fixed z-[300] overflow-hidden rounded-sm border border-gray-200 bg-white shadow-[0_2px_6px_rgba(0,0,0,0.3)]"
           style={{ top: dropdownStyle.top, left: dropdownStyle.left, width: dropdownStyle.width }}
         >
-          {filteredFallback.map((suggestion) => (
-            <button
-              key={suggestion.id}
-              type="button"
-              className="flex w-full cursor-pointer items-start gap-2 px-3 py-2 text-left text-sm hover:bg-gray-50"
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={() => selectFallback(suggestion)}
-            >
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" />
-              <span>{suggestion.label}</span>
-            </button>
-          ))}
+          {loading ? (
+            <div className="flex items-center gap-2 px-3 py-3 text-sm text-gray-500">
+              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-brand-500" />
+              Searching places...
+            </div>
+          ) : suggestions.length === 0 ? (
+            <div className="px-3 py-3 text-sm text-gray-500">
+              No places found. Try a street name or city.
+            </div>
+          ) : (
+            <ul className="max-h-64 overflow-y-auto py-1">
+              {suggestions.map((suggestion, index) => (
+                <li key={suggestion.id}>
+                  <button
+                    type="button"
+                    className={cn(
+                      'flex w-full cursor-pointer items-start gap-3 px-3 py-2.5 text-left transition-colors',
+                      index === activeIndex ? 'bg-gray-100' : 'hover:bg-gray-50',
+                    )}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onClick={() => selectSuggestion(suggestion)}
+                  >
+                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" strokeWidth={1.75} />
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm text-gray-800">
+                        {highlightMatch(suggestion.primaryText, inputValue)}
+                      </span>
+                      <span className="block truncate text-xs text-gray-500">
+                        {suggestion.secondaryText}
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <div className="flex items-center justify-end border-t border-gray-100 px-3 py-1.5">
+            <span className="text-[10px] tracking-wide text-gray-400">
+              powered by{' '}
+              <span className="font-medium">
+                <span className="text-[#4285F4]">G</span>
+                <span className="text-[#EA4335]">o</span>
+                <span className="text-[#FBBC05]">o</span>
+                <span className="text-[#4285F4]">g</span>
+                <span className="text-[#34A853]">l</span>
+                <span className="text-[#EA4335]">e</span>
+              </span>
+            </span>
+          </div>
         </div>,
         document.body,
       )}

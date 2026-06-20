@@ -10,7 +10,7 @@ import { SearchableSelect } from '@/components/ui/SearchableSelect';
 import { Select } from '@/components/ui/Select';
 import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
-import { AddressAutocomplete, type AddressSuggestion } from '@/components/ui/AddressAutocomplete';
+import { AddressAutocomplete } from '@/components/ui/AddressAutocomplete';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { useTable } from '@/hooks/useTable';
 import { useModal } from '@/hooks/useModal';
@@ -55,21 +55,6 @@ function buildSiteOptionsForCustomer(customerId: string) {
     .sort((a, b) => a.label.localeCompare(b.label));
 }
 
-function buildLocationSuggestionsForCustomer(customerId: string): AddressSuggestion[] {
-  const customer = mockCustomers.find((c) => c.id === customerId);
-  if (!customer) return [];
-  return customer.sites.map((s) => ({
-    id: s.id,
-    label: `${s.address}, ${s.city}, ${s.state} ${s.zipCode}`,
-    location: {
-      formattedAddress: `${s.address}, ${s.city}, ${s.state} ${s.zipCode}`,
-      latitude: s.latitude,
-      longitude: s.longitude,
-      placeId: s.id,
-    },
-  }));
-}
-
 function formatSiteAddress(site: { address: string; city: string; state: string; zipCode: string }) {
   return `${site.address}, ${site.city}, ${site.state} ${site.zipCode}`;
 }
@@ -106,10 +91,6 @@ export function EquipmentListPage() {
   const registerCustomerOptions = useMemo(() => buildCustomerOptionsFromCustomers(), []);
   const registerSiteOptions = useMemo(
     () => buildSiteOptionsForCustomer(registerForm.customerId),
-    [registerForm.customerId],
-  );
-  const locationSuggestions = useMemo(
-    () => buildLocationSuggestionsForCustomer(registerForm.customerId),
     [registerForm.customerId],
   );
 
@@ -163,7 +144,7 @@ export function EquipmentListPage() {
     if (!registerForm.name.trim()) errors.name = 'Equipment name is required';
     if (!registerForm.type) errors.type = 'Type is required';
     if (!registerForm.customerId) errors.customerId = 'Customer is required';
-    if (!registerForm.location) errors.location = 'Select an exact location from Google or a site address';
+    if (!registerForm.location) errors.location = 'Select an exact location from the address search';
     if (!registerForm.fuelType) errors.fuelType = 'Fuel type is required';
 
     if (Object.keys(errors).length > 0) {
@@ -460,12 +441,12 @@ export function EquipmentListPage() {
           <div className="sm:col-span-2">
             <AddressAutocomplete
               label="Exact Location"
+              customerId={registerForm.customerId}
               value={registerForm.location}
               onChange={(location) => updateRegisterForm({ location })}
               placeholder="Search address on Google Maps..."
               error={registerErrors.location}
               disabled={!registerForm.customerId}
-              fallbackSuggestions={locationSuggestions}
               helperText={
                 registerForm.customerId
                   ? undefined
@@ -535,7 +516,7 @@ export function EquipmentListPage() {
           />
         </div>
         <p className="mt-4 rounded-lg bg-blue-50 p-3 text-sm text-blue-700">
-          A QR code will be auto-generated upon registration. Use Google Places to pin the exact equipment location on the customer site.
+          A QR code will be auto-generated upon registration. Search the exact equipment location — Google Places integration will be enabled in production.
         </p>
       </Modal>
 

@@ -63,7 +63,7 @@ export function LoginPage() {
             <button
               key={role}
               onClick={() => handleRoleSelect(role)}
-              className="group flex flex-col items-center rounded-xl border-2 border-gray-200 bg-white p-6 text-center shadow-sm transition-all hover:border-brand-500 hover:shadow-md"
+              className="group flex cursor-pointer flex-col items-center rounded-xl border-2 border-gray-200 bg-white p-6 text-center shadow-sm transition-all hover:border-brand-500 hover:shadow-md"
             >
               <div className="rounded-lg bg-brand-100 p-3 transition-colors group-hover:bg-brand-200">
                 <Icon className="h-8 w-8 text-brand-600" />

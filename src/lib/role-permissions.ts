@@ -43,6 +43,7 @@ export const NAV_BY_ROLE: Record<UserRole, NavItem[]> = {
   ],
   franchise_admin: [
     { label: 'Dashboard', icon: 'LayoutDashboard', path: '/dashboard' },
+    { label: 'Organizations', icon: 'Network', path: '/organizations' },
     { label: 'Users', icon: 'Users', path: '/users' },
     { label: 'Drivers', icon: 'UserCog', path: '/drivers' },
     { label: 'Customers', icon: 'UserCheck', path: '/customers' },
@@ -63,7 +64,7 @@ export const NAV_BY_ROLE: Record<UserRole, NavItem[]> = {
 const ALLOWED_ROUTES: Record<UserRole, string[]> = {
   corporate_super_admin: ['/dashboard', '/tenants', '/organizations', '/users', '/drivers', '/customers', '/jobs', '/fueling-events', '/fleet', '/inventory', '/equipment', '/pricing', '/compliance', '/invoices', '/reports', '/audit-log', '/notifications', '/settings'],
   master_franchise_admin: ['/dashboard', '/organizations', '/users', '/drivers', '/customers', '/jobs', '/fueling-events', '/fleet', '/pricing', '/compliance', '/reports', '/audit-log', '/notifications', '/settings'],
-  franchise_admin: ['/dashboard', '/users', '/drivers', '/customers', '/jobs', '/fueling-events', '/fleet', '/inventory', '/equipment', '/pricing', '/compliance', '/invoices', '/reports', '/audit-log', '/notifications', '/settings'],
+  franchise_admin: ['/dashboard', '/organizations', '/users', '/drivers', '/customers', '/jobs', '/fueling-events', '/fleet', '/inventory', '/equipment', '/pricing', '/compliance', '/invoices', '/reports', '/audit-log', '/notifications', '/settings'],
 };
 
 export function canAccessRoute(role: UserRole, path: string): boolean {

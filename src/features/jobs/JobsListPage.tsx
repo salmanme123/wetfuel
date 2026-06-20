@@ -1,10 +1,11 @@
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { StatusBadge } from '@/components/shared/StatusBadge';
 import { Button } from '@/components/ui/Button';
 import { DataTable, TablePagination, type Column } from '@/components/ui/DataTable';
 import { SearchInput } from '@/components/ui/SearchInput';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
 import { Select } from '@/components/ui/Select';
 import { Tabs } from '@/components/ui/Tabs';
 import { Modal } from '@/components/ui/Modal';
@@ -21,15 +22,47 @@ import type { Job, JobStatus } from '@/types';
 
 export function JobsListPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { addToast } = useToast();
   const modal = useModal();
   const [activeStatus, setActiveStatus] = useState<string>('all');
   const [jobs] = useState(mockJobs);
+  const [siteFilter, setSiteFilter] = useState(() => searchParams.get('siteId') ?? '');
+  const [customerFilterFromUrl] = useState(() => searchParams.get('customerId') ?? '');
 
   const filteredByStatus = useMemo(() => {
     if (activeStatus === 'all') return jobs;
     return jobs.filter((j) => j.status === activeStatus);
   }, [jobs, activeStatus]);
+
+  const customerOptions = useMemo(() => {
+    const seen = new Map<string, string>();
+    jobs.forEach((j) => seen.set(j.customerId, j.customerName));
+    return Array.from(seen, ([value, label]) => ({ value, label }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, [jobs]);
+
+  const siteOptions = useMemo(() => {
+    const seen = new Map<string, string>();
+    jobs.forEach((j) => seen.set(j.siteId, j.siteName));
+    return Array.from(seen, ([value, label]) => ({ value, label }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, [jobs]);
+
+  const driverOptions = useMemo(() => {
+    const seen = new Map<string, string>();
+    jobs.forEach((j) => {
+      if (j.driverId && j.driverName) {
+        seen.set(j.driverId, j.driverName);
+      }
+    });
+    const assigned = Array.from(seen, ([value, label]) => ({ value, label }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+    const hasUnassigned = jobs.some((j) => !j.driverId);
+    return hasUnassigned
+      ? [{ label: 'Unassigned', value: 'null' }, ...assigned]
+      : assigned;
+  }, [jobs]);
 
   const statusCounts = useMemo(() => {
     const counts: Record<string, number> = { all: jobs.length };
@@ -44,8 +77,19 @@ export function JobsListPage() {
 
   const table = useTable<Job & Record<string, unknown>>({
     data: filteredByStatus as (Job & Record<string, unknown>)[],
-    searchKeys: ['jobNumber', 'customerName'],
+    searchKeys: ['jobNumber', 'customerName', 'siteName'],
   });
+
+  useEffect(() => {
+    if (customerFilterFromUrl) {
+      table.setFilter('customerId', customerFilterFromUrl);
+    }
+    if (siteFilter) {
+      table.setFilter('siteId', siteFilter);
+    }
+    // Apply URL filters once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const columns: Column<Job & Record<string, unknown>>[] = [
     { key: 'jobNumber', header: 'Job #', sortable: true, width: '140px', render: (j) => <span className="font-mono text-brand-600">{(j as unknown as Job).jobNumber}</span> },
@@ -77,8 +121,44 @@ export function JobsListPage() {
 
       <div className="mb-4 flex flex-wrap items-center gap-4">
         <SearchInput value={table.searchTerm} onChange={table.setSearchTerm} placeholder="Search by job # or customer..." className="w-80" />
-        <Select options={FUEL_TYPES} placeholder="All Fuel Types" value={table.filters['fuelType'] ?? ''} onChange={(e) => table.setFilter('fuelType', e.target.value)} />
-        {Object.keys(table.filters).length > 0 && <Button variant="ghost" onClick={table.clearFilters}>Clear</Button>}
+        <SearchableSelect
+          options={customerOptions}
+          placeholder="All Customers"
+          value={table.filters['customerId'] ?? ''}
+          onChange={(val) => table.setFilter('customerId', val)}
+          className="w-52"
+          searchPlaceholder="Search customers..."
+        />
+        <SearchableSelect
+          options={siteOptions}
+          placeholder="All Sites"
+          value={table.filters['siteId'] ?? ''}
+          onChange={(val) => {
+            setSiteFilter(val);
+            table.setFilter('siteId', val);
+          }}
+          className="w-52"
+          searchPlaceholder="Search sites..."
+        />
+        <SearchableSelect
+          options={driverOptions}
+          placeholder="All Drivers"
+          value={table.filters['driverId'] ?? ''}
+          onChange={(val) => table.setFilter('driverId', val)}
+          className="w-52"
+          searchPlaceholder="Search drivers..."
+        />
+        <SearchableSelect
+          options={FUEL_TYPES}
+          placeholder="All Fuel Types"
+          value={table.filters['fuelType'] ?? ''}
+          onChange={(val) => table.setFilter('fuelType', val)}
+          className="w-52"
+          searchPlaceholder="Search fuel types..."
+        />
+        {(Object.keys(table.filters).length > 0 || table.searchTerm) && (
+          <Button variant="ghost" onClick={() => { table.clearFilters(); setSiteFilter(''); }}>Clear</Button>
+        )}
       </div>
 
       <DataTable columns={columns} data={table.filteredData} onSort={table.handleSort} sortConfig={table.sortConfig} onRowClick={(j) => navigate(`/jobs/${(j as unknown as Job).id}`)} keyExtractor={(j) => (j as unknown as Job).id} />

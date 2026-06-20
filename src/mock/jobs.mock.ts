@@ -67,7 +67,7 @@ export const mockJobs: Job[] = [
     createdAt: '2026-06-19T00:00:00Z', updatedAt: '2026-06-19T00:00:00Z',
   },
   {
-    id: 'job-006', tenantId: 'tenant-001', organizationId: 'org-007',
+    id: 'job-006', tenantId: 'tenant-001', organizationId: 'org-005',
     jobNumber: 'JOB-2026-00147', status: 'assigned', priority: 'high',
     customerId: 'cust-006', customerName: 'Sunshine Marina',
     siteId: 'site-008', siteName: 'Marina Dock', siteAddress: '200 Biscayne Blvd, Miami, FL 33132',
@@ -80,7 +80,7 @@ export const mockJobs: Job[] = [
     createdAt: '2026-06-18T00:00:00Z', updatedAt: '2026-06-19T16:00:00Z',
   },
   {
-    id: 'job-007', tenantId: 'tenant-001', organizationId: 'org-007',
+    id: 'job-007', tenantId: 'tenant-001', organizationId: 'org-005',
     jobNumber: 'JOB-2026-00148', status: 'draft', priority: 'normal',
     customerId: 'cust-007', customerName: 'Miami Event Rentals',
     siteId: 'site-009', siteName: 'Warehouse', siteAddress: '880 NW 22nd Ave, Miami, FL 33125',
@@ -93,7 +93,7 @@ export const mockJobs: Job[] = [
     createdAt: '2026-06-20T00:00:00Z', updatedAt: '2026-06-20T00:00:00Z',
   },
   {
-    id: 'job-008', tenantId: 'tenant-001', organizationId: 'org-008',
+    id: 'job-008', tenantId: 'tenant-001', organizationId: 'org-004',
     jobNumber: 'JOB-2026-00149', status: 'in_progress', priority: 'urgent',
     customerId: 'cust-008', customerName: 'Tampa Bay Schools District',
     siteId: 'site-010', siteName: 'Bus Depot A', siteAddress: '1500 School Bus Ln, Tampa, FL 33607',
@@ -158,7 +158,7 @@ export const mockJobs: Job[] = [
     createdAt: '2026-06-18T00:00:00Z', updatedAt: '2026-06-19T12:00:00Z',
   },
   {
-    id: 'job-013', tenantId: 'tenant-001', organizationId: 'org-008',
+    id: 'job-013', tenantId: 'tenant-001', organizationId: 'org-004',
     jobNumber: 'JOB-2026-00154', status: 'pending', priority: 'normal',
     customerId: 'cust-012', customerName: 'Clearwater Resort',
     siteId: 'site-015', siteName: 'Resort Facility', siteAddress: '400 Gulf Blvd, Clearwater, FL 33767',
@@ -197,7 +197,7 @@ export const mockJobs: Job[] = [
     createdAt: '2026-06-20T00:00:00Z', updatedAt: '2026-06-20T00:00:00Z',
   },
   {
-    id: 'job-016', tenantId: 'tenant-001', organizationId: 'org-007',
+    id: 'job-016', tenantId: 'tenant-001', organizationId: 'org-005',
     jobNumber: 'JOB-2026-00157', status: 'completed', priority: 'normal',
     customerId: 'cust-006', customerName: 'Sunshine Marina',
     siteId: 'site-008', siteName: 'Marina Dock', siteAddress: '200 Biscayne Blvd, Miami, FL 33132',
@@ -210,7 +210,7 @@ export const mockJobs: Job[] = [
     createdAt: '2026-06-12T00:00:00Z', updatedAt: '2026-06-14T09:00:00Z',
   },
   {
-    id: 'job-017', tenantId: 'tenant-001', organizationId: 'org-008',
+    id: 'job-017', tenantId: 'tenant-001', organizationId: 'org-004',
     jobNumber: 'JOB-2026-00158', status: 'assigned', priority: 'high',
     customerId: 'cust-008', customerName: 'Tampa Bay Schools District',
     siteId: 'site-011', siteName: 'Bus Depot B', siteAddress: '2800 Transit Way, Brandon, FL 33510',

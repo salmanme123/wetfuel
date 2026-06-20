@@ -209,7 +209,7 @@ export const mockCustomers: Customer[] = [
   {
     id: 'cust-006',
     tenantId: 'tenant-001',
-    organizationId: 'org-007',
+    organizationId: 'org-005',
     companyName: 'Sunshine Marina',
     category: 'commercial',
     contactName: 'Carlos Vega',
@@ -244,7 +244,7 @@ export const mockCustomers: Customer[] = [
   {
     id: 'cust-007',
     tenantId: 'tenant-001',
-    organizationId: 'org-007',
+    organizationId: 'org-005',
     companyName: 'Miami Event Rentals',
     category: 'commercial',
     contactName: 'Diana Brooks',
@@ -279,7 +279,7 @@ export const mockCustomers: Customer[] = [
   {
     id: 'cust-008',
     tenantId: 'tenant-001',
-    organizationId: 'org-008',
+    organizationId: 'org-004',
     companyName: 'Tampa Bay Schools District',
     category: 'government',
     contactName: 'Nancy Hall',
@@ -434,7 +434,7 @@ export const mockCustomers: Customer[] = [
   {
     id: 'cust-012',
     tenantId: 'tenant-001',
-    organizationId: 'org-008',
+    organizationId: 'org-004',
     companyName: 'Clearwater Resort',
     category: 'commercial',
     contactName: 'Steve Maxwell',

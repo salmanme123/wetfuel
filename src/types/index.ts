@@ -16,3 +16,4 @@ export * from './audit.types';
 export * from './notification.types';
 export * from './fueling-event.types';
 export * from './settings.types';
+export * from './place.types';

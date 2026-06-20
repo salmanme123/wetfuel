@@ -1,6 +1,10 @@
+import { useMemo, useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
 import { Modal } from '@/components/ui/Modal';
 import { useModal } from '@/hooks/useModal';
 import { mockFuelingEvents } from '@/mock';
@@ -13,12 +17,97 @@ const stepIcons: Record<string, typeof CheckCircle> = {
   price_calculated: DollarSign, tax_calculated: Calculator, completed: CheckCircle, synced: CloudUpload,
 };
 
+function buildOptions(events: FuelingEvent[], idKey: keyof FuelingEvent, nameKey: keyof FuelingEvent) {
+  const seen = new Map<string, string>();
+  events.forEach((fe) => {
+    const id = fe[idKey];
+    const name = fe[nameKey];
+    if (typeof id === 'string' && typeof name === 'string') {
+      seen.set(id, name);
+    }
+  });
+  return Array.from(seen, ([value, label]) => ({ value, label }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
 export function FuelingEventsPage() {
+  const [searchParams] = useSearchParams();
   const modal = useModal<FuelingEvent>();
+  const [driverId, setDriverId] = useState('');
+  const [customerId, setCustomerId] = useState('');
+  const [equipmentId, setEquipmentId] = useState(() => searchParams.get('equipmentId') ?? '');
+
+  useEffect(() => {
+    const eq = searchParams.get('equipmentId');
+    if (eq) setEquipmentId(eq);
+  }, [searchParams]);
+
+  const driverOptions = useMemo(
+    () => buildOptions(mockFuelingEvents, 'driverId', 'driverName'),
+    [],
+  );
+  const customerOptions = useMemo(
+    () => buildOptions(mockFuelingEvents, 'customerId', 'customerName'),
+    [],
+  );
+  const equipmentOptions = useMemo(
+    () => buildOptions(mockFuelingEvents, 'equipmentId', 'equipmentName'),
+    [],
+  );
+
+  const filteredEvents = useMemo(() => {
+    return mockFuelingEvents.filter((fe) => {
+      if (driverId && fe.driverId !== driverId) return false;
+      if (customerId && fe.customerId !== customerId) return false;
+      if (equipmentId && fe.equipmentId !== equipmentId) return false;
+      return true;
+    });
+  }, [driverId, customerId, equipmentId]);
+
+  const hasFilters = Boolean(driverId || customerId || equipmentId);
+
+  const clearFilters = () => {
+    setDriverId('');
+    setCustomerId('');
+    setEquipmentId('');
+  };
 
   return (
     <div>
       <PageHeader title="Fueling Events" description="Detailed audit trail of every fuel delivery — GPS, QR scan, meter data, pricing, and taxes" />
+
+      <div className="mb-4 flex flex-wrap items-center gap-4">
+        <SearchableSelect
+          options={driverOptions}
+          placeholder="All Drivers"
+          value={driverId}
+          onChange={setDriverId}
+          className="w-52"
+          searchPlaceholder="Search drivers..."
+        />
+        <SearchableSelect
+          options={customerOptions}
+          placeholder="All Customers"
+          value={customerId}
+          onChange={setCustomerId}
+          className="w-52"
+          searchPlaceholder="Search customers..."
+        />
+        <SearchableSelect
+          options={equipmentOptions}
+          placeholder="All Equipment"
+          value={equipmentId}
+          onChange={setEquipmentId}
+          className="w-52"
+          searchPlaceholder="Search equipment..."
+        />
+        {hasFilters && (
+          <Button variant="ghost" onClick={clearFilters}>Clear</Button>
+        )}
+        <span className="text-sm text-gray-500">
+          {filteredEvents.length} event{filteredEvents.length === 1 ? '' : 's'}
+        </span>
+      </div>
 
       <div className="overflow-x-auto rounded-lg border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200">
@@ -37,20 +126,28 @@ export function FuelingEventsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {mockFuelingEvents.map((fe) => (
-              <tr key={fe.id} className="cursor-pointer hover:bg-gray-50" onClick={() => modal.open(fe)}>
-                <td className="px-4 py-3 text-sm font-mono text-brand-600">{fe.jobNumber}</td>
-                <td className="px-4 py-3 text-sm">{fe.driverName}</td>
-                <td className="px-4 py-3 text-sm">{fe.customerName}</td>
-                <td className="px-4 py-3 text-sm">{fe.equipmentName}</td>
-                <td className="px-4 py-3 text-sm font-mono text-xs">{fe.qrCode}</td>
-                <td className="px-4 py-3 text-sm">{fe.fuelType}</td>
-                <td className="px-4 py-3 text-sm font-medium">{formatGallons(fe.gallonsDelivered)}</td>
-                <td className="px-4 py-3 text-sm font-medium">{formatCurrency(fe.total)}</td>
-                <td className="px-4 py-3 text-sm text-gray-500">{formatDateTime(fe.createdAt)}</td>
-                <td className="px-4 py-3"><Badge variant="success">{fe.steps.length}/8</Badge></td>
+            {filteredEvents.length === 0 ? (
+              <tr>
+                <td colSpan={10} className="px-4 py-12 text-center text-sm text-gray-500">
+                  No fueling events match the selected filters.
+                </td>
               </tr>
-            ))}
+            ) : (
+              filteredEvents.map((fe) => (
+                <tr key={fe.id} className="cursor-pointer hover:bg-gray-50" onClick={() => modal.open(fe)}>
+                  <td className="px-4 py-3 text-sm font-mono text-brand-600">{fe.jobNumber}</td>
+                  <td className="px-4 py-3 text-sm">{fe.driverName}</td>
+                  <td className="px-4 py-3 text-sm">{fe.customerName}</td>
+                  <td className="px-4 py-3 text-sm">{fe.equipmentName}</td>
+                  <td className="px-4 py-3 text-sm font-mono text-xs">{fe.qrCode}</td>
+                  <td className="px-4 py-3 text-sm">{fe.fuelType}</td>
+                  <td className="px-4 py-3 text-sm font-medium">{formatGallons(fe.gallonsDelivered)}</td>
+                  <td className="px-4 py-3 text-sm font-medium">{formatCurrency(fe.total)}</td>
+                  <td className="px-4 py-3 text-sm text-gray-500">{formatDateTime(fe.createdAt)}</td>
+                  <td className="px-4 py-3"><Badge variant="success">{fe.steps.length}/8</Badge></td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

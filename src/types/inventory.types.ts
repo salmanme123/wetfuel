@@ -1,6 +1,13 @@
 export type FuelInventoryType = 'bulk_tank' | 'truck';
 export type TransferType = 'tank_to_truck' | 'truck_to_truck' | 'truck_to_tank' | 'purchase' | 'return';
 
+export interface TransferPerformer {
+  id: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
+
 export interface FuelStorage {
   id: string;
   tenantId: string;
@@ -27,7 +34,7 @@ export interface FuelTransfer {
   toStorageName: string;
   fuelType: string;
   gallons: number;
-  performedBy: string;
+  performedBy: TransferPerformer;
   notes: string;
   createdAt: string;
 }

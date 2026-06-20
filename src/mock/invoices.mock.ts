@@ -52,7 +52,7 @@ export const mockInvoices: Invoice[] = [
     quickbooksSynced: true, notes: 'Emergency rate applied', createdAt: '2026-06-12T06:00:00Z', updatedAt: '2026-06-14T10:00:00Z',
   },
   {
-    id: 'inv-006', tenantId: 'tenant-001', organizationId: 'org-007', invoiceNumber: 'INV-2026-00094',
+    id: 'inv-006', tenantId: 'tenant-001', organizationId: 'org-005', invoiceNumber: 'INV-2026-00094',
     customerId: 'cust-006', customerName: 'Sunshine Marina', status: 'paid',
     issueDate: '2026-06-14', dueDate: '2026-06-14', paidDate: '2026-06-14',
     subtotal: 1881.60, taxTotal: 150.53, total: 2032.13,

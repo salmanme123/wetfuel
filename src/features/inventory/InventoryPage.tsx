@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { StatsCard } from '@/components/shared/StatsCard';
 import { Card } from '@/components/ui/Card';
@@ -8,20 +8,98 @@ import { Tabs } from '@/components/ui/Tabs';
 import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
 import { useModal } from '@/hooks/useModal';
 import { useToast } from '@/hooks/useToast';
-import { mockFuelStorage, mockFuelTransfers } from '@/mock';
+import { mockFuelStorage, mockFuelTransfers, mockVehicles, mockDrivers, mockUsers } from '@/mock';
 import { formatGallons, formatDateTime } from '@/lib/format';
-import { FUEL_TYPES } from '@/lib/constants';
+import { FUEL_TYPES, ROLES } from '@/lib/constants';
 import { Droplets, Database, ArrowLeftRight, Plus } from 'lucide-react';
+import type { TransferPerformer, SelectOption } from '@/types';
 
-const transferLabels: Record<string, string> = { tank_to_truck: 'Tank → Truck', truck_to_truck: 'Truck → Truck', truck_to_tank: 'Truck → Tank', purchase: 'Purchase', return: 'Return' };
-const transferColors: Record<string, 'info' | 'success' | 'warning' | 'default'> = { tank_to_truck: 'info', truck_to_truck: 'default', truck_to_tank: 'warning', purchase: 'success', return: 'warning' };
+const transferLabels: Record<string, string> = {
+  tank_to_truck: 'Tank → Truck',
+  truck_to_truck: 'Truck → Truck',
+  truck_to_tank: 'Truck → Tank',
+  purchase: 'Purchase',
+  return: 'Return',
+};
+const transferColors: Record<string, 'info' | 'success' | 'warning' | 'default'> = {
+  tank_to_truck: 'info',
+  truck_to_truck: 'default',
+  truck_to_tank: 'warning',
+  purchase: 'success',
+  return: 'warning',
+};
+
+const EXTERNAL_SOURCES: SelectOption[] = [
+  { label: 'Valero Terminal', value: 'ext-valero' },
+  { label: 'Shell Terminal', value: 'ext-shell' },
+  { label: 'Marathon Terminal', value: 'ext-marathon' },
+];
+
+function buildLocationOptions(): SelectOption[] {
+  const tanks = mockFuelStorage.map((s) => ({
+    label: `[Tank] ${s.name}`,
+    value: s.id,
+  }));
+  const trucks = mockVehicles.map((v) => ({
+    label: `[Truck] ${v.name}`,
+    value: v.id,
+  }));
+  return [...tanks, ...trucks, ...EXTERNAL_SOURCES].sort((a, b) => a.label.localeCompare(b.label));
+}
+
+function buildPerformerOptions(): SelectOption[] {
+  const drivers = mockDrivers.map((d) => ({
+    value: d.id,
+    label: `${d.firstName} ${d.lastName}`,
+    badge: 'Driver',
+  }));
+  const users = mockUsers.map((u) => ({
+    value: u.id,
+    label: `${u.firstName} ${u.lastName}`,
+    badge: ROLES[u.role] ?? u.role,
+  }));
+  return [...drivers, ...users].sort((a, b) => a.label.localeCompare(b.label));
+}
+
+function formatPerformerName(performer: TransferPerformer): string {
+  return `${performer.firstName} ${performer.lastName}`;
+}
+
+function PerformerCell({ performer }: { performer: TransferPerformer }) {
+  return (
+    <span className="inline-flex items-center gap-2">
+      <span className="font-medium text-gray-900">{formatPerformerName(performer)}</span>
+      <span className="rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+        {performer.role}
+      </span>
+    </span>
+  );
+}
 
 export function InventoryPage() {
   const [activeTab, setActiveTab] = useState('storage');
+  const [fromId, setFromId] = useState('');
+  const [toId, setToId] = useState('');
+  const [performedById, setPerformedById] = useState('');
   const { addToast } = useToast();
   const modal = useModal();
+
+  const locationOptions = useMemo(() => buildLocationOptions(), []);
+  const performerOptions = useMemo(() => buildPerformerOptions(), []);
+
+  const resetTransferForm = () => {
+    setFromId('');
+    setToId('');
+    setPerformedById('');
+  };
+
+  const handleCloseModal = () => {
+    resetTransferForm();
+    modal.close();
+  };
 
   const totalCapacity = mockFuelStorage.reduce((s, t) => s + t.capacityGallons, 0);
   const totalCurrent = mockFuelStorage.reduce((s, t) => s + t.currentGallons, 0);
@@ -81,7 +159,7 @@ export function InventoryPage() {
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">To</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Fuel</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Gallons</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">By</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Performed By</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Date</th>
                   </tr>
                 </thead>
@@ -94,7 +172,7 @@ export function InventoryPage() {
                       <td className="px-4 py-3 text-sm">{t.toStorageName}</td>
                       <td className="px-4 py-3 text-sm">{t.fuelType}</td>
                       <td className="px-4 py-3 text-sm font-medium">{formatGallons(t.gallons)}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{t.performedBy}</td>
+                      <td className="px-4 py-3 text-sm"><PerformerCell performer={t.performedBy} /></td>
                       <td className="px-4 py-3 text-sm text-gray-500">{formatDateTime(t.createdAt)}</td>
                     </tr>
                   ))}
@@ -105,16 +183,43 @@ export function InventoryPage() {
         )}
       </div>
 
-      <Modal isOpen={modal.isOpen} onClose={modal.close} title="Record Fuel Transfer" size="lg" footer={
-        <><Button variant="outline" onClick={modal.close}>Cancel</Button><Button onClick={() => { addToast({ type: 'success', title: 'Transfer recorded' }); modal.close(); }}>Record</Button></>
+      <Modal
+        isOpen={modal.isOpen}
+        onClose={handleCloseModal}
+        title="Record Fuel Transfer"
+        size="lg"
+        bodyClassName="overflow-visible"
+        footer={
+        <><Button variant="outline" onClick={handleCloseModal}>Cancel</Button><Button onClick={() => { addToast({ type: 'success', title: 'Transfer recorded' }); handleCloseModal(); }}>Record</Button></>
       }>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2">
           <Select label="Transfer Type" options={[{ label: 'Tank → Truck', value: 'tank_to_truck' }, { label: 'Truck → Truck', value: 'truck_to_truck' }, { label: 'Truck → Tank', value: 'truck_to_tank' }, { label: 'Purchase', value: 'purchase' }, { label: 'Return', value: 'return' }]} placeholder="Select type" />
           <Select label="Fuel Type" options={FUEL_TYPES} placeholder="Select fuel" />
-          <Input label="From" placeholder="Source tank/truck" />
-          <Input label="To" placeholder="Destination tank/truck" />
+          <SearchableSelect
+            label="From"
+            options={locationOptions}
+            value={fromId}
+            onChange={setFromId}
+            placeholder="Select source tank, truck, or terminal"
+            searchPlaceholder="Search from location..."
+          />
+          <SearchableSelect
+            label="To"
+            options={locationOptions}
+            value={toId}
+            onChange={setToId}
+            placeholder="Select destination tank or truck"
+            searchPlaceholder="Search to location..."
+          />
           <Input label="Gallons" type="number" placeholder="1000" />
-          <Input label="Performed By" placeholder="Driver/admin name" />
+          <SearchableSelect
+            label="Performed By"
+            options={performerOptions}
+            value={performedById}
+            onChange={setPerformedById}
+            placeholder="Select driver or admin"
+            searchPlaceholder="Search by name or role..."
+          />
         </div>
       </Modal>
     </div>

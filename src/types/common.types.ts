@@ -18,6 +18,7 @@ export interface FilterConfig {
 export interface SelectOption {
   label: string;
   value: string;
+  badge?: string;
 }
 
 export type Status = 'active' | 'inactive' | 'suspended';

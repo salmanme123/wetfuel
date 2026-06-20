@@ -17,9 +17,10 @@ interface ModalProps {
   children: ReactNode;
   footer?: ReactNode;
   size?: keyof typeof sizeClasses;
+  bodyClassName?: string;
 }
 
-export function Modal({ isOpen, onClose, title, children, footer, size = 'md' }: ModalProps) {
+export function Modal({ isOpen, onClose, title, children, footer, size = 'md', bodyClassName }: ModalProps) {
   useEffect(() => {
     if (!isOpen) return;
     const handleEscape = (e: KeyboardEvent) => {
@@ -36,11 +37,15 @@ export function Modal({ isOpen, onClose, title, children, footer, size = 'md' }:
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/50 transition-opacity" onClick={onClose} />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+      <div
+        className="fixed inset-0 bg-black/50 transition-opacity pointer-events-auto"
+        onClick={onClose}
+        aria-hidden="true"
+      />
       <div
         className={cn(
-          'relative w-full rounded-xl bg-white shadow-xl',
+          'relative z-10 w-full rounded-xl bg-white shadow-xl pointer-events-auto',
           sizeClasses[size],
         )}
       >
@@ -53,7 +58,7 @@ export function Modal({ isOpen, onClose, title, children, footer, size = 'md' }:
             <X className="h-5 w-5" />
           </button>
         </div>
-        <div className="max-h-[70vh] overflow-y-auto px-6 py-4">{children}</div>
+        <div className={cn('max-h-[70vh] overflow-y-auto px-6 py-4', bodyClassName)}>{children}</div>
         {footer && (
           <div className="flex items-center justify-end gap-3 border-t border-gray-200 px-6 py-4">
             {footer}

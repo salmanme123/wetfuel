@@ -43,7 +43,7 @@ export const mockVehicles: Vehicle[] = [
     createdAt: '2023-03-10T00:00:00Z', updatedAt: '2026-06-19T00:00:00Z',
   },
   {
-    id: 'veh-005', tenantId: 'tenant-001', organizationId: 'org-007',
+    id: 'veh-005', tenantId: 'tenant-001', organizationId: 'org-005',
     name: 'Truck #301', make: 'Freightliner', model: 'M2 106', year: 2024, vin: '3ALACWFCXPDBC34567', licensePlate: 'FL-FUL-301',
     fuelCapacityGallons: 3000, currentFuelGallons: 2400, status: 'active',
     registrationExpiry: '2027-05-10', insuranceExpiry: '2027-03-31', lastInspectionDate: '2026-04-15', nextInspectionDue: '2026-10-15',
@@ -52,10 +52,10 @@ export const mockVehicles: Vehicle[] = [
     createdAt: '2024-01-20T00:00:00Z', updatedAt: '2026-06-20T00:00:00Z',
   },
   {
-    id: 'veh-006', tenantId: 'tenant-001', organizationId: 'org-008',
+    id: 'veh-006', tenantId: 'tenant-001', organizationId: 'org-004',
     name: 'Truck #401', make: 'Freightliner', model: 'M2 106', year: 2023, vin: '3ALACWFC1PDBC89012', licensePlate: 'FL-FUL-401',
     fuelCapacityGallons: 3000, currentFuelGallons: 800, status: 'active',
-    registrationExpiry: '2026-08-15', insuranceExpiry: '2026-09-30', lastInspectionDate: '2026-02-20', nextInspectionDue: '2026-08-20',
+    registrationExpiry: '2026-03-01', insuranceExpiry: '2026-09-30', lastInspectionDate: '2026-02-20', nextInspectionDue: '2026-08-20',
     mileage: 62100, assignedDriverId: 'driver-006', assignedDriverName: 'Bobby Clark',
     maintenanceHistory: [
       { id: 'maint-004', type: 'Engine Service', scheduledDate: '2026-06-25', completedDate: null, status: 'scheduled', notes: 'Regular 50K service' },

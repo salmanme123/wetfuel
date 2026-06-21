@@ -15,6 +15,7 @@ const routeLabels: Record<string, string> = {
   pricing: 'Pricing & Tax',
   compliance: 'Compliance',
   invoices: 'Invoicing',
+  royalties: 'Royalties',
   reports: 'Reports',
   'audit-log': 'Audit Log',
   'fueling-events': 'Fueling Events',
@@ -30,16 +31,18 @@ export function Breadcrumbs() {
 
   return (
     <nav className="flex items-center gap-1 text-sm">
-      <Link to="/dashboard" className="text-muted-foreground hover:text-foreground">
+      <Link to="/dashboard" className="cursor-pointer text-muted-foreground hover:text-foreground">
         <Home className="h-4 w-4" />
       </Link>
       {pathSegments.map((segment, index) => {
         const path = '/' + pathSegments.slice(0, index + 1).join('/');
         const prevSegment = pathSegments[index - 1];
         const label =
-          (prevSegment === 'equipment' || prevSegment === 'drivers') && index === pathSegments.length - 1
-            ? 'Details'
-            : routeLabels[segment] ?? segment;
+          segment === 'new' && prevSegment === 'royalties'
+            ? 'New Agreement'
+            : (prevSegment === 'equipment' || prevSegment === 'drivers') && index === pathSegments.length - 1
+              ? 'Details'
+              : routeLabels[segment] ?? segment;
         const isLast = index === pathSegments.length - 1;
 
         return (
@@ -48,7 +51,7 @@ export function Breadcrumbs() {
             {isLast ? (
               <span className="font-medium text-foreground">{label}</span>
             ) : (
-              <Link to={path} className="text-muted-foreground hover:text-foreground">
+              <Link to={path} className="cursor-pointer text-muted-foreground hover:text-foreground">
                 {label}
               </Link>
             )}

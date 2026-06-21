@@ -38,7 +38,7 @@ export function Modal({ isOpen, onClose, title, children, footer, size = 'md', b
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-background/80 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed inset-0 cursor-pointer bg-background/80 backdrop-blur-sm" onClick={onClose} />
       <div
         className={cn(
           'relative w-full rounded-2xl border border-border bg-card p-6 shadow-2xl',
@@ -49,7 +49,7 @@ export function Modal({ isOpen, onClose, title, children, footer, size = 'md', b
           <h2 className="text-lg font-semibold text-foreground">{title}</h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="rounded-lg p-1 cursor-pointer text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             <X className="h-5 w-5" />
           </button>

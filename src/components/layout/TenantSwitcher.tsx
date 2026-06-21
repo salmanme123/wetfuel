@@ -28,7 +28,7 @@ export function TenantSwitcher() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5 text-sm shadow-xs hover:bg-accent"
+        className="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5 text-sm shadow-xs hover:bg-accent"
       >
         <Building2 className="h-4 w-4 text-primary" />
         <span className="font-medium text-foreground">{activeTenant?.companyName ?? 'Select Tenant'}</span>
@@ -46,7 +46,7 @@ export function TenantSwitcher() {
               <button
                 key={tenant.id}
                 onClick={() => { setActiveTenantId(tenant.id); setIsOpen(false); }}
-                className={`flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${
+                className={`flex w-full cursor-pointer items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${
                   activeTenantId === tenant.id ? 'bg-primary/15 text-primary' : 'hover:bg-accent text-foreground'
                 }`}
               >

@@ -20,12 +20,19 @@ import { formatGallons, formatDate } from '@/lib/format';
 import { Plus } from 'lucide-react';
 import type { Job, JobStatus } from '@/types';
 
+function isJobStatus(value: string | null): value is JobStatus {
+  return value !== null && JOB_STATUSES.some((s) => s.value === value);
+}
+
 export function JobsListPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { addToast } = useToast();
   const modal = useModal();
-  const [activeStatus, setActiveStatus] = useState<string>('all');
+  const [activeStatus, setActiveStatus] = useState<string>(() => {
+    const status = searchParams.get('status');
+    return isJobStatus(status) ? status : 'all';
+  });
   const [jobs] = useState(mockJobs);
   const [siteFilter, setSiteFilter] = useState(() => searchParams.get('siteId') ?? '');
   const [customerFilterFromUrl] = useState(() => searchParams.get('customerId') ?? '');
@@ -82,6 +89,26 @@ export function JobsListPage() {
   });
 
   useEffect(() => {
+    const status = searchParams.get('status');
+    if (isJobStatus(status)) {
+      setActiveStatus(status);
+    } else if (!status) {
+      setActiveStatus('all');
+    }
+  }, [searchParams]);
+
+  const handleStatusChange = (key: string) => {
+    setActiveStatus(key);
+    const next = new URLSearchParams(searchParams);
+    if (key === 'all') {
+      next.delete('status');
+    } else {
+      next.set('status', key);
+    }
+    setSearchParams(next, { replace: true });
+  };
+
+  useEffect(() => {
     if (customerFilterFromUrl) {
       table.setFilter('customerId', customerFilterFromUrl);
     }
@@ -120,7 +147,7 @@ export function JobsListPage() {
       />
 
       <div className="mb-4">
-        <Tabs tabs={statusTabs} activeTab={activeStatus} onChange={(key) => { setActiveStatus(key as JobStatus | 'all'); }} />
+        <Tabs tabs={statusTabs} activeTab={activeStatus} onChange={handleStatusChange} />
       </div>
 
       <div className="mb-4 flex flex-wrap items-center gap-4">

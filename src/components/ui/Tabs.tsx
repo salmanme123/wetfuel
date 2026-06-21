@@ -23,7 +23,7 @@ export function Tabs({ tabs, activeTab, onChange }: TabsProps) {
             aria-selected={activeTab === tab.key}
             onClick={() => onChange(tab.key)}
             className={cn(
-              'inline-flex h-9 items-center gap-2 rounded-md px-3 py-1 text-sm font-medium transition-colors',
+              'inline-flex h-9 cursor-pointer items-center gap-2 rounded-md px-3 py-1 text-sm font-medium transition-colors',
               activeTab === tab.key
                 ? 'bg-background text-foreground shadow-sm'
                 : 'text-muted-foreground hover:text-foreground',

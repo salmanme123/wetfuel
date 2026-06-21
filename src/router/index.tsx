@@ -20,6 +20,8 @@ import { EquipmentDetailPage } from '@/features/equipment/EquipmentDetailPage';
 import { PricingPage } from '@/features/pricing/PricingPage';
 import { CompliancePage } from '@/features/compliance/CompliancePage';
 import { InvoicesListPage } from '@/features/invoices/InvoicesListPage';
+import { RoyaltiesPage } from '@/features/royalties/RoyaltiesPage';
+import { RoyaltyAgreementWizardPage } from '@/features/royalties/RoyaltyAgreementWizardPage';
 import { ReportsPage } from '@/features/reports/ReportsPage';
 import { AuditLogPage } from '@/features/audit/AuditLogPage';
 import { FuelingEventsPage } from '@/features/fueling-events/FuelingEventsPage';
@@ -56,6 +58,8 @@ export const router = createBrowserRouter([
           { path: 'pricing', element: <PricingPage /> },
           { path: 'compliance', element: <CompliancePage /> },
           { path: 'invoices', element: <InvoicesListPage /> },
+          { path: 'royalties', element: <RoyaltiesPage /> },
+          { path: 'royalties/new', element: <RoyaltyAgreementWizardPage /> },
           { path: 'reports', element: <ReportsPage /> },
           { path: 'audit-log', element: <AuditLogPage /> },
           { path: 'fueling-events', element: <FuelingEventsPage /> },

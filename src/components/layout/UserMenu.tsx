@@ -35,7 +35,7 @@ export function UserMenu() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-accent"
+        className="flex cursor-pointer items-center gap-2 rounded-lg p-1.5 hover:bg-accent"
       >
         <Avatar firstName={state.user.firstName} lastName={state.user.lastName} size="sm" />
         <div className="hidden text-left md:block">
@@ -66,7 +66,7 @@ export function UserMenu() {
               <button
                 key={role}
                 onClick={() => { switchRole(role); setIsOpen(false); }}
-                className={`w-full rounded-lg px-3 py-2 text-left text-sm transition-colors ${
+                className={`w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm transition-colors ${
                   state.user?.role === role ? 'bg-primary/15 text-primary font-medium' : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                 }`}
               >
@@ -78,7 +78,7 @@ export function UserMenu() {
           <div className="p-2">
             <button
               onClick={() => { logout(); setIsOpen(false); }}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-400 hover:bg-red-500/10"
+              className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-400 hover:bg-red-500/10"
             >
               <LogOut className="h-4 w-4" /> Sign Out
             </button>

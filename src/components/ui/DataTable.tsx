@@ -123,7 +123,7 @@ export function TablePagination({ page, totalPages, totalItems, pageSize, onPage
         <button
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
-          className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+          className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
         >
           Previous
         </button>
@@ -143,7 +143,7 @@ export function TablePagination({ page, totalPages, totalItems, pageSize, onPage
               key={pageNum}
               onClick={() => onPageChange(pageNum)}
               className={cn(
-                'rounded-md px-3 py-1.5 text-sm font-medium',
+                'cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium',
                 pageNum === page
                   ? 'bg-primary text-primary-foreground'
                   : 'text-foreground hover:bg-accent',
@@ -156,7 +156,7 @@ export function TablePagination({ page, totalPages, totalItems, pageSize, onPage
         <button
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
-          className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+          className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
         >
           Next
         </button>

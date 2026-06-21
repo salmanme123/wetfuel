@@ -1,10 +1,10 @@
 import { PageHeader } from '@/components/shared/PageHeader';
 import { StatsCard } from '@/components/shared/StatsCard';
 import { Card } from '@/components/ui/Card';
+import { BarChart } from '@/components/charts';
 import { masterFranchiseKpis, dailyDeliveriesData } from '@/mock';
 import { formatCurrency, formatGallons } from '@/lib/format';
 import { Boxes, DollarSign, Droplets, Clock, ShieldCheck, Users } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export function MasterFranchiseDashboard() {
   return (
@@ -23,15 +23,7 @@ export function MasterFranchiseDashboard() {
       <div className="mt-6">
         <Card title="Daily Deliveries (Last 14 Days)">
           <div className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dailyDeliveriesData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip />
-                <Bar dataKey="count" fill="#2563eb" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <BarChart data={dailyDeliveriesData} categoryField="date" valueField="count" />
           </div>
         </Card>
       </div>

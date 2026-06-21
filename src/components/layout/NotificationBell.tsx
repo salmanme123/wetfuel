@@ -27,7 +27,7 @@ export function NotificationBell() {
 
   return (
     <div className="relative" ref={menuRef}>
-      <button onClick={() => setIsOpen(!isOpen)} className="relative rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground">
+      <button onClick={() => setIsOpen(!isOpen)} className="relative cursor-pointer rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground">
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
           <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">{unreadCount}</span>
@@ -63,7 +63,7 @@ export function NotificationBell() {
             })}
           </div>
           <div className="border-t border-border p-2">
-            <button onClick={() => { setIsOpen(false); navigate('/notifications'); }} className="w-full rounded-lg py-2 text-center text-sm font-medium text-primary hover:bg-primary/10">View All Notifications</button>
+            <button onClick={() => { setIsOpen(false); navigate('/notifications'); }} className="w-full cursor-pointer rounded-lg py-2 text-center text-sm font-medium text-primary hover:bg-primary/10">View All Notifications</button>
           </div>
         </div>
       )}

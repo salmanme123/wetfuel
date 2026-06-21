@@ -54,7 +54,7 @@ export function AuditLogPage() {
         <SearchInput value={table.searchTerm} onChange={table.setSearchTerm} placeholder="Search by user, record, or description..." className="w-96" />
         <Select options={actionOptions} placeholder="All Actions" value={table.filters['action'] ?? ''} onChange={(e) => table.setFilter('action', e.target.value)} />
         <Select options={entityOptions} placeholder="All Entities" value={table.filters['entity'] ?? ''} onChange={(e) => table.setFilter('entity', e.target.value)} />
-        {Object.keys(table.filters).length > 0 && <button onClick={table.clearFilters} className="text-sm text-primary hover:underline">Clear</button>}
+        {Object.keys(table.filters).length > 0 && <button onClick={table.clearFilters} className="cursor-pointer text-sm text-primary hover:underline">Clear</button>}
       </div>
 
       <DataTable columns={columns} data={table.filteredData} onSort={table.handleSort} sortConfig={table.sortConfig} keyExtractor={(e) => (e as unknown as AuditLogEntry).id} />

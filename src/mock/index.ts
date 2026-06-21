@@ -16,3 +16,4 @@ export * from './audit.mock';
 export * from './notifications.mock';
 export * from './fueling-events.mock';
 export * from './settings.mock';
+export * from './royalties.mock';

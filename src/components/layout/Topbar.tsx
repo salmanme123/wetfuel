@@ -15,7 +15,7 @@ export function Topbar() {
       <div className="flex items-center gap-4">
         <button
           onClick={sidebar?.toggle}
-          className="rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground lg:hidden"
+          className="cursor-pointer rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground lg:hidden"
         >
           <Menu className="h-5 w-5" />
         </button>

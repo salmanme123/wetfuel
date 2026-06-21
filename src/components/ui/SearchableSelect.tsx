@@ -139,7 +139,7 @@ export function SearchableSelect({
         <button
           type="button"
           onClick={toggleOpen}
-          className="flex min-w-0 flex-1 items-center gap-2 px-3 py-2 text-left text-sm"
+          className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 px-3 py-2 text-left text-sm"
         >
           {selectedOption ? (
             renderOptionContent(selectedOption, true)
@@ -151,7 +151,7 @@ export function SearchableSelect({
           <button
             type="button"
             onClick={handleClear}
-            className="shrink-0 rounded p-1 text-muted-foreground/60 hover:text-muted-foreground"
+            className="shrink-0 cursor-pointer rounded p-1 text-muted-foreground/60 hover:text-muted-foreground"
             aria-label="Clear selection"
           >
             <X className="h-3.5 w-3.5" />
@@ -160,7 +160,7 @@ export function SearchableSelect({
         <button
           type="button"
           onClick={toggleOpen}
-          className="shrink-0 px-2 py-2 text-muted-foreground/60"
+          className="shrink-0 cursor-pointer px-2 py-2 text-muted-foreground/60"
           aria-label="Toggle options"
         >
           <ChevronDown className={cn('h-4 w-4 transition-transform', open && 'rotate-180')} />
@@ -199,7 +199,7 @@ export function SearchableSelect({
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => handleSelect('')}
                 className={cn(
-                  'w-full px-3 py-2 text-left text-sm hover:bg-muted/50',
+                  'w-full cursor-pointer px-3 py-2 text-left text-sm hover:bg-muted/50',
                   !value && 'bg-primary/10 font-medium text-primary',
                 )}
               >
@@ -216,7 +216,7 @@ export function SearchableSelect({
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => handleSelect(opt.value)}
                     className={cn(
-                      'w-full px-3 py-2 text-left text-sm hover:bg-muted/50',
+                      'w-full cursor-pointer px-3 py-2 text-left text-sm hover:bg-muted/50',
                       value === opt.value && 'bg-primary/10 text-primary',
                     )}
                   >

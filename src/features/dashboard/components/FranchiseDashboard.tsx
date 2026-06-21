@@ -3,11 +3,11 @@ import { PageHeader } from '@/components/shared/PageHeader';
 import { StatsCard } from '@/components/shared/StatsCard';
 import { Card } from '@/components/ui/Card';
 import { StatusBadge } from '@/components/shared/StatusBadge';
+import { AreaChart, BarChart } from '@/components/charts';
 import { franchiseKpis, monthlyRevenueData, dailyDeliveriesData } from '@/mock';
 import { mockJobs } from '@/mock';
 import { formatCurrency, formatGallons, formatDate, formatNumber } from '@/lib/format';
 import { Truck, Droplets, Users, FileText, ShieldCheck, UserCheck } from 'lucide-react';
-import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export function FranchiseDashboard() {
   const navigate = useNavigate();
@@ -32,29 +32,19 @@ export function FranchiseDashboard() {
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <Card title="Monthly Revenue">
           <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={monthlyRevenueData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} tickFormatter={(v: number) => `$${formatNumber(v / 1000)}k`} />
-                <Tooltip formatter={(value) => formatCurrency(Number(value))} />
-                <Area type="monotone" dataKey="revenue" stroke="#2563eb" fill="#dbeafe" strokeWidth={2} />
-              </AreaChart>
-            </ResponsiveContainer>
+            <AreaChart
+              data={monthlyRevenueData}
+              categoryField="month"
+              valueField="revenue"
+              tooltipFormatter={(v) => formatCurrency(v)}
+              yAxisFormatter={(v) => `$${formatNumber(v / 1000)}k`}
+            />
           </div>
         </Card>
 
         <Card title="Daily Deliveries">
           <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dailyDeliveriesData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip />
-                <Bar dataKey="count" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <BarChart data={dailyDeliveriesData} categoryField="date" valueField="count" color="#f59e0b" />
           </div>
         </Card>
       </div>

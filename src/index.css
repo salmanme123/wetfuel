@@ -101,6 +101,27 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+button:not(:disabled),
+a,
+label[for],
+select:not(:disabled),
+summary,
+[role="button"]:not([aria-disabled="true"]),
+[role="tab"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+button:disabled,
+select:disabled,
+[disabled] {
+  cursor: not-allowed;
+}
+
+input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+textarea {
+  cursor: text;
+}
+
 .display-font {
   font-family: var(--font-display);
   letter-spacing: -0.02em;

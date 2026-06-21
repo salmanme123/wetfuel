@@ -7,13 +7,13 @@ import { cn } from '@/lib/cn';
 import {
   Fuel, ChevronLeft, ChevronRight,
   LayoutDashboard, Building2, Network, Users, UserCheck, Truck,
-  UserCog, CarFront, Droplets, QrCode,   DollarSign, ShieldCheck, FileText, HandCoins, BarChart3,
+  UserCog, CarFront, Droplets, QrCode, DollarSign, ShieldCheck, FileText, BarChart3,
   Flame, ScrollText, Settings,
 } from 'lucide-react';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   LayoutDashboard, Building2, Network, Users, UserCheck, Truck,
-  UserCog, CarFront, Droplets, QrCode, DollarSign, ShieldCheck, FileText, HandCoins, BarChart3,
+  UserCog, CarFront, Droplets, QrCode, DollarSign, ShieldCheck, FileText, BarChart3,
   Flame, ScrollText, Settings,
 };
 

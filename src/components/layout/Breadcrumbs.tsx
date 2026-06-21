@@ -15,7 +15,6 @@ const routeLabels: Record<string, string> = {
   pricing: 'Pricing & Tax',
   compliance: 'Compliance',
   invoices: 'Invoicing',
-  royalties: 'Royalties',
   reports: 'Reports',
   'audit-log': 'Audit Log',
   'fueling-events': 'Fueling Events',
@@ -38,11 +37,9 @@ export function Breadcrumbs() {
         const path = '/' + pathSegments.slice(0, index + 1).join('/');
         const prevSegment = pathSegments[index - 1];
         const label =
-          segment === 'new' && prevSegment === 'royalties'
-            ? 'New Agreement'
-            : (prevSegment === 'equipment' || prevSegment === 'drivers') && index === pathSegments.length - 1
-              ? 'Details'
-              : routeLabels[segment] ?? segment;
+          (prevSegment === 'equipment' || prevSegment === 'drivers') && index === pathSegments.length - 1
+            ? 'Details'
+            : routeLabels[segment] ?? segment;
         const isLast = index === pathSegments.length - 1;
 
         return (

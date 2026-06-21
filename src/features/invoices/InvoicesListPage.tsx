@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { StatsCard } from '@/components/shared/StatsCard';
 import { Button } from '@/components/ui/Button';
@@ -10,13 +9,12 @@ import { useTable } from '@/hooks/useTable';
 import { useToast } from '@/hooks/useToast';
 import { mockInvoices } from '@/mock';
 import { formatCurrency, formatDate } from '@/lib/format';
-import { FileText, DollarSign, AlertTriangle, CheckCircle, HandCoins } from 'lucide-react';
+import { FileText, DollarSign, AlertTriangle, CheckCircle } from 'lucide-react';
 import type { Invoice } from '@/types';
 
 const statusColors: Record<string, 'default' | 'info' | 'success' | 'error' | 'warning'> = { draft: 'default', sent: 'info', paid: 'success', overdue: 'error', cancelled: 'warning' };
 
 export function InvoicesListPage() {
-  const navigate = useNavigate();
   const { addToast } = useToast();
 
   const totalOutstanding = mockInvoices.filter((i) => i.status === 'sent' || i.status === 'overdue').reduce((s, i) => s + i.total, 0);
@@ -42,19 +40,9 @@ export function InvoicesListPage() {
 
   return (
     <div>
-      <PageHeader title="Customer Invoicing" description="Bill end customers for fuel deliveries — separate from inter-org royalty settlements" actions={
+      <PageHeader title="Invoicing & Finance" description="Generate invoices, track payments, and sync with QuickBooks" actions={
         <Button onClick={() => addToast({ type: 'info', title: 'Generate invoice from completed jobs' })}>Generate Invoice</Button>
       } />
-
-      <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-primary/20 bg-primary/5 p-4">
-        <div className="flex items-center gap-3">
-          <HandCoins className="h-5 w-5 shrink-0 text-primary" />
-          <p className="text-sm text-muted-foreground">
-            Customer invoices are <strong className="text-foreground">accounts receivable</strong>. Franchise royalties owed upstream are tracked separately on the Royalties page.
-          </p>
-        </div>
-        <Button variant="outline" size="sm" onClick={() => navigate('/royalties')}>View Royalties</Button>
-      </div>
 
       <div className="mb-6 grid gap-4 sm:grid-cols-4">
         <StatsCard title="Total Invoices" value={mockInvoices.length} icon={FileText} />

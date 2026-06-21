@@ -22,7 +22,6 @@ export const NAV_BY_ROLE: Record<UserRole, NavItem[]> = {
     { label: 'Pricing & Tax', icon: 'DollarSign', path: '/pricing' },
     { label: 'Compliance', icon: 'ShieldCheck', path: '/compliance' },
     { label: 'Invoicing', icon: 'FileText', path: '/invoices' },
-    { label: 'Royalties', icon: 'HandCoins', path: '/royalties' },
     { label: 'Reports', icon: 'BarChart3', path: '/reports' },
     { label: 'Audit Log', icon: 'ScrollText', path: '/audit-log' },
     { label: 'Settings', icon: 'Settings', path: '/settings' },
@@ -38,7 +37,6 @@ export const NAV_BY_ROLE: Record<UserRole, NavItem[]> = {
     { label: 'Fleet', icon: 'CarFront', path: '/fleet' },
     { label: 'Pricing & Tax', icon: 'DollarSign', path: '/pricing' },
     { label: 'Compliance', icon: 'ShieldCheck', path: '/compliance' },
-    { label: 'Royalties', icon: 'HandCoins', path: '/royalties' },
     { label: 'Reports', icon: 'BarChart3', path: '/reports' },
     { label: 'Audit Log', icon: 'ScrollText', path: '/audit-log' },
     { label: 'Settings', icon: 'Settings', path: '/settings' },
@@ -57,7 +55,6 @@ export const NAV_BY_ROLE: Record<UserRole, NavItem[]> = {
     { label: 'Pricing & Tax', icon: 'DollarSign', path: '/pricing' },
     { label: 'Compliance', icon: 'ShieldCheck', path: '/compliance' },
     { label: 'Invoicing', icon: 'FileText', path: '/invoices' },
-    { label: 'Royalties', icon: 'HandCoins', path: '/royalties' },
     { label: 'Reports', icon: 'BarChart3', path: '/reports' },
     { label: 'Audit Log', icon: 'ScrollText', path: '/audit-log' },
     { label: 'Settings', icon: 'Settings', path: '/settings' },
@@ -65,9 +62,9 @@ export const NAV_BY_ROLE: Record<UserRole, NavItem[]> = {
 };
 
 const ALLOWED_ROUTES: Record<UserRole, string[]> = {
-  corporate_super_admin: ['/dashboard', '/tenants', '/organizations', '/users', '/drivers', '/customers', '/jobs', '/fueling-events', '/fleet', '/inventory', '/equipment', '/pricing', '/compliance', '/invoices', '/royalties', '/reports', '/audit-log', '/notifications', '/settings'],
-  master_franchise_admin: ['/dashboard', '/organizations', '/users', '/drivers', '/customers', '/jobs', '/fueling-events', '/fleet', '/pricing', '/compliance', '/royalties', '/reports', '/audit-log', '/notifications', '/settings'],
-  franchise_admin: ['/dashboard', '/organizations', '/users', '/drivers', '/customers', '/jobs', '/fueling-events', '/fleet', '/inventory', '/equipment', '/pricing', '/compliance', '/invoices', '/royalties', '/reports', '/audit-log', '/notifications', '/settings'],
+  corporate_super_admin: ['/dashboard', '/tenants', '/organizations', '/users', '/drivers', '/customers', '/jobs', '/fueling-events', '/fleet', '/inventory', '/equipment', '/pricing', '/compliance', '/invoices', '/reports', '/audit-log', '/notifications', '/settings'],
+  master_franchise_admin: ['/dashboard', '/organizations', '/users', '/drivers', '/customers', '/jobs', '/fueling-events', '/fleet', '/pricing', '/compliance', '/reports', '/audit-log', '/notifications', '/settings'],
+  franchise_admin: ['/dashboard', '/organizations', '/users', '/drivers', '/customers', '/jobs', '/fueling-events', '/fleet', '/inventory', '/equipment', '/pricing', '/compliance', '/invoices', '/reports', '/audit-log', '/notifications', '/settings'],
 };
 
 export function canAccessRoute(role: UserRole, path: string): boolean {

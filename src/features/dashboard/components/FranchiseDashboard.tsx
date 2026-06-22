@@ -4,9 +4,10 @@ import { StatsCard } from '@/components/shared/StatsCard';
 import { Card } from '@/components/ui/Card';
 import { StatusBadge } from '@/components/shared/StatusBadge';
 import { AreaChart, BarChart } from '@/components/charts';
+import { deliveryDayTooltip, monthlyRevenueTooltip } from '@/lib/chart-tooltips';
 import { franchiseKpis, monthlyRevenueData, dailyDeliveriesData } from '@/mock';
 import { mockJobs } from '@/mock';
-import { formatCurrency, formatGallons, formatDate, formatNumber } from '@/lib/format';
+import { formatGallons, formatDate, formatNumber } from '@/lib/format';
 import { Truck, Droplets, Users, FileText, ShieldCheck, UserCheck } from 'lucide-react';
 
 export function FranchiseDashboard() {
@@ -36,7 +37,7 @@ export function FranchiseDashboard() {
               data={monthlyRevenueData}
               categoryField="month"
               valueField="revenue"
-              tooltipFormatter={(v) => formatCurrency(v)}
+              tooltipTextFormatter={monthlyRevenueTooltip}
               yAxisFormatter={(v) => `$${formatNumber(v / 1000)}k`}
             />
           </div>
@@ -44,7 +45,13 @@ export function FranchiseDashboard() {
 
         <Card title="Daily Deliveries">
           <div className="h-64">
-            <BarChart data={dailyDeliveriesData} categoryField="date" valueField="count" color="#f59e0b" />
+            <BarChart
+              data={dailyDeliveriesData}
+              categoryField="date"
+              valueField="count"
+              color="#f59e0b"
+              tooltipTextFormatter={deliveryDayTooltip}
+            />
           </div>
         </Card>
       </div>

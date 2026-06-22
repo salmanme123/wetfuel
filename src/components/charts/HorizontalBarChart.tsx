@@ -5,7 +5,13 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import { useTheme } from '@/hooks/useTheme';
 import { useStableRef } from '@/hooks/useStableRef';
 import { cn } from '@/lib/cn';
-import { applyAxisTheme, createTooltip, getChartColors, styleTooltip } from './chart-theme';
+import {
+  applyAxisTheme,
+  bindSpriteTooltipText,
+  createStyledTooltip,
+  getChartColors,
+  type ChartTooltipContext,
+} from './chart-theme';
 
 interface HorizontalBarChartProps {
   data: Record<string, string | number>[];
@@ -14,7 +20,9 @@ interface HorizontalBarChartProps {
   color?: string;
   className?: string;
   height?: string;
+  valueLabel?: string;
   tooltipFormatter?: (value: number) => string;
+  tooltipTextFormatter?: (ctx: ChartTooltipContext) => string;
   xAxisFormatter?: (value: number) => string;
 }
 
@@ -25,12 +33,15 @@ export function HorizontalBarChart({
   color = '#f59e0b',
   className,
   height = '100%',
+  valueLabel,
   tooltipFormatter,
+  tooltipTextFormatter,
   xAxisFormatter,
 }: HorizontalBarChartProps) {
   const chartRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
   const tooltipFormatterRef = useStableRef(tooltipFormatter);
+  const tooltipTextFormatterRef = useStableRef(tooltipTextFormatter);
   const xAxisFormatterRef = useStableRef(xAxisFormatter);
 
   useLayoutEffect(() => {
@@ -75,14 +86,15 @@ export function HorizontalBarChart({
       }),
     );
 
-    const tooltip = createTooltip(root, `{${valueField}}`);
-    tooltip.label.adapters.add('text', (text) => {
-      const formatter = tooltipFormatterRef.current;
-      if (!formatter) return text;
-      const value = Number(String(text).replace(/[^0-9.-]/g, ''));
-      return formatter(value);
+    const getTooltipConfig = () => ({
+      categoryField,
+      valueField,
+      valueLabel,
+      tooltipFormatter: tooltipFormatterRef.current,
+      tooltipTextFormatter: tooltipTextFormatterRef.current,
     });
-    styleTooltip(tooltip, colors);
+
+    const tooltip = createStyledTooltip(root, categoryField, valueField, getTooltipConfig);
 
     const series = chart.series.push(
       am5xy.ColumnSeries.new(root, {
@@ -100,7 +112,9 @@ export function HorizontalBarChart({
       cornerRadiusTR: 4,
       cornerRadiusBR: 4,
       height: am5.percent(70),
+      interactive: true,
     });
+    bindSpriteTooltipText(series.columns.template, categoryField, valueField, getTooltipConfig);
 
     yAxis.data.setAll(data);
     series.data.setAll(data);
@@ -110,7 +124,7 @@ export function HorizontalBarChart({
     return () => {
       root.dispose();
     };
-  }, [data, categoryField, valueField, color, theme]);
+  }, [data, categoryField, valueField, color, valueLabel, theme]);
 
   return <div ref={chartRef} className={cn('w-full', className)} style={{ height }} />;
 }

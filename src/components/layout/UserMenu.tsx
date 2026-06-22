@@ -47,7 +47,7 @@ export function UserMenu() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-72 rounded-xl border border-border bg-card shadow-2xl">
+        <div className="absolute right-0 top-full z-50 mt-2 w-72 rounded-xl border border-border bg-card text-foreground shadow-2xl">
           <div className="border-b border-border p-4">
             <p className="font-medium text-foreground">
               {state.user.firstName} {state.user.lastName}

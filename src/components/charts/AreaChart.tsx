@@ -5,7 +5,13 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import { useTheme } from '@/hooks/useTheme';
 import { useStableRef } from '@/hooks/useStableRef';
 import { cn } from '@/lib/cn';
-import { applyAxisTheme, createTooltip, getChartColors, styleTooltip } from './chart-theme';
+import {
+  applyAxisTheme,
+  bindSpriteTooltipText,
+  createStyledTooltip,
+  getChartColors,
+  type ChartTooltipContext,
+} from './chart-theme';
 
 interface AreaChartProps {
   data: Record<string, string | number>[];
@@ -15,7 +21,9 @@ interface AreaChartProps {
   fillColor?: string;
   className?: string;
   height?: string;
+  valueLabel?: string;
   tooltipFormatter?: (value: number) => string;
+  tooltipTextFormatter?: (ctx: ChartTooltipContext) => string;
   yAxisFormatter?: (value: number) => string;
 }
 
@@ -27,12 +35,15 @@ export function AreaChart({
   fillColor = '#dbeafe',
   className,
   height = '100%',
+  valueLabel,
   tooltipFormatter,
+  tooltipTextFormatter,
   yAxisFormatter,
 }: AreaChartProps) {
   const chartRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
   const tooltipFormatterRef = useStableRef(tooltipFormatter);
+  const tooltipTextFormatterRef = useStableRef(tooltipTextFormatter);
   const yAxisFormatterRef = useStableRef(yAxisFormatter);
 
   useLayoutEffect(() => {
@@ -77,14 +88,15 @@ export function AreaChart({
       }),
     );
 
-    const tooltip = createTooltip(root, `{${valueField}}`);
-    tooltip.label.adapters.add('text', (text) => {
-      const formatter = tooltipFormatterRef.current;
-      if (!formatter) return text;
-      const value = Number(String(text).replace(/[^0-9.-]/g, ''));
-      return formatter(value);
+    const getTooltipConfig = () => ({
+      categoryField,
+      valueField,
+      valueLabel,
+      tooltipFormatter: tooltipFormatterRef.current,
+      tooltipTextFormatter: tooltipTextFormatterRef.current,
     });
-    styleTooltip(tooltip, colors);
+
+    const tooltip = createStyledTooltip(root, categoryField, valueField, getTooltipConfig);
 
     const series = chart.series.push(
       am5xy.SmoothedXYLineSeries.new(root, {
@@ -96,17 +108,43 @@ export function AreaChart({
       }),
     );
 
-    series.strokes.template.setAll({ stroke: am5.color(color), strokeWidth: 2 });
-    series.fills.template.setAll({ fill: am5.color(fillColor), fillOpacity: 0.5, visible: true });
+    series.set('snapTooltip', true);
+
+    series.strokes.template.setAll({
+      stroke: am5.color(color),
+      strokeWidth: 3,
+      interactive: true,
+    });
+    bindSpriteTooltipText(series.strokes.template, categoryField, valueField, getTooltipConfig);
+
+    series.fills.template.setAll({
+      fill: am5.color(fillColor),
+      fillOpacity: 0.5,
+      visible: true,
+      interactive: true,
+    });
+    bindSpriteTooltipText(series.fills.template, categoryField, valueField, getTooltipConfig);
+
     series.bullets.push(() =>
       am5.Bullet.new(root, {
         sprite: am5.Circle.new(root, {
-          radius: 4,
+          radius: 6,
           fill: am5.color(color),
           stroke: am5.color(color),
+          interactive: true,
         }),
       }),
     );
+
+    const cursor = chart.set(
+      'cursor',
+      am5xy.XYCursor.new(root, {
+        behavior: 'none',
+        snapToSeries: [series],
+      }),
+    );
+    cursor.lineY.set('visible', false);
+    cursor.lineX.set('visible', false);
 
     xAxis.data.setAll(data);
     series.data.setAll(data);
@@ -116,7 +154,7 @@ export function AreaChart({
     return () => {
       root.dispose();
     };
-  }, [data, categoryField, valueField, color, fillColor, theme]);
+  }, [data, categoryField, valueField, color, fillColor, valueLabel, theme]);
 
   return <div ref={chartRef} className={cn('w-full', className)} style={{ height }} />;
 }

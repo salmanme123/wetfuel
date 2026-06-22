@@ -5,7 +5,12 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import { useTheme } from '@/hooks/useTheme';
 import { useStableRef } from '@/hooks/useStableRef';
 import { cn } from '@/lib/cn';
-import { getChartColors, styleTooltip } from './chart-theme';
+import {
+  bindSpriteTooltipText,
+  createStyledTooltip,
+  getChartColors,
+  type ChartTooltipContext,
+} from './chart-theme';
 
 const DEFAULT_COLORS = ['#2563eb', '#f59e0b', '#10b981', '#8b5cf6', '#ef4444'];
 
@@ -16,7 +21,9 @@ interface PieChartProps {
   colors?: string[];
   className?: string;
   height?: string;
+  valueLabel?: string;
   tooltipFormatter?: (value: number) => string;
+  tooltipTextFormatter?: (ctx: ChartTooltipContext) => string;
 }
 
 export function PieChart({
@@ -26,11 +33,14 @@ export function PieChart({
   colors = DEFAULT_COLORS,
   className,
   height = '100%',
+  valueLabel,
   tooltipFormatter,
+  tooltipTextFormatter,
 }: PieChartProps) {
   const chartRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
   const tooltipFormatterRef = useStableRef(tooltipFormatter);
+  const tooltipTextFormatterRef = useStableRef(tooltipTextFormatter);
 
   useLayoutEffect(() => {
     if (!chartRef.current) return;
@@ -60,10 +70,23 @@ export function PieChart({
       }),
     );
 
+    const getTooltipConfig = () => ({
+      categoryField,
+      valueField,
+      valueLabel,
+      tooltipFormatter: tooltipFormatterRef.current,
+      tooltipTextFormatter: tooltipTextFormatterRef.current,
+    });
+
+    const tooltip = createStyledTooltip(root, categoryField, valueField, getTooltipConfig);
+    series.set('tooltip', tooltip);
+
     series.slices.template.setAll({
       strokeWidth: 2,
       stroke: chartColors.tooltipBg,
+      interactive: true,
     });
+    bindSpriteTooltipText(series.slices.template, categoryField, valueField, getTooltipConfig);
 
     series.labels.template.setAll({
       fill: chartColors.text,
@@ -73,31 +96,13 @@ export function PieChart({
 
     series.ticks.template.setAll({ stroke: chartColors.text });
 
-    const tooltip = am5.Tooltip.new(root, {
-      labelText: `{${categoryField}}: {${valueField}}`,
-      getFillFromSprite: false,
-      autoTextColor: false,
-    });
-    tooltip.label.adapters.add('text', (_text, target) => {
-      const formatter = tooltipFormatterRef.current;
-      const ctx = target.dataItem?.dataContext as Record<string, unknown> | undefined;
-      const category = ctx?.[categoryField];
-      const value = ctx?.[valueField];
-      if (formatter && typeof value === 'number' && typeof category === 'string') {
-        return `${category}: ${formatter(value)}`;
-      }
-      return _text;
-    });
-    styleTooltip(tooltip, chartColors);
-    series.set('tooltip', tooltip);
-
     series.data.setAll(data);
     series.appear(800, 100);
 
     return () => {
       root.dispose();
     };
-  }, [data, categoryField, valueField, colors, theme]);
+  }, [data, categoryField, valueField, colors, valueLabel, theme]);
 
   return <div ref={chartRef} className={cn('w-full', className)} style={{ height }} />;
 }

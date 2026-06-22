@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/Card';
 import { Tabs } from '@/components/ui/Tabs';
 import { Badge } from '@/components/ui/Badge';
 import { AreaChart, BarChart, HorizontalBarChart, PieChart } from '@/components/charts';
+import { deliveryDayTooltip, fuelTypeVolumeTooltip, monthlyRevenueTooltip } from '@/lib/chart-tooltips';
 import { mockCustomers, mockDrivers, mockInvoices, dailyDeliveriesData, monthlyRevenueData, fuelTypeBreakdown } from '@/mock';
 import { formatCurrency, formatGallons, formatNumber } from '@/lib/format';
 
@@ -31,7 +32,12 @@ export function ReportsPage() {
           <div className="grid gap-6 lg:grid-cols-2">
             <Card title="Daily Deliveries">
               <div className="h-72">
-                <BarChart data={dailyDeliveriesData} categoryField="date" valueField="count" />
+                <BarChart
+                  data={dailyDeliveriesData}
+                  categoryField="date"
+                  valueField="count"
+                  tooltipTextFormatter={deliveryDayTooltip}
+                />
               </div>
             </Card>
 
@@ -42,7 +48,7 @@ export function ReportsPage() {
                   categoryField="type"
                   valueField="gallons"
                   colors={PIE_COLORS}
-                  tooltipFormatter={(v) => formatGallons(v)}
+                  tooltipTextFormatter={fuelTypeVolumeTooltip}
                 />
               </div>
             </Card>
@@ -84,7 +90,7 @@ export function ReportsPage() {
                   valueField="revenue"
                   color="#10b981"
                   fillColor="#d1fae5"
-                  tooltipFormatter={(v) => formatCurrency(v)}
+                  tooltipTextFormatter={monthlyRevenueTooltip}
                   yAxisFormatter={(v) => `$${formatNumber(v / 1000)}k`}
                 />
               </div>
@@ -148,7 +154,7 @@ export function ReportsPage() {
                 data={fuelTypeBreakdown}
                 categoryField="type"
                 valueField="gallons"
-                tooltipFormatter={(v) => formatGallons(v)}
+                tooltipTextFormatter={fuelTypeVolumeTooltip}
                 xAxisFormatter={(v) => formatNumber(v)}
               />
             </div>

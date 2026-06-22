@@ -5,7 +5,13 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import { useTheme } from '@/hooks/useTheme';
 import { useStableRef } from '@/hooks/useStableRef';
 import { cn } from '@/lib/cn';
-import { applyAxisTheme, createTooltip, getChartColors, styleTooltip } from './chart-theme';
+import {
+  applyAxisTheme,
+  bindSpriteTooltipText,
+  createStyledTooltip,
+  getChartColors,
+  type ChartTooltipContext,
+} from './chart-theme';
 
 interface BarChartProps {
   data: Record<string, string | number>[];
@@ -14,7 +20,9 @@ interface BarChartProps {
   color?: string;
   className?: string;
   height?: string;
+  valueLabel?: string;
   tooltipFormatter?: (value: number) => string;
+  tooltipTextFormatter?: (ctx: ChartTooltipContext) => string;
 }
 
 export function BarChart({
@@ -24,11 +32,14 @@ export function BarChart({
   color = '#2563eb',
   className,
   height = '100%',
+  valueLabel,
   tooltipFormatter,
+  tooltipTextFormatter,
 }: BarChartProps) {
   const chartRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
   const tooltipFormatterRef = useStableRef(tooltipFormatter);
+  const tooltipTextFormatterRef = useStableRef(tooltipTextFormatter);
 
   useLayoutEffect(() => {
     if (!chartRef.current) return;
@@ -65,14 +76,15 @@ export function BarChart({
       }),
     );
 
-    const tooltip = createTooltip(root, `{${valueField}}`);
-    tooltip.label.adapters.add('text', (text) => {
-      const formatter = tooltipFormatterRef.current;
-      if (!formatter) return text;
-      const value = Number(String(text).replace(/[^0-9.-]/g, ''));
-      return formatter(value);
+    const getTooltipConfig = () => ({
+      categoryField,
+      valueField,
+      valueLabel,
+      tooltipFormatter: tooltipFormatterRef.current,
+      tooltipTextFormatter: tooltipTextFormatterRef.current,
     });
-    styleTooltip(tooltip, colors);
+
+    const tooltip = createStyledTooltip(root, categoryField, valueField, getTooltipConfig);
 
     const series = chart.series.push(
       am5xy.ColumnSeries.new(root, {
@@ -90,7 +102,9 @@ export function BarChart({
       cornerRadiusTL: 4,
       cornerRadiusTR: 4,
       width: am5.percent(70),
+      interactive: true,
     });
+    bindSpriteTooltipText(series.columns.template, categoryField, valueField, getTooltipConfig);
 
     xAxis.data.setAll(data);
     series.data.setAll(data);
@@ -100,7 +114,7 @@ export function BarChart({
     return () => {
       root.dispose();
     };
-  }, [data, categoryField, valueField, color, theme]);
+  }, [data, categoryField, valueField, color, valueLabel, theme]);
 
   return <div ref={chartRef} className={cn('w-full', className)} style={{ height }} />;
 }

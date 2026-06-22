@@ -24,11 +24,106 @@ export function applyAxisTheme(
   renderer.labels.template.setAll({ fill: colors.text, fontSize: 12 });
 }
 
-export function createTooltip(root: am5.Root, labelText: string) {
+export function createTooltip(root: am5.Root, categoryField: string, valueField: string) {
   return am5.Tooltip.new(root, {
-    labelText,
+    labelText: `{${categoryField}}\n{${valueField}}`,
     getFillFromSprite: false,
     autoTextColor: false,
+    pointerOrientation: 'vertical',
+  });
+}
+
+export interface ChartTooltipContext {
+  category: string;
+  value: number;
+  data: Record<string, string | number>;
+}
+
+export interface ChartTooltipConfig {
+  categoryField: string;
+  valueField: string;
+  valueLabel?: string;
+  tooltipFormatter?: (value: number) => string;
+  tooltipTextFormatter?: (ctx: ChartTooltipContext) => string;
+}
+
+export function formatTooltipText(
+  ctx: ChartTooltipContext,
+  config: ChartTooltipConfig,
+): string {
+  if (config.tooltipTextFormatter) {
+    return config.tooltipTextFormatter(ctx);
+  }
+
+  const formatted = config.tooltipFormatter
+    ? config.tooltipFormatter(ctx.value)
+    : String(ctx.value);
+  const label = config.valueLabel ?? 'Value';
+
+  return `${ctx.category}\n${label}: ${formatted}`;
+}
+
+function resolveTooltipDataContext(target: am5.Sprite): Record<string, string | number> | undefined {
+  let node: am5.Sprite | undefined = target;
+  while (node) {
+    const ctx = node.dataItem?.dataContext;
+    if (ctx) return ctx as Record<string, string | number>;
+    node = node.parent;
+  }
+  return undefined;
+}
+
+function formatTooltipFromContext(
+  dataContext: Record<string, string | number>,
+  categoryField: string,
+  valueField: string,
+  getConfig: () => ChartTooltipConfig,
+): string {
+  const category = String(dataContext[categoryField] ?? '');
+  const value = Number(dataContext[valueField] ?? 0);
+  return formatTooltipText({ category, value, data: dataContext }, getConfig());
+}
+
+export function bindTooltipLabel(
+  tooltip: am5.Tooltip,
+  categoryField: string,
+  valueField: string,
+  getConfig: () => ChartTooltipConfig,
+) {
+  tooltip.set('labelText', `{${categoryField}}\n{${valueField}}`);
+
+  tooltip.label.adapters.add('text', (text, target) => {
+    const dataContext = resolveTooltipDataContext(target);
+    if (dataContext) {
+      return formatTooltipFromContext(dataContext, categoryField, valueField, getConfig);
+    }
+
+    const config = getConfig();
+    if (config.tooltipTextFormatter && text) {
+      const [category = '', rawValue = ''] = text.split('\n');
+      const value = Number(String(rawValue).replace(/[^0-9.-]/g, ''));
+      if (!Number.isNaN(value)) {
+        return formatTooltipText({ category, value, data: {} }, config);
+      }
+    }
+
+    return text;
+  });
+}
+
+export function bindSpriteTooltipText(
+  template: unknown,
+  categoryField: string,
+  valueField: string,
+  getConfig: () => ChartTooltipConfig,
+) {
+  const t = template as {
+    adapters: { add: (key: string, fn: (text: string, target: am5.Sprite) => string) => void };
+  };
+  t.adapters.add('tooltipText', (_text: string, target: am5.Sprite) => {
+    const dataContext = resolveTooltipDataContext(target);
+    if (!dataContext) return _text;
+    return formatTooltipFromContext(dataContext, categoryField, valueField, getConfig);
   });
 }
 
@@ -38,5 +133,22 @@ export function styleTooltip(tooltip: am5.Tooltip, colors: ReturnType<typeof get
     stroke: colors.tooltipBorder,
     strokeWidth: 1,
   });
-  tooltip.label.setAll({ fill: colors.tooltipText, fontSize: 12 });
+  tooltip.label.setAll({
+    fill: colors.tooltipText,
+    fontSize: 12,
+    textAlign: 'center',
+  });
+}
+
+export function createStyledTooltip(
+  root: am5.Root,
+  categoryField: string,
+  valueField: string,
+  getConfig: () => ChartTooltipConfig,
+) {
+  const colors = getChartColors();
+  const tooltip = createTooltip(root, categoryField, valueField);
+  bindTooltipLabel(tooltip, categoryField, valueField, getConfig);
+  styleTooltip(tooltip, colors);
+  return tooltip;
 }

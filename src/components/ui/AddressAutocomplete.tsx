@@ -177,7 +177,7 @@ export function AddressAutocomplete({
           }}
           onKeyDown={handleKeyDown}
           className={cn(
-            'block w-full rounded-lg border py-2 pl-9 pr-3 text-sm shadow-sm transition-colors',
+            'block w-full rounded-lg border border-border bg-card py-2 pl-9 pr-3 text-sm text-foreground shadow-sm transition-colors',
             'focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500',
             'placeholder:text-muted-foreground/60',
             error ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-border',
@@ -198,7 +198,7 @@ export function AddressAutocomplete({
       {showDropdown && createPortal(
         <div
           ref={dropdownRef}
-          className="fixed z-[300] overflow-hidden rounded-sm border border-border bg-card shadow-[0_2px_6px_rgba(0,0,0,0.3)]"
+          className="fixed z-[300] overflow-hidden rounded-sm border border-border bg-card text-foreground shadow-[0_2px_6px_rgba(0,0,0,0.3)]"
           style={{ top: dropdownStyle.top, left: dropdownStyle.left, width: dropdownStyle.width }}
         >
           {loading ? (

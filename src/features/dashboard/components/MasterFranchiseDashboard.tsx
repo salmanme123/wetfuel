@@ -2,6 +2,7 @@ import { PageHeader } from '@/components/shared/PageHeader';
 import { StatsCard } from '@/components/shared/StatsCard';
 import { Card } from '@/components/ui/Card';
 import { BarChart } from '@/components/charts';
+import { deliveryDayTooltip } from '@/lib/chart-tooltips';
 import { masterFranchiseKpis, dailyDeliveriesData } from '@/mock';
 import { formatCurrency, formatGallons } from '@/lib/format';
 import { Boxes, DollarSign, Droplets, Clock, ShieldCheck, Users } from 'lucide-react';
@@ -23,7 +24,12 @@ export function MasterFranchiseDashboard() {
       <div className="mt-6">
         <Card title="Daily Deliveries (Last 14 Days)">
           <div className="h-72">
-            <BarChart data={dailyDeliveriesData} categoryField="date" valueField="count" />
+            <BarChart
+              data={dailyDeliveriesData}
+              categoryField="date"
+              valueField="count"
+              tooltipTextFormatter={deliveryDayTooltip}
+            />
           </div>
         </Card>
       </div>

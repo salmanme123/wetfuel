@@ -37,7 +37,7 @@ export function TenantSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 top-full z-50 mt-1 w-72 rounded-xl border border-border bg-card shadow-2xl">
+        <div className="absolute left-0 top-full z-50 mt-1 w-72 rounded-xl border border-border bg-card text-foreground shadow-2xl">
           <div className="border-b border-border px-4 py-3">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Operating as Tenant</p>
           </div>

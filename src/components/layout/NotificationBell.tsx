@@ -35,7 +35,7 @@ export function NotificationBell() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-96 rounded-xl border border-border bg-card shadow-2xl">
+        <div className="absolute right-0 top-full z-50 mt-2 w-96 rounded-xl border border-border bg-card text-foreground shadow-2xl">
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <h3 className="font-semibold text-foreground">Notifications</h3>
             {unreadCount > 0 && <Badge variant="error">{unreadCount} unread</Badge>}

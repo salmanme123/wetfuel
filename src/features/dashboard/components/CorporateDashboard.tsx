@@ -36,6 +36,7 @@ import {
   XCircle,
 } from 'lucide-react';
 import { AreaChart } from '@/components/charts';
+import { monthlyRevenueTooltip } from '@/lib/chart-tooltips';
 
 const priorityColors: Record<string, 'default' | 'info' | 'warning' | 'error'> = {
   low: 'default',
@@ -304,7 +305,7 @@ export function CorporateDashboard() {
               data={monthlyRevenueData}
               categoryField="month"
               valueField="revenue"
-              tooltipFormatter={(v) => formatCurrency(v)}
+              tooltipTextFormatter={monthlyRevenueTooltip}
               yAxisFormatter={(v) => `$${formatNumber(v / 1000)}k`}
             />
           </div>

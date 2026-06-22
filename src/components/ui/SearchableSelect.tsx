@@ -139,7 +139,7 @@ export function SearchableSelect({
         <button
           type="button"
           onClick={toggleOpen}
-          className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 px-3 py-2 text-left text-sm"
+          className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 px-3 py-2 text-left text-sm text-foreground"
         >
           {selectedOption ? (
             renderOptionContent(selectedOption, true)
@@ -176,7 +176,7 @@ export function SearchableSelect({
             left: dropdownStyle.left,
             width: dropdownStyle.width,
           }}
-          className="z-[200] overflow-hidden rounded-lg border border-border bg-card shadow-xl"
+          className="z-[200] overflow-hidden rounded-lg border border-border bg-card text-foreground shadow-xl"
           onMouseDown={(e) => e.stopPropagation()}
         >
           <div className="border-b border-border/50 p-2">
@@ -188,7 +188,7 @@ export function SearchableSelect({
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={searchPlaceholder}
-                className="w-full rounded-md border border-border py-1.5 pl-8 pr-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                className="w-full rounded-md border border-border bg-background py-1.5 pl-8 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
               />
             </div>
           </div>
@@ -199,7 +199,7 @@ export function SearchableSelect({
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => handleSelect('')}
                 className={cn(
-                  'w-full cursor-pointer px-3 py-2 text-left text-sm hover:bg-muted/50',
+                  'w-full cursor-pointer px-3 py-2 text-left text-sm text-foreground hover:bg-muted/50',
                   !value && 'bg-primary/10 font-medium text-primary',
                 )}
               >
@@ -216,7 +216,7 @@ export function SearchableSelect({
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => handleSelect(opt.value)}
                     className={cn(
-                      'w-full cursor-pointer px-3 py-2 text-left text-sm hover:bg-muted/50',
+                      'w-full cursor-pointer px-3 py-2 text-left text-sm text-foreground hover:bg-muted/50',
                       value === opt.value && 'bg-primary/10 text-primary',
                     )}
                   >

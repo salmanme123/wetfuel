@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '@/hooks/useAuth';
-import { Fuel, Building2, Map, Truck } from 'lucide-react';
+import { WetFuelLogo } from '@/components/brand/WetFuelLogo';
+import { Building2, Map, Truck } from 'lucide-react';
 import type { UserRole } from '@/types';
 
 const roles: { role: UserRole; label: string; description: string; icon: typeof Building2 }[] = [
@@ -46,12 +47,9 @@ export function LoginPage() {
         background: 'radial-gradient(ellipse 80% 50% at 20% -10%, oklch(0.62 0.24 27 / 0.08), transparent 60%), radial-gradient(ellipse 60% 40% at 100% 110%, oklch(0.62 0.24 27 / 0.04), transparent 60%)',
       }} />
 
-      <div className="relative z-10 mb-8 flex items-center gap-3">
-        <Fuel className="h-12 w-12 text-primary" />
-        <div>
-          <h1 className="text-3xl font-bold text-foreground display-font">WetFuel</h1>
-          <p className="text-sm text-muted-foreground">Digital Solution Ecosystem</p>
-        </div>
+      <div className="relative z-10 mb-8 flex flex-col items-center gap-3">
+        <WetFuelLogo variant="full" className="h-14 w-auto max-w-xs" />
+        <p className="text-sm text-muted-foreground">Digital Solution Ecosystem</p>
       </div>
 
       <div className="relative z-10 w-full max-w-3xl">

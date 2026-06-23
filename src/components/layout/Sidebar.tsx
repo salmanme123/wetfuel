@@ -4,8 +4,9 @@ import { SidebarContext } from '@/context/SidebarContext';
 import { useAuth } from '@/hooks/useAuth';
 import { NAV_BY_ROLE } from '@/lib/role-permissions';
 import { cn } from '@/lib/cn';
+import { WetFuelLogo } from '@/components/brand/WetFuelLogo';
 import {
-  Fuel, ChevronLeft, ChevronRight,
+  ChevronLeft, ChevronRight,
   LayoutDashboard, Building2, Network, Users, UserCheck, Truck,
   UserCog, CarFront, Droplets, QrCode, DollarSign, ShieldCheck, FileText, BarChart3,
   Flame, ScrollText, Settings,
@@ -31,11 +32,11 @@ export function Sidebar() {
         sidebar.isCollapsed ? 'w-16' : 'w-64',
       )}
     >
-      <div className={cn('flex h-16 items-center border-b border-sidebar-border px-4', sidebar.isCollapsed ? 'justify-center' : 'gap-3')}>
-        <Fuel className="h-8 w-8 shrink-0 text-primary" />
-        {!sidebar.isCollapsed && (
-          <span className="text-lg font-bold text-sidebar-foreground display-font">WetFuel</span>
-        )}
+      <div className={cn('flex h-[4.5rem] items-center border-b border-sidebar-border px-3', sidebar.isCollapsed ? 'justify-center' : 'px-4')}>
+        <WetFuelLogo
+          variant={sidebar.isCollapsed ? 'symbol' : 'full'}
+          className={sidebar.isCollapsed ? 'h-10 w-10' : 'h-12 w-auto max-w-[13.5rem]'}
+        />
       </div>
 
       <nav className="flex-1 overflow-y-auto py-4">
